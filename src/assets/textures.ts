@@ -1,0 +1,28 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+
+export const textures = {
+    'cta/bg': 'cta/bg.jpg',
+    'play/bg': 'play/bg.jpg',
+    'animations/scroll/5': 'animations/scroll/5.png',
+    'animations/scroll/4': 'animations/scroll/4.png',
+    'animations/scroll/3': 'animations/scroll/3.png',
+    'animations/scroll/2': 'animations/scroll/2.png',
+    'animations/scroll/1': 'animations/scroll/1.png',
+    'ui/cta_box': 'ui/cta_box.png',
+    'ui/logo': 'ui/logo.png',
+    'animations/scroll/0': 'animations/scroll/0.png',
+    wing: 'wing.png',
+    token: 'token.png',
+    'ui/cta_play_button': 'ui/cta_play_button.png',
+    'ui/hand': 'ui/hand.png',
+    'ui/persistent_cta_button': 'ui/persistent_cta_button.png',
+    star: 'star.png',
+    'ui/sound_off': 'ui/sound_off.png',
+    'ui/sound_on': 'ui/sound_on.png',
+    'particles/confetti/06': 'particles/confetti/06.png',
+    'particles/confetti/05': 'particles/confetti/05.png',
+    'particles/confetti/01': 'particles/confetti/01.png',
+    'particles/confetti/04': 'particles/confetti/04.png',
+    'particles/confetti/03': 'particles/confetti/03.png',
+    'particles/confetti/02': 'particles/confetti/02.png',
+};

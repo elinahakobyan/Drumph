@@ -1,0 +1,114 @@
+{
+    "spine": true,
+    "legologger": false,
+    "variation": {
+        "image": {
+            "bg/play/bg.jpg": {
+                "description": "Game Background",
+                "options": ["bg/play/bg_alt.jpg"],
+                "active": -1
+            },
+            "bg/cta/bg.jpg": {
+                "description": "CTA Background",
+                "options": ["bg/cta/bg_alt.jpg"],
+                "active": 0
+            },
+            "main/ui/cta_icon.png": {
+                "description": "CTA icon",
+                "options": ["main/ui/cta_icon_alt1.png", "main/ui/cta_icon_alt2.png"],
+                "active": 0
+            }
+        },
+        "module": {
+            "cta": {
+                "description": "CTA style",
+                "options": {
+                    "traditional": {
+                        "path": "src/views/cta-traditional",
+                        "description": "Traditional CTA",
+                        "assets": []
+                    },
+                    "starRating": {
+                        "path": "src/views/cta-star-rating",
+                        "description": "Star Rating CTA",
+                        "assets": ["ui/star_full.png", "ui/star_half.png", "ui/cta_icon.png"]
+                    }
+                },
+                "active": "traditional"
+            }
+        }
+    },
+    "params": {
+        "tutorial": {
+            "value": true,
+            "description": "Controls visibility of a tutorial."
+        },
+        "tutorialTime": {
+            "value": 5,
+            "description": "Seconds delay before tutorial closes.",
+            "range": [2, 15]
+        },
+        "tutorialText": {
+            "value": "Tutorial Text",
+            "description": "Nagging tutorial text.",
+            "options": ["Tutorial Text", "Other Tutorial Text"]
+        },
+        "persistentCtaBtn": {
+            "value": true,
+            "description": "When true, the cta button is displayed at all times."
+        },
+        "idleTimeToCta": {
+            "value": 10,
+            "description": "AFK time to open the CTA (seconds)",
+            "range": [10, 45]
+        },
+        "ctaScreenClickable": {
+            "value": true,
+            "description": "The entire CTA screen is clickable to the App store. When false, only CTA button is clickable."
+        },
+        "ctaPrimaryBtnText": {
+            "value": "Continue",
+            "description": "Change CTA Primary button text.",
+            "options": ["Play Now", "Continue", "Download Now", "PLAY NOW"]
+        },
+        "sound": {
+            "value": true,
+            "description": "If true, sound is played."
+        },
+        "soundIcon": {
+            "value": true,
+            "description": "When false, the sound icon is not displayed",
+            "dependsOn": {
+                "name": "sound",
+                "value": true
+            }
+        },
+        "hint": {
+            "value": true,
+            "description": "Bool to trigger nagging/arrow, param dependency example"
+        },
+        "idleTimeToHint": {
+            "value": 1,
+            "description": "idle time to show a hint (milliseconds)",
+            "range": [1, 5],
+            "dependsOn": {
+                "name": "hint",
+                "value": true
+            }
+        }
+    },
+    "size": {
+        "landscape": { "width": 1390, "height": 640 },
+        "portrait": { "width": 640, "height": 1390 }
+    },
+    "compression": {
+        "default": {
+            "assets/atlases/**/*.jpg": 80,
+            "assets/atlases/**/*.png": 80
+        }
+    },
+    "store": {
+        "appstore": "https://apps.apple.com/app/id1456349022",
+        "googleplay": "https://play.google.com/store/apps/details?id=com.doublecoconut.roofbot"
+    }
+}

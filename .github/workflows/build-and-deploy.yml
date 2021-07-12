@@ -1,0 +1,38 @@
+on:
+    push:
+        branches:
+            - master
+
+jobs:
+    build:
+        runs-on: ubuntu-20.04
+        steps:
+            - name: Checkout 🛎
+              uses: actions/checkout@v2
+              with:
+                  persist-credentials: false
+
+            - name: Setup Node
+              uses: actions/setup-node@v1
+              with:
+                  node-version: 12
+            - run: echo "//npm.pkg.github.com/:_authToken=$PKG_AUTH_TOKEN" > .npmrc
+              env:
+                PKG_AUTH_TOKEN: ${{secrets.PKG_AUTH_TOKEN}}
+            - run: echo "@replayable:registry=https://npm.pkg.github.com/" >> .npmrc
+            - name: Installing ffmpeg
+              run: |
+                  sudo apt-get update
+                  sudo apt-get install lame
+
+            - name: Install and Build
+              run: |
+                  npm install
+                  npm run build
+
+            - name: Deploy 🚀
+              uses: JamesIves/github-pages-deploy-action@releases/v3
+              with:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  BRANCH: gh-pages # The branch the action should deploy to.
+                  FOLDER: dist # The folder the action should deploy.

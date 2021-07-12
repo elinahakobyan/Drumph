@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport"
+    content="width=device-width,height=device-height,initial-scale=1.0,maximum-scale=1.0, viewport-fit=cover">
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
+  <link href="//fonts.googleapis.com/css?family=Lato:400,900" rel="stylesheet" type="text/css" />
+  <link href="index.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="light">
+  <h1 id="_title_"></h1>
+  <div class="wrap" id="_wrap_">
+  </div>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $("a.dir").click(function (e) {
+        $(this).toggleClass('open');
+        $('.sub[data-folder="' + $(this).attr('href') + '"]').slideToggle();
+        e.preventDefault();
+      });
+    });
+  </script>
+</body>
+
+</html>
