@@ -1,6 +1,6 @@
 import { lego } from '@armathai/lego';
 import { ICellConfig, PixiGrid } from '@armathai/pixi-grid';
-import { BoardComponent } from '../components/board-component';
+import { BoardComponent } from './board-view';
 import { getPlayGridConfig } from '../constants/configs/grid-configs';
 import { PlayModelEvent } from '../events/model';
 import { BoardModel } from '../models/board-model';

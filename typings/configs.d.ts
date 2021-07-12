@@ -83,3 +83,19 @@ type SpineConfig = {
     scale?: PIXI.Point;
     speed?: number;
 };
+
+type LevelPadConfig = {
+    row: number;
+    col: number;
+    sound: number;
+};
+
+type PadModelConfig = {
+    name: string;
+    row: number;
+    col: number;
+    sound?: number;
+    color?: number;
+};
+
+type LevelConfig = LevelPadConfig[];

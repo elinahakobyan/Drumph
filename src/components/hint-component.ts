@@ -4,7 +4,7 @@ import { gsap } from 'gsap';
 import { getHandTextureConfig } from '../constants/configs/texture-configs';
 import { HintModelEvent } from '../events/model';
 import { getDisplayObjectByProperty, makeTexture } from '../utils';
-import { BoardComponent } from './board-component';
+import { BoardComponent } from '../views/board-view';
 
 export class HintComponent extends Sprite {
     public constructor() {
