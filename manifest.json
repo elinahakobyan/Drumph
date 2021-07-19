@@ -44,7 +44,7 @@
             "description": "Controls visibility of a tutorial."
         },
         "tutorialTime": {
-            "value": 5,
+            "value": 15,
             "description": "Seconds delay before tutorial closes.",
             "range": [2, 15]
         },
@@ -58,7 +58,7 @@
             "description": "When true, the cta button is displayed at all times."
         },
         "idleTimeToCta": {
-            "value": 10,
+            "value": 45,
             "description": "AFK time to open the CTA (seconds)",
             "range": [10, 45]
         },
@@ -75,20 +75,12 @@
             "value": true,
             "description": "If true, sound is played."
         },
-        "soundIcon": {
-            "value": true,
-            "description": "When false, the sound icon is not displayed",
-            "dependsOn": {
-                "name": "sound",
-                "value": true
-            }
-        },
         "hint": {
             "value": true,
             "description": "Bool to trigger nagging/arrow, param dependency example"
         },
         "idleTimeToHint": {
-            "value": 1,
+            "value": 15,
             "description": "idle time to show a hint (milliseconds)",
             "range": [1, 5],
             "dependsOn": {

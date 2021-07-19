@@ -1,3 +1,16 @@
+export enum PadModelEvent {
+    stateUpdate = 'PadModelStateUpdate',
+    colorUpdate = 'PadModelColorUpdate',
+    nameUpdate = 'PadModelNameUpdate',
+}
+
+export enum BoardModelEvent {
+    stateUpdate = 'BoardModelStateUpdate',
+    levelUpdate = 'BoardModelLevelUpdate',
+    padsUpdate = 'BoardModelPadsUpdate',
+    levelPatternUpdate = 'BoardModelLevelPatternUpdate',
+}
+
 export enum CtaModelEvent {
     revelationUpdate = 'CtaModelRevelationUpdate',
     revealedUpdate = 'CtaModelRevealedUpdate',

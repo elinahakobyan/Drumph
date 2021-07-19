@@ -22,7 +22,7 @@ export class PadModel extends ObservableModel {
     }
 
     public get color(): number {
-        return this._config.color;
+        return this._config.colorPassive;
     }
 
     public get name(): string {

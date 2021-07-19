@@ -1,12 +1,12 @@
 import { lego } from '@armathai/lego';
 import { ICellConfig, PixiGrid } from '@armathai/pixi-grid';
-import { BoardComponent } from './board-view';
+import { BoardView } from './board-view';
 import { getPlayGridConfig } from '../constants/configs/grid-configs';
 import { PlayModelEvent } from '../events/model';
 import { BoardModel } from '../models/board-model';
 
 export class PlayView extends PixiGrid {
-    private _board: BoardComponent;
+    private _board: BoardView;
 
     public constructor() {
         super();
@@ -24,7 +24,7 @@ export class PlayView extends PixiGrid {
     }
 
     private _buildBoard(): void {
-        this.setChild('board', (this._board = new BoardComponent()));
+        this.setChild('board', (this._board = new BoardView()));
     }
 
     private _destroyBoard(): void {

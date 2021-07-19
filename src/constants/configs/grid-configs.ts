@@ -1,6 +1,7 @@
 import { ICellConfig } from '@armathai/pixi-grid';
 import { lp } from '../../utils';
 import { getBackgroundGridLandscapeConfig, getBackgroundGridPortraitConfig } from './grid/background-grid-configs';
+import { getBoardGridLandscapeConfig, getBoardGridPortraitConfig } from './grid/board-grid-config';
 import {
     getStarRatingCTAGridLandscapeConfig,
     getStarRatingCTAGridPortraitConfig,
@@ -26,6 +27,10 @@ export const getForegroundGridConfig = (): ICellConfig => {
 
 export const getUIGridConfig = (): ICellConfig => {
     return lp(getUIGridLandscapeConfig, getUIGridPortraitConfig).call(null);
+};
+
+export const getBoardGridConfig = (): ICellConfig => {
+    return lp(getBoardGridLandscapeConfig, getBoardGridPortraitConfig).call(null);
 };
 
 export const getPlayGridConfig = (): ICellConfig => {

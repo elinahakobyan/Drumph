@@ -95,7 +95,8 @@ type PadModelConfig = {
     row: number;
     col: number;
     sound?: number;
-    color?: number;
+    colorPassive?: number;
+    colorAtive?: number;
 };
 
 type LevelConfig = LevelPadConfig[];

@@ -30,11 +30,11 @@ export class SoundObservant {
     }
 
     private _playLoop(): void {
-        this._play('theme');
+        // this._play('theme');
     }
 
     private _onSoundMuteUpdate(mute: boolean): void {
-        mute ? this._mute() : this._unmute();
+        // mute ? this._mute() : this._unmute();
     }
 
     private _unmute(): void {
