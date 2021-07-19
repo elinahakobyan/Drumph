@@ -35,7 +35,7 @@ export abstract class AbstractCTAView extends PixiGrid {
                 this.removeChildren();
                 break;
             case PlayableState.cta:
-                this.build();
+                // this.build();
                 break;
             default:
         }

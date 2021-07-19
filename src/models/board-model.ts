@@ -1,4 +1,6 @@
+import { lego } from '@armathai/lego';
 import { levels, padsConfigs } from '../constants/constants';
+import { BoardModelEvent } from '../events/model';
 import { ObservableModel } from './observable-model';
 import { PadModel } from './pads/pad-model';
 
@@ -17,7 +19,7 @@ export class BoardModel extends ObservableModel {
 
     public constructor() {
         super('BoardModel');
-
+        lego.event.on(BoardModelEvent.levelUpdate, this._onLevelUpdate, this);
         this.makeObservable();
     }
 
@@ -52,18 +54,24 @@ export class BoardModel extends ObservableModel {
         const padsConfig = padsConfigs;
         padsConfig.map((padConfig) => {
             const padModel = new PadModel(padConfig);
-            pads.set(padConfig.name, padModel);
+            pads.set(padModel.name, padModel);
         });
         this._pads = pads;
     }
 
-    private _createlevelPattern(level: number): void {
+    private _onLevelUpdate(level: number): void {
         this._level = level;
-        const levelPads = levels[level - 1];
+        this._createlevelPattern();
+        this._state = BoardState.tutorial;
+    }
+
+    private _createlevelPattern(): void {
+        const levelPads = levels[this._level - 1];
         this._levelPattern ? (this._levelPattern.length = 0) : (this._levelPattern = []);
+        const levelPattern: string[] = [];
         levelPads.forEach((levelPads) => {
-            this._levelPattern.push(`pad_${levelPads.row}_${levelPads.col}`);
+            levelPattern.push(`pad_${levelPads.row}_${levelPads.col}`);
         });
-        console.warn(this._levelPattern);
+        this._levelPattern = levelPattern;
     }
 }

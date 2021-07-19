@@ -2,6 +2,10 @@ export enum MainViewEvent {
     click = 'MainViewClick',
 }
 
+export enum BoardViewEvent {
+    addPads = 'BoardViewEventAddPads',
+}
+
 export enum SoundToggleComponentEvent {
     click = 'SoundToggleComponentEventClick',
 }

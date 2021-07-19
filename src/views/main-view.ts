@@ -9,14 +9,11 @@ import { MainViewEvent } from '../events/view';
 import { PlayableState } from '../models/playable-model';
 import { getPlayable } from '../utils';
 import { BackgroundView } from './background-view';
-import { CTAView } from './cta-traditional';
 import { ForegroundView } from './foreground-view';
 import { PlayView } from './play-view';
 import { UIView } from './ui-view';
 
 export class MainView extends PixiGrid {
-    private _ctaView: CTAView;
-
     public constructor() {
         super();
         this._build();
@@ -39,7 +36,7 @@ export class MainView extends PixiGrid {
     private _onPlayableStateUpdate(state: PlayableState): void {
         switch (state) {
             case PlayableState.cta:
-                this.rebuildChild(this._ctaView);
+                // this.rebuildChild(this._ctaView);
                 break;
             default:
         }
@@ -51,11 +48,11 @@ export class MainView extends PixiGrid {
         this._updateHitArea();
 
         // eslint-disable-next-line @typescript-eslint/naming-convention
-        const { CTAView } = require(__CTA_MODULE__);
+        // const { CTAView } = require(__CTA_MODULE__);
         this.setChild('main', new BackgroundView());
         this.setChild('main', new PlayView());
         this.setChild('main', new UIView());
-        this.setChild('main', (this._ctaView = new CTAView()));
+        // this.setChild('main', (this._ctaView = new CTAView()));
         this.setChild('main', new ForegroundView());
     }
 

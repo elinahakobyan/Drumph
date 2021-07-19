@@ -1,7 +1,8 @@
 import { lego } from '@armathai/lego';
 import { CtaModelEvent, PlayableModelEvent } from '../events/model';
 import { PlayableEvent } from '../events/playable';
-import { CTAViewEvent } from '../events/view';
+import { BoardViewEvent, CTAViewEvent } from '../events/view';
+import { creatLevelPatternCommands } from './creat-level-pattern-commands';
 import { createObservancesCommand } from './create-observances-command';
 import { initializePlayableModelCommand } from './initialize-playable-model-command';
 import { onCtaRevealedCommand } from './on-cta-revealed-command';
@@ -26,5 +27,6 @@ export const startupCommand = (): void => {
         .on(CtaModelEvent.revealedUpdate, onCtaRevealedCommand)
         .on(CtaModelEvent.revelationUpdate, onCtaRevelationCommand)
         .on(CTAViewEvent.secondaryButtonClick, retryCommand)
+        .on(BoardViewEvent.addPads, creatLevelPatternCommands)
         .on(PlayableModelEvent.stateUpdate, onPlayableStateUpdateCommand);
 };

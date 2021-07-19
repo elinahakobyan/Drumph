@@ -8,8 +8,14 @@ export enum PadState {
 export class PadModel extends ObservableModel {
     private _state = PadState.unknown;
     private _config: PadModelConfig;
+    private _name: string;
+    private _activeColor: number;
+    private _passiveColor: number;
     public constructor(config: PadModelConfig) {
         super('BoardModel');
+        this._name = config.name;
+        this._activeColor = config.colorAtive;
+        this._passiveColor = config.colorPassive;
         this.makeObservable();
     }
 
@@ -21,12 +27,15 @@ export class PadModel extends ObservableModel {
         this._state = value;
     }
 
-    public get color(): number {
-        return this._config.colorPassive;
+    public get activeColor(): number {
+        return this._activeColor;
+    }
+    public get passiveColor(): number {
+        return this._passiveColor;
     }
 
     public get name(): string {
-        return this._config.name;
+        return this._name;
     }
 
     public initialize(): void {

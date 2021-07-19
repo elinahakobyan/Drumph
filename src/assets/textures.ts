@@ -19,6 +19,7 @@ export const textures = {
     star: 'star.png',
     'ui/sound_off': 'ui/sound_off.png',
     'ui/sound_on': 'ui/sound_on.png',
+    'pad/pad_bg': 'pad/pad_bg.png',
     'particles/confetti/06': 'particles/confetti/06.png',
     'particles/confetti/05': 'particles/confetti/05.png',
     'particles/confetti/01': 'particles/confetti/01.png',

@@ -384,6 +384,30 @@
         "y": 0.5
       }
     },
+    "pad/pad_bg.png": {
+      "frame": {
+        "x": 542,
+        "y": 3,
+        "w": 47,
+        "h": 47
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 47,
+        "h": 47
+      },
+      "sourceSize": {
+        "w": 47,
+        "h": 47
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
     "particles/confetti/06.png": {
       "frame": {
         "x": 566,

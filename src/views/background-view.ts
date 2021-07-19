@@ -27,7 +27,7 @@ export class BackgroundView extends PixiGrid {
                 break;
 
             case PlayableState.cta:
-                this._createBg('cta/bg.jpg');
+                // this._createBg('cta/bg.jpg');
                 break;
 
             default:

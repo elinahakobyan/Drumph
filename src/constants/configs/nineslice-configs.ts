@@ -18,6 +18,15 @@ export const getTraditionalCtaBoxPatchesConfig = (): NineSliceConfig => {
     };
 };
 
+export const getPadBgPatchConfig = (): NineSliceConfig => {
+    return {
+        texture: textures['pad/pad_bg'],
+        data: [8, 7, 7, 7],
+        width: 180,
+        height: 170,
+    };
+};
+
 export const getTraditionalCtaPrimaryButtonUpPatchesConfig = (): NineSliceConfig => {
     return {
         texture: textures['ui/cta_play_button'],
