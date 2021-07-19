@@ -7,6 +7,7 @@ import { PadModel } from './pads/pad-model';
 export enum BoardState {
     unknown = 'unknown',
     play = 'play',
+    imitacia = 'imitacia',
     tutorial = 'tutorial',
     passive = 'passive',
     showResult = 'showResult',
@@ -16,6 +17,7 @@ export class BoardModel extends ObservableModel {
     private _pads: Map<string, PadModel> = null;
     private _level: number = null;
     private _levelPattern: string[] = null;
+    private _imitacia = false;
 
     public constructor() {
         super('BoardModel');
@@ -25,6 +27,14 @@ export class BoardModel extends ObservableModel {
 
     public get state(): string {
         return this._state;
+    }
+
+    public get imitacia(): boolean {
+        return this._imitacia;
+    }
+
+    public set imitacia(value: boolean) {
+        this._imitacia = value;
     }
 
     public get level(): number {

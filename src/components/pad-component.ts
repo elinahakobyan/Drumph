@@ -6,8 +6,10 @@
 //     [CellColors.pink]: 'pink',
 // };
 
+import { lego } from '@armathai/lego';
 import { NineSlicePlane, Rectangle, Sprite } from 'pixi.js';
 import { getPadBgPatchConfig } from '../constants/configs/nineslice-configs';
+import { PadComponentEvent } from '../events/view';
 import { PadModel } from '../models/pads/pad-model';
 import { makeNineSlice } from '../utils';
 import { Container } from '../utils/container';
@@ -41,6 +43,24 @@ export class PadComponent extends Container {
     public block(): void {
         this._blocker.visible = true;
         this.interactive = false;
+    }
+
+    public addClickListener(): void {
+        this.on('pointerdown', this.emitClickListener);
+        // this._blocker.visible = true;
+        // this.interactive = false;
+    }
+
+    public removeClickListener(): void {
+        this.off('pointerdown', this.emitClickListener);
+
+        // this._blocker.visible = true;
+        // this.interactive = false;
+    }
+    public emitClickListener(): void {
+        console.warn('hhashh');
+
+        lego.event.emit(PadComponentEvent.click, this._name);
     }
 
     public activate(): void {

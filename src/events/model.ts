@@ -1,6 +1,7 @@
 export enum PadModelEvent {
     stateUpdate = 'PadModelStateUpdate',
-    colorUpdate = 'PadModelColorUpdate',
+    activeColorUpdate = 'PadModelActiveColorUpdate',
+    passiveColorUpdate = 'PadModelPassiveColorUpdate',
     nameUpdate = 'PadModelNameUpdate',
 }
 

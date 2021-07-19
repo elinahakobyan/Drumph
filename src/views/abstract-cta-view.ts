@@ -55,6 +55,7 @@ export abstract class AbstractCTAView extends PixiGrid {
     }
 
     private _buildButton(config: ButtonConfig, callback: Callback): Button {
+        return;
         const btn = new Button(config);
         btn.on('click', callback, this);
 

@@ -35,6 +35,7 @@ export class BackgroundView extends PixiGrid {
     }
 
     private _createBg(key: string): void {
+        return;
         this._bg && this._bg.destroy();
         this._bg = makeSprite(getBackgroundViewSpriteConfig(key));
         this.setChild('bg', this._bg);

@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
+import { PixiGrid } from '@armathai/pixi-grid';
+import { IPixiChild } from '@armathai/pixi-grid/dist/types/Types';
 import { Application } from '@pixi/app';
 import { Texture } from '@pixi/core';
 import { Container, DisplayObject } from '@pixi/display';
@@ -219,4 +221,47 @@ export function getApplication(): Application {
 
 export function getParams(): typeof import('../../manifest.json').params {
     return getPlayable().params;
+}
+
+export function isSquareLikeScreen(): boolean {
+    const { width, height } = getPlayable().viewBounds;
+    return Math.min(width, height) / Math.max(width, height) > 0.7;
+}
+
+export function isNarrowScreen(): boolean {
+    const { width, height } = getPlayable().viewBounds;
+    return Math.min(width, height) / Math.max(width, height) < 0.5;
+}
+
+export function tweenToCell(
+    grid: PixiGrid,
+    child: IPixiChild,
+    cellName: string,
+    duration = 1,
+    ease = 'Sinusoidal.InOut',
+): void {
+    const { x: formScaleX, y: formScaleY } = child.scale;
+    const { x: formPositionX, y: formPositionY } = child.position;
+    //@ts-ignore
+    grid.setChild(cellName, child);
+    gsap.from(child.scale, { x: formScaleX, y: formScaleY, duration, ease });
+    gsap.from(child, { x: formPositionX, y: formPositionY, duration, ease });
+}
+
+export function showFromUp(view: DisplayObject, delay = 0, duration = 500, ease = 'Sinusoidal.Out'): GSAPAnimation {
+    const { parent } = view;
+    const { y } = parent.toLocal({ y: -Math.abs(view.position.y), x: 0 }, null);
+
+    const tw = gsap.from(view, { position: y, duration, ease, yoyo: true, delay });
+    // const tw = CI_API.game.add.tween(view).from({ y }, duration, easing, true, delay);
+
+    return tw;
+}
+
+export function hideToUp(view: Container, delay = 0, duration = 500, ease = 'Sinusoidal.Out'): GSAPAnimation {
+    const { parent } = view;
+    const { y } = parent.toLocal({ y: -Math.abs(view.height), x: 0 }, null);
+    const tw = gsap.to(view, { position: y, duration, ease, yoyo: true, delay });
+
+    return tw;
 }

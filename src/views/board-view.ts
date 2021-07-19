@@ -12,6 +12,7 @@ export class BoardView extends PixiGrid {
     private _bg: NineSlicePlane;
     private _icon: DisplayObject;
     private _pads: PadComponent[];
+    private _padsInteractive = false;
     public constructor() {
         super();
 
@@ -25,6 +26,20 @@ export class BoardView extends PixiGrid {
 
     public getGridConfig(): ICellConfig {
         return getBoardGridConfig();
+    }
+
+    public onPadsClick(): void {
+        this._padsInteractive = true;
+        this._pads.forEach((pad) => {
+            pad.addClickListener();
+        });
+    }
+
+    public offPadsClick(): void {
+        this._padsInteractive = true;
+        this._pads.forEach((pad) => {
+            pad.removeClickListener();
+        });
     }
 
     private _build(): void {

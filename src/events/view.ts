@@ -2,6 +2,10 @@ export enum MainViewEvent {
     click = 'MainViewClick',
 }
 
+export enum PadComponentEvent {
+    click = 'PadComponentEventClick',
+}
+
 export enum BoardViewEvent {
     addPads = 'BoardViewEventAddPads',
 }

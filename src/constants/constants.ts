@@ -49,5 +49,24 @@ export const padsConfigs: PadModelConfig[] = [
     { name: 'pad_2_0', row: 2, col: 0, sound: 0, colorPassive: 0xed64be, colorAtive: 0xffb5fc },
     { name: 'pad_2_1', row: 2, col: 1, sound: 0, colorPassive: 0xf9739e, colorAtive: 0xfda4cc },
     { name: 'pad_2_2', row: 2, col: 2, sound: 0, colorPassive: 0xf8ec49, colorAtive: 0xfbf883 },
+
     { name: 'pad_2_3', row: 2, col: 3, sound: 0, colorPassive: 0xabe85b, colorAtive: 0xb6e95c },
 ];
+
+export const cellsGap = 10;
+
+export const logoPaddingY = 0.25;
+
+export const logoPaddingH = 0.26;
+
+export const boardPadding = 0.04;
+
+export const cellSize = Object.freeze({
+    width: 210,
+    height: 210,
+});
+
+export const logoDimension = Object.freeze({
+    width: 667,
+    height: 222,
+});
