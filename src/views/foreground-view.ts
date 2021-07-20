@@ -19,6 +19,7 @@ export class ForegroundView extends PixiGrid {
     public constructor() {
         super();
         this.name = 'ForegroundView';
+
         lego.event
             .on(PlayableModelEvent.stateUpdate, this._onPlayableStateUpdate, this)
             .on(PlayableModelEvent.hintUpdate, this._onHintUpdate, this)

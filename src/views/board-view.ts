@@ -20,7 +20,6 @@ export class BoardView extends PixiGrid {
         this.name = 'BoardView';
         lego.event.on(BoardModelEvent.padsUpdate, this._onPadsUpdate, this);
         lego.event.on(BoardModelEvent.levelPatternUpdate, this._onLevelPadsUpdate, this);
-
         this._build();
     }
 

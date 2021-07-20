@@ -1,4 +1,4 @@
-$families: ('KGPrimaryPenmanship');
+$families: ('KGPrimaryPenmanship', 'solomon-sans-black');
 
 @each $family in $families {
     @font-face {

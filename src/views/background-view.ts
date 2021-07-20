@@ -1,14 +1,14 @@
 import { lego } from '@armathai/lego';
 import { ICellConfig, PixiGrid } from '@armathai/pixi-grid';
-import { Sprite } from '@pixi/sprite';
+import { NineSlicePlane } from 'pixi.js';
 import { getBackgroundGridConfig } from '../constants/configs/grid-configs';
-import { getBackgroundViewSpriteConfig } from '../constants/configs/sprite-configs';
+import { getBgPatchConfig } from '../constants/configs/nineslice-configs';
 import { PlayableModelEvent } from '../events/model';
 import { PlayableState } from '../models/playable-model';
-import { makeSprite } from '../utils';
+import { makeNineSlice } from '../utils';
 
 export class BackgroundView extends PixiGrid {
-    private _bg: Sprite;
+    private _bg: NineSlicePlane;
 
     public constructor() {
         super();
@@ -23,7 +23,7 @@ export class BackgroundView extends PixiGrid {
     private _onPlayableStateUpdate(status: PlayableState): void {
         switch (status) {
             case PlayableState.play:
-                this._createBg('play/bg.jpg');
+                this._createBg();
                 break;
 
             case PlayableState.cta:
@@ -34,10 +34,12 @@ export class BackgroundView extends PixiGrid {
         }
     }
 
-    private _createBg(key: string): void {
-        return;
-        this._bg && this._bg.destroy();
-        this._bg = makeSprite(getBackgroundViewSpriteConfig(key));
-        this.setChild('bg', this._bg);
+    private _createBg(): void {
+        const bg = makeNineSlice(getBgPatchConfig(window.innerWidth, window.innerHeight));
+        bg.tint = 0x000000;
+
+        // this._bg && this._bg.destroy();
+        // this._bg = makeSprite(getBackgroundViewSpriteConfig(key));
+        this.setChild('bg', (this._bg = bg));
     }
 }

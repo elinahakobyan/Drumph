@@ -27,6 +27,24 @@ export const getPadBgPatchConfig = (): NineSliceConfig => {
     };
 };
 
+export const getProgressBarFillPatchConfig = (): NineSliceConfig => {
+    return {
+        texture: textures['ui/fill'],
+        data: [9, 4, 9, 4],
+        width: 870,
+        height: 10,
+    };
+};
+
+export const getBgPatchConfig = (width: number, height: number): NineSliceConfig => {
+    return {
+        texture: textures['pad/pad_bg'],
+        data: [8, 7, 7, 7],
+        width,
+        height,
+    };
+};
+
 export const getTraditionalCtaPrimaryButtonUpPatchesConfig = (): NineSliceConfig => {
     return {
         texture: textures['ui/cta_play_button'],

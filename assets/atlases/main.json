@@ -480,10 +480,34 @@
         "y": 0.5
       }
     },
-    "particles/confetti/04.png": {
+    "ui/fill.png": {
       "frame": {
         "x": 458,
         "y": 790,
+        "w": 27,
+        "h": 13
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 27,
+        "h": 13
+      },
+      "sourceSize": {
+        "w": 27,
+        "h": 13
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "particles/confetti/04.png": {
+      "frame": {
+        "x": 251,
+        "y": 780,
         "w": 20,
         "h": 26
       },
@@ -506,7 +530,7 @@
     },
     "particles/confetti/03.png": {
       "frame": {
-        "x": 251,
+        "x": 277,
         "y": 780,
         "w": 25,
         "h": 21
@@ -530,7 +554,7 @@
     },
     "particles/confetti/02.png": {
       "frame": {
-        "x": 278,
+        "x": 304,
         "y": 780,
         "w": 22,
         "h": 19

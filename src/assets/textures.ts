@@ -23,6 +23,7 @@ export const textures = {
     'particles/confetti/06': 'particles/confetti/06.png',
     'particles/confetti/05': 'particles/confetti/05.png',
     'particles/confetti/01': 'particles/confetti/01.png',
+    'ui/fill': 'ui/fill.png',
     'particles/confetti/04': 'particles/confetti/04.png',
     'particles/confetti/03': 'particles/confetti/03.png',
     'particles/confetti/02': 'particles/confetti/02.png',

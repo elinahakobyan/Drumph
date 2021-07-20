@@ -2,16 +2,17 @@ import { lego } from '@armathai/lego';
 import { AnimatedSprite } from '@pixi/sprite-animated';
 import { Text } from '@pixi/text';
 import { gsap } from 'gsap';
-import { getScrollAnimationData } from '../constants/configs/animation-configs';
-import { getTutorialTextConfig } from '../constants/configs/text-configs';
-import { TutorialModelEvent } from '../events/model';
+import { getAfterTutorialTextConfig, getBeforeTutorialTextConfig } from '../constants/configs/text-configs';
+import { BoardModelEvent, TutorialModelEvent } from '../events/model';
 import { MainViewEvent, TutorialViewEvent } from '../events/view';
-import { fitText, makeAnimation, makeText, postRunnable } from '../utils';
+import { BoardState } from '../models/board-model';
+import { makeText, postRunnable } from '../utils';
 import { Container } from '../utils/container';
 
 export class TutorialComponent extends Container {
     private _scroll: AnimatedSprite;
     private _label: Text;
+    private _isAfter = false;
 
     public constructor() {
         super();
@@ -22,30 +23,32 @@ export class TutorialComponent extends Container {
         postRunnable(this._show, this);
 
         lego.event.on(TutorialModelEvent.completeUpdate, this._onTutorialCompleteUpdate, this);
+        lego.event.on(BoardModelEvent.stateUpdate, this._onBoardstateUpdate, this);
     }
 
     private _show(): void {
-        this._switchScreenInput(true);
-
-        const duration = this._scroll.totalFrames / this._scroll.animationSpeed / 60;
-        this._scroll.play();
-        const show = gsap.timeline({
-            defaults: {
-                ease: 'sine.in',
-                duration,
-            },
-        });
-        show.add([
-            gsap.from(this._label.scale, {
-                x: 0,
-            }),
-            gsap.from(this._label, {
-                alpha: 0,
-            }),
-        ]);
+        // this._switchScreenInput(true);
+        // const duration = this._scroll.totalFrames / this._scroll.animationSpeed / 60;
+        // this._scroll.play();
+        // const show = gsap.timeline({
+        //     defaults: {
+        //         ease: 'sine.in',
+        //         duration,
+        //     },
+        // });
+        // show.add([
+        //     gsap.from(this._label.scale, {
+        //         x: 0,
+        //     }),
+        //     gsap.from(this._label, {
+        //         alpha: 0,
+        //     }),
+        // ]);
     }
 
     private _hide(options?: { children?: boolean; texture?: boolean; baseTexture?: boolean }): void {
+        return;
+
         this._switchScreenInput(false);
 
         const duration = this._scroll.totalFrames / this._scroll.animationSpeed / 60;
@@ -77,6 +80,10 @@ export class TutorialComponent extends Container {
         lego.event.emit(TutorialViewEvent.hideComplete);
     }
 
+    private _onBoardstateUpdate(value: BoardState): void {
+        console.warn(value);
+    }
+
     private _onTutorialCompleteUpdate(): void {
         this._hide();
     }
@@ -86,16 +93,12 @@ export class TutorialComponent extends Container {
     }
 
     private _buildScrolls(): void {
-        this._scroll = makeAnimation(getScrollAnimationData());
-        this.addChild(this._scroll);
+        //
     }
 
-    private _buildLabel(): void {
-        this._label = makeText(getTutorialTextConfig());
+    private _buildLabel(isAfter = false): void {
+        this._label = isAfter ? makeText(getAfterTutorialTextConfig()) : makeText(getBeforeTutorialTextConfig());
         this._label.anchor.set(0.5);
-        this._label.position.set(this._scroll.width * 0.5, this._scroll.height * 0.48);
-
-        fitText(this._label, this._scroll.width - 120);
         this.addChild(this._label);
     }
 

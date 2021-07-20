@@ -7,6 +7,7 @@ export enum PadModelEvent {
 
 export enum BoardModelEvent {
     stateUpdate = 'BoardModelStateUpdate',
+    imitaciaUpdate = 'BoardModelImitaciaUpdate',
     levelUpdate = 'BoardModelLevelUpdate',
     padsUpdate = 'BoardModelPadsUpdate',
     levelPatternUpdate = 'BoardModelLevelPatternUpdate',
@@ -28,6 +29,7 @@ export enum ObservableModelEvent {
 
 export enum PlayModelEvent {
     boardUpdate = 'PlayModelBoardUpdate',
+    progressBarUpdate = 'PlayModelProgressBarUpdate',
 }
 
 export enum PlayableModelEvent {
@@ -38,6 +40,11 @@ export enum PlayableModelEvent {
     ctaUpdate = 'PlayableModelCtaUpdate',
     soundUpdate = 'PlayableModelSoundUpdate',
     retriesCountUpdate = 'PlayableModelRetriesCountUpdate',
+}
+
+export enum ProgressBarModelEvent {
+    configUpdate = 'ProgressBarModelConfigUpdate',
+    progressUpdate = 'ProgressBarModelProgressUpdate',
 }
 
 export enum SoundModelEvent {
