@@ -47,21 +47,12 @@ export class TutorialComponent extends Container {
     }
 
     private _hide(options?: { children?: boolean; texture?: boolean; baseTexture?: boolean }): void {
-        return;
-
         this._switchScreenInput(false);
 
-        const duration = this._scroll.totalFrames / this._scroll.animationSpeed / 60;
-        this._scroll.animationSpeed *= -1;
-        this._scroll.play();
-        this._scroll.onComplete = () => {
-            this._scroll.onComplete = null;
-            super.destroy(options);
-        };
         const hide = gsap.timeline({
             defaults: {
                 ease: 'sine.out',
-                duration,
+                duration: '0.4',
             },
             onComplete: this._onHideComplete,
             callbackScope: this,
@@ -82,6 +73,19 @@ export class TutorialComponent extends Container {
 
     private _onBoardstateUpdate(value: BoardState): void {
         console.warn(value);
+
+        switch (value) {
+            case BoardState.imitacia:
+                this._onTutorialCompleteUpdate();
+                break;
+            case BoardState.play:
+                break;
+            case BoardState.tutorial:
+                break;
+
+            default:
+                break;
+        }
     }
 
     private _onTutorialCompleteUpdate(): void {

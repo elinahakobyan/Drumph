@@ -28,3 +28,7 @@ export enum TutorialViewEvent {
     click = 'TutorialViewEventClick',
     hideComplete = 'TutorialViewEventHideComplete',
 }
+
+export enum ProgressUpdateViewEvent {
+    update = 'ProgressUpdateViewEventUpdate',
+}

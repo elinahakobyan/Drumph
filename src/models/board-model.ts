@@ -1,6 +1,8 @@
 import { lego } from '@armathai/lego';
 import { levels, padsConfigs } from '../constants/constants';
 import { BoardModelEvent } from '../events/model';
+import { ProgressUpdateViewEvent } from '../events/view';
+import { loopRunnable } from '../utils';
 import { ObservableModel } from './observable-model';
 import { PadModel } from './pads/pad-model';
 
@@ -12,6 +14,7 @@ export enum BoardState {
     passive = 'passive',
     showResult = 'showResult',
 }
+export const duration = 1.5;
 export class BoardModel extends ObservableModel {
     private _state = BoardState.unknown;
     private _pads: Map<string, PadModel> = null;
@@ -25,8 +28,12 @@ export class BoardModel extends ObservableModel {
         this.makeObservable();
     }
 
-    public get state(): string {
+    public get state(): BoardState {
         return this._state;
+    }
+
+    public set state(value: BoardState) {
+        this._state = value;
     }
 
     public get imitacia(): boolean {
@@ -57,6 +64,16 @@ export class BoardModel extends ObservableModel {
         this._state = BoardState.passive;
         this._createPads();
         // this._createlevelPattern(1);
+    }
+
+    public startEmitacia(): void {
+        lego.event.emit(ProgressUpdateViewEvent.update);
+
+        loopRunnable(0.2, () => {
+            console.warn(1);
+
+            lego.event.emit(ProgressUpdateViewEvent.update);
+        });
     }
 
     private _createPads(): void {
