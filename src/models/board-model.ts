@@ -86,7 +86,9 @@ export class BoardModel extends ObservableModel {
         lego.event.emit(ProgressUpdateViewEvent.update, this._levelPattern[0]);
 
         this._levelPattern.shift();
-        this._visibilityRunnable = loopRunnable(levelLength / this._progressStepCount, this._progressEmitter, this);
+        console.warn(levelLength / this._progressStepCount);
+
+        this._visibilityRunnable = loopRunnable(levelLength / this._levelPattern.length, this._progressEmitter, this);
     }
 
     private _progressEmitter(): void {
