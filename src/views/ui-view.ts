@@ -2,9 +2,9 @@ import { lego } from '@armathai/lego';
 import { ICellConfig, PixiGrid } from '@armathai/pixi-grid';
 import { PersistentCTAComponent } from '../components/persistent-cta-component';
 import { getUIGridConfig } from '../constants/configs/grid-configs';
-import { PlayableModelEvent, PlayModelEvent } from '../events/model';
+import { BoardModelEvent, PlayableModelEvent } from '../events/model';
+import { ProgressUpdateViewEvent } from '../events/view';
 import { PersistentCtaModel } from '../models/persistent-cta-model';
-import { ProgressBarModel } from '../models/progress-bar-model';
 import { ProgressBarView } from './progress-bar-view';
 
 export class UIView extends PixiGrid {
@@ -15,7 +15,8 @@ export class UIView extends PixiGrid {
         super();
         this.name = 'UIView';
         lego.event.on(PlayableModelEvent.persistentCtaUpdate, this._onPlayablePersistentCtaUpdate, this);
-        lego.event.on(PlayModelEvent.progressBarUpdate, this._onProgressBarUpdate, this);
+        lego.event.on(BoardModelEvent.progressUpdate, this._onProgressBarUpdate, this);
+        lego.event.on(ProgressUpdateViewEvent.start, this._buildProgressBar, this);
     }
 
     public getGridConfig(): ICellConfig {
@@ -36,14 +37,17 @@ export class UIView extends PixiGrid {
     }
 
     // /ProgressBar
-    private _onProgressBarUpdate(progressBar: ProgressBarModel): void {
-        progressBar ? this._buildProgressBar() : this._destroyProgressBar();
+    private _onProgressBarUpdate(progress: number): void {
+        console.warn(progress);
+
+        // progressBar ? this._buildProgressBar() : this._destroyProgressBar();
     }
 
     private _buildProgressBar(): void {
+        console.warn('hasa');
+
         this._progressBar = new ProgressBarView();
         this.setChild('progress_bar', this._progressBar);
-
         // this._progressBar.rotation = lp(0, Math.PI * 0.5);
     }
 

@@ -1,3 +1,5 @@
+import { lego } from '@armathai/lego';
+import { ProgressUpdateViewEvent } from '../events/view';
 import { BoardModel } from './board-model';
 import { ObservableModel } from './observable-model';
 import { ProgressBarModel } from './progress-bar-model';
@@ -9,6 +11,7 @@ export class PlayModel extends ObservableModel {
     public constructor() {
         super('PlayModel');
         this.makeObservable('_board');
+        lego.event.on(ProgressUpdateViewEvent.start, this.initializeProgressBarModel, this);
     }
 
     public get board(): BoardModel {
@@ -21,7 +24,6 @@ export class PlayModel extends ObservableModel {
 
     public initialize(): void {
         this.initializeBoardModel();
-        this.initializeProgressBarModel();
     }
 
     public destroy(): void {

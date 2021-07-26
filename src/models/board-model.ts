@@ -1,8 +1,8 @@
 import { lego } from '@armathai/lego';
-import { levels, padsConfigs } from '../constants/constants';
+import { levelLength, levels, padsConfigs } from '../constants/constants';
 import { BoardModelEvent } from '../events/model';
 import { ProgressUpdateViewEvent } from '../events/view';
-import { loopRunnable } from '../utils';
+import { loopRunnable, removeRunnable } from '../utils';
 import { ObservableModel } from './observable-model';
 import { PadModel } from './pads/pad-model';
 
@@ -17,8 +17,13 @@ export enum BoardState {
 export const duration = 1.5;
 export class BoardModel extends ObservableModel {
     private _state = BoardState.unknown;
+    private _visibilityRunnable: Runnable;
+
     private _pads: Map<string, PadModel> = null;
     private _level: number = null;
+    private _progressStepCount: number = null;
+    private _progress: number = null;
+    private _progressStep: number = null;
     private _levelPattern: string[] = null;
     private _imitacia = false;
 
@@ -60,20 +65,39 @@ export class BoardModel extends ObservableModel {
         return this._levelPattern;
     }
 
+    public get progressStepCount(): number {
+        return this._progressStepCount;
+    }
+
+    public get progress(): number {
+        return this._progress;
+    }
+
     public initialize(): void {
         this._state = BoardState.passive;
         this._createPads();
-        // this._createlevelPattern(1);
+        this._createlevelPattern();
     }
 
     public startEmitacia(): void {
-        lego.event.emit(ProgressUpdateViewEvent.update);
+        lego.event.emit(ProgressUpdateViewEvent.start, false);
 
-        loopRunnable(0.2, () => {
-            console.warn(1);
+        this._onProgressStepCountUpdate();
+        lego.event.emit(ProgressUpdateViewEvent.update, this._levelPattern[0]);
 
-            lego.event.emit(ProgressUpdateViewEvent.update);
-        });
+        this._levelPattern.shift();
+        this._visibilityRunnable = loopRunnable(levelLength / this._progressStepCount, this._progressEmitter, this);
+    }
+
+    private _progressEmitter(): void {
+        if (this._levelPattern.length > 0) {
+            this._onProgressUpdate();
+            lego.event.emit(ProgressUpdateViewEvent.update, this._levelPattern[0]);
+            this._levelPattern.shift();
+        } else {
+            removeRunnable(this._visibilityRunnable);
+            lego.event.emit(ProgressUpdateViewEvent.finish, true);
+        }
     }
 
     private _createPads(): void {
@@ -100,5 +124,16 @@ export class BoardModel extends ObservableModel {
             levelPattern.push(`pad_${levelPads.row}_${levelPads.col}`);
         });
         this._levelPattern = levelPattern;
+    }
+
+    private _onProgressStepCountUpdate(): void {
+        this._levelPattern.length > 0
+            ? (this._progressStepCount = 1 / this._levelPattern.length)
+            : (this._progressStepCount = 0);
+        !this._progressStep ? (this._progressStep = this._progress = this._progressStepCount) : false;
+    }
+
+    private _onProgressUpdate(): void {
+        this._progress += this._progressStep;
     }
 }

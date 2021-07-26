@@ -8,11 +8,11 @@
 
 import { lego } from '@armathai/lego';
 import { NineSlicePlane, Rectangle, Sprite } from 'pixi.js';
-import { getPadBgPatchConfig } from '../constants/configs/nineslice-configs';
-import { PadComponentEvent } from '../events/view';
-import { PadModel } from '../models/pads/pad-model';
-import { makeNineSlice } from '../utils';
-import { Container } from '../utils/container';
+import { getPadBgPatchConfig } from '../../constants/configs/nineslice-configs';
+import { PadComponentEvent } from '../../events/view';
+import { PadModel } from '../../models/pads/pad-model';
+import { makeNineSlice } from '../../utils';
+import { Container } from '../../utils/container';
 
 export class PadComponent extends Container {
     private _cell: Sprite;
@@ -28,7 +28,7 @@ export class PadComponent extends Container {
         this._config = padModel;
 
         this._name = padModel.name;
-
+        this.interactive = true;
         this._build();
     }
 
@@ -45,32 +45,18 @@ export class PadComponent extends Container {
         this.interactive = false;
     }
 
-    public addClickListener(): void {
-        this.on('pointerdown', this.emitClickListener);
+    public updateClickListener(value: boolean): void {
+        value ? this._addListener() : this._removeListener();
         // this._blocker.visible = true;
         // this.interactive = false;
-    }
-
-    public removeClickListener(): void {
-        this.off('pointerdown', this.emitClickListener);
-
-        // this._blocker.visible = true;
-        // this.interactive = false;
-    }
-    public emitClickListener(): void {
-        console.warn('hhashh');
-
-        lego.event.emit(PadComponentEvent.click, this._name);
     }
 
     public activate(): void {
         this._bg.tint = this._config.activeColor;
-        this.interactive = true;
     }
 
     public deactivate(): void {
         this._bg.tint = this._config.passiveColor;
-        this.interactive = false;
     }
 
     public showAnimation(): void {
@@ -143,9 +129,17 @@ export class PadComponent extends Container {
     //         this.addChild((this._hint = hint));
     //     }
 
-    //     private _addListener(): void {
-    //         this.on('pointerdown', () => {
-    //             lego.event.emit(CellViewEvent.onClick, this._uuid);
-    //         });
-    //     }
+    private _addListener(): void {
+        this.on('pointerdown', this._click);
+    }
+
+    private _removeListener(): void {
+        this.off('pointerdown', this._click);
+    }
+
+    private _click(): void {
+        console.warn(this._name);
+
+        lego.event.emit(PadComponentEvent.click, this._name);
+    }
 }

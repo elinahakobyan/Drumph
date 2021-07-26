@@ -1,7 +1,8 @@
 import { lego } from '@armathai/lego';
-import { Container, NineSlicePlane, Rectangle } from 'pixi.js';
+import { Container, NineSlicePlane } from 'pixi.js';
 import { getProgressBarFillPatchConfig } from '../constants/configs/nineslice-configs';
-import { ProgressBarModelEvent } from '../events/model';
+import { BoardModelEvent, ProgressBarModelEvent } from '../events/model';
+import { ProgressUpdateViewEvent } from '../events/view';
 import { makeNineSlice } from '../utils';
 
 export class ProgressBarView extends Container {
@@ -9,26 +10,29 @@ export class ProgressBarView extends Container {
     private _maxWidth: number;
     public constructor() {
         super();
-        this._maxWidth = 1400;
-        this._build();
         lego.event.on(ProgressBarModelEvent.progressUpdate, this._updateProgress, this);
-    }
-
-    public getBounds(): Rectangle {
-        return new Rectangle(0, 0, this._maxWidth, 10);
+        lego.event.on(ProgressUpdateViewEvent.start, this._buildFill, this);
+        lego.event.on(BoardModelEvent.progressStepCountUpdate, this._updateProgressStepCount, this);
+        this._build();
     }
 
     private _updateProgress(progress: number): void {
         this._fill.width = this._maxWidth * progress;
     }
 
-    private _build(): void {
-        this._buildFill();
+    private _updateProgressStepCount(progress: number): void {
+        console.warn(progress);
     }
 
-    private _buildFill(): void {
+    private _build(): void {
+        const fillBg = makeNineSlice(getProgressBarFillPatchConfig());
+        fillBg.tint = 0xff0000;
+        this.addChild(fillBg);
+    }
+
+    private _buildFill(value: number): void {
         const fill = makeNineSlice(getProgressBarFillPatchConfig());
-        fill.width = this._maxWidth * 0;
         this.addChild((this._fill = fill));
+        this._fill.scale.x = 0.001;
     }
 }

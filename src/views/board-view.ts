@@ -2,11 +2,12 @@ import { lego } from '@armathai/lego';
 import { ICellConfig, PixiGrid } from '@armathai/pixi-grid';
 import { DisplayObject } from '@pixi/display';
 import { NineSlicePlane } from '@pixi/mesh-extras';
-import { PadComponent } from '../components/pad-component';
 import { getBoardGridConfig } from '../constants/configs/grid-configs';
 import { BoardModelEvent } from '../events/model';
-import { BoardViewEvent } from '../events/view';
+import { BoardViewEvent, ProgressUpdateViewEvent } from '../events/view';
 import { PadModel } from '../models/pads/pad-model';
+import { delayRunnable } from '../utils';
+import { PadComponent } from './pad/pad-view';
 
 export class BoardView extends PixiGrid {
     private _bg: NineSlicePlane;
@@ -20,6 +21,9 @@ export class BoardView extends PixiGrid {
         this.name = 'BoardView';
         lego.event.on(BoardModelEvent.padsUpdate, this._onPadsUpdate, this);
         lego.event.on(BoardModelEvent.levelPatternUpdate, this._onLevelPadsUpdate, this);
+        lego.event.on(ProgressUpdateViewEvent.update, this._onUpdateImitacia, this);
+        lego.event.on(ProgressUpdateViewEvent.finish, this._onCampletUpdateImitacia, this);
+        lego.event.on(ProgressUpdateViewEvent.start, this._onCampletUpdateImitacia, this);
         this._build();
     }
 
@@ -30,14 +34,14 @@ export class BoardView extends PixiGrid {
     public onPadsClick(): void {
         this._padsInteractive = true;
         this._pads.forEach((pad) => {
-            pad.addClickListener();
+            pad.updateClickListener(true);
         });
     }
 
     public offPadsClick(): void {
         this._padsInteractive = true;
         this._pads.forEach((pad) => {
-            pad.removeClickListener();
+            pad.updateClickListener(false);
         });
     }
 
@@ -62,6 +66,31 @@ export class BoardView extends PixiGrid {
             const pad = <PadComponent>this._getPad(patternPad);
             pad ? pad.deactivate() : false;
         });
+        ///
+    }
+
+    private _onUpdateImitacia(padId: string): void {
+        console.warn(padId);
+        const pad = this._getPad(padId);
+        pad.activate();
+        delayRunnable(
+            0.5,
+            () => {
+                pad.deactivate();
+            },
+            this,
+        );
+        ///
+    }
+
+    private _onCampletUpdateImitacia(isCamplet: boolean): void {
+        console.warn(isCamplet);
+        if (isCamplet) {
+            this.onPadsClick();
+        } else {
+            this.offPadsClick();
+        }
+
         ///
     }
 

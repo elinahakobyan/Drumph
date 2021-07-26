@@ -31,4 +31,6 @@ export enum TutorialViewEvent {
 
 export enum ProgressUpdateViewEvent {
     update = 'ProgressUpdateViewEventUpdate',
+    start = 'ProgressUpdateViewEventStart',
+    finish = 'ProgressUpdateViewEventFinish',
 }

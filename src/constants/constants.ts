@@ -38,22 +38,22 @@ export const levels: LevelConfig[] = [
 ];
 
 export const padsConfigs: PadModelConfig[] = [
-    { name: 'pad_0_0', row: 0, col: 0, sound: 0, colorPassive: 0xed64be, colorAtive: 0xffb5fc },
-    { name: 'pad_0_1', row: 0, col: 1, sound: 0, colorPassive: 0xed64be, colorAtive: 0xffb5fc },
-    { name: 'pad_0_2', row: 0, col: 2, sound: 0, colorPassive: 0x31befe, colorAtive: 0x45ddff },
-    { name: 'pad_0_3', row: 0, col: 3, sound: 0, colorPassive: 0xabe85b, colorAtive: 0xb6e95c },
-    { name: 'pad_1_0', row: 1, col: 0, sound: 0, colorPassive: 0xed64be, colorAtive: 0xffb5fc },
-    { name: 'pad_1_1', row: 1, col: 1, sound: 0, colorPassive: 0xf9739e, colorAtive: 0xfda4cc },
-    { name: 'pad_1_2', row: 1, col: 2, sound: 0, colorPassive: 0xf8ec49, colorAtive: 0xfbf883 },
-    { name: 'pad_1_3', row: 1, col: 3, sound: 0, colorPassive: 0x31befe, colorAtive: 0x45ddff },
-    { name: 'pad_2_0', row: 2, col: 0, sound: 0, colorPassive: 0xed64be, colorAtive: 0xffb5fc },
-    { name: 'pad_2_1', row: 2, col: 1, sound: 0, colorPassive: 0xf9739e, colorAtive: 0xfda4cc },
-    { name: 'pad_2_2', row: 2, col: 2, sound: 0, colorPassive: 0xf8ec49, colorAtive: 0xfbf883 },
-
-    { name: 'pad_2_3', row: 2, col: 3, sound: 0, colorPassive: 0xabe85b, colorAtive: 0xb6e95c },
+    { name: 'pad_0_0', row: 0, col: 0, sound: 0, colorPassive: 0xed64be, colorAtive: 0xff0000 },
+    { name: 'pad_0_1', row: 0, col: 1, sound: 0, colorPassive: 0xed64be, colorAtive: 0xff0000 },
+    { name: 'pad_0_2', row: 0, col: 2, sound: 0, colorPassive: 0x31befe, colorAtive: 0xff0000 },
+    { name: 'pad_0_3', row: 0, col: 3, sound: 0, colorPassive: 0xabe85b, colorAtive: 0xff0000 },
+    { name: 'pad_1_0', row: 1, col: 0, sound: 0, colorPassive: 0xed64be, colorAtive: 0xff0000 },
+    { name: 'pad_1_2', row: 1, col: 2, sound: 0, colorPassive: 0xf8ec49, colorAtive: 0xff0000 },
+    { name: 'pad_1_1', row: 1, col: 1, sound: 0, colorPassive: 0xf9739e, colorAtive: 0xff0000 },
+    { name: 'pad_1_3', row: 1, col: 3, sound: 0, colorPassive: 0x31befe, colorAtive: 0xff0000 },
+    { name: 'pad_2_0', row: 2, col: 0, sound: 0, colorPassive: 0xed64be, colorAtive: 0xff0000 },
+    { name: 'pad_2_1', row: 2, col: 1, sound: 0, colorPassive: 0xf9739e, colorAtive: 0xff0000 },
+    { name: 'pad_2_2', row: 2, col: 2, sound: 0, colorPassive: 0xf8ec49, colorAtive: 0xff0000 },
+    { name: 'pad_2_3', row: 2, col: 3, sound: 0, colorPassive: 0xabe85b, colorAtive: 0xff0000 },
 ];
 
 export const cellsGap = 10;
+export const levelLength = 3;
 
 export const logoPaddingY = 0.25;
 
