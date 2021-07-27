@@ -5,6 +5,7 @@ import { NineSlicePlane } from '@pixi/mesh-extras';
 import { getBoardGridConfig } from '../constants/configs/grid-configs';
 import { BoardModelEvent } from '../events/model';
 import { BoardViewEvent, ProgressUpdateViewEvent } from '../events/view';
+import { BoardState } from '../models/board-model';
 import { PadModel } from '../models/pads/pad-model';
 import { delayRunnable } from '../utils';
 import { PadComponent } from './pad/pad-view';
@@ -20,6 +21,7 @@ export class BoardView extends PixiGrid {
         this._bg = null;
         this.name = 'BoardView';
         lego.event.on(BoardModelEvent.padsUpdate, this._onPadsUpdate, this);
+        lego.event.on(BoardModelEvent.stateUpdate, this._onStateUpdate, this);
         lego.event.on(BoardModelEvent.levelPatternUpdate, this._onLevelPadsUpdate, this);
         lego.event.on(ProgressUpdateViewEvent.update, this._onUpdateImitacia, this);
         lego.event.on(ProgressUpdateViewEvent.finish, this._onCampletUpdateImitacia, this);
@@ -49,6 +51,11 @@ export class BoardView extends PixiGrid {
         //
     }
 
+    private _onStateUpdate(value: BoardState): void {
+        //
+        console.warn(value);
+    }
+
     private _onPadsUpdate(padsConfig: Map<string, PadModel>): void {
         this._pads = [];
         padsConfig.forEach((padConfig) => {
@@ -70,7 +77,7 @@ export class BoardView extends PixiGrid {
     }
 
     private _onUpdateImitacia(padId: string): void {
-        console.warn(padId);
+        // console.warn(padId);
         const pad = this._getPad(padId);
         pad.activate();
         delayRunnable(

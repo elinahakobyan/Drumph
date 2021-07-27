@@ -38,13 +38,12 @@ export class UIView extends PixiGrid {
 
     // /ProgressBar
     private _onProgressBarUpdate(progress: number): void {
-        console.warn(progress);
-
+        // console.warn(progress);
         // progressBar ? this._buildProgressBar() : this._destroyProgressBar();
     }
 
     private _buildProgressBar(): void {
-        console.warn('hasa');
+        // console.warn('hasa');
 
         this._progressBar = new ProgressBarView();
         this.setChild('progress_bar', this._progressBar);

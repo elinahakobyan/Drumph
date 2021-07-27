@@ -2,7 +2,7 @@ export enum MainViewEvent {
     click = 'MainViewClick',
 }
 
-export enum PadComponentEvent {
+export enum PadViewEvent {
     click = 'PadComponentEventClick',
 }
 

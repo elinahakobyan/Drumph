@@ -9,7 +9,7 @@
 import { lego } from '@armathai/lego';
 import { NineSlicePlane, Rectangle, Sprite } from 'pixi.js';
 import { getPadBgPatchConfig } from '../../constants/configs/nineslice-configs';
-import { PadComponentEvent } from '../../events/view';
+import { PadViewEvent } from '../../events/view';
 import { PadModel } from '../../models/pads/pad-model';
 import { makeNineSlice } from '../../utils';
 import { Container } from '../../utils/container';
@@ -140,6 +140,6 @@ export class PadComponent extends Container {
     private _click(): void {
         console.warn(this._name);
 
-        lego.event.emit(PadComponentEvent.click, this._name);
+        lego.event.emit(PadViewEvent.click, this._name);
     }
 }

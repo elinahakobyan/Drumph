@@ -1,38 +1,60 @@
 import { lego } from '@armathai/lego';
+import gsap from 'gsap';
 import { Container, NineSlicePlane } from 'pixi.js';
 import { getProgressBarFillPatchConfig } from '../constants/configs/nineslice-configs';
-import { BoardModelEvent, ProgressBarModelEvent } from '../events/model';
-import { ProgressUpdateViewEvent } from '../events/view';
+import { levelLength } from '../constants/constants';
+import { BoardModelEvent } from '../events/model';
 import { makeNineSlice } from '../utils';
 
 export class ProgressBarView extends Container {
-    private _fill: NineSlicePlane;
-    private _maxWidth: number;
+    private _passiveLine: NineSlicePlane;
+    private _activeLine: NineSlicePlane;
+    private _anim: gsap.core.Tween = null;
+    private _color: 0xff00ff;
     public constructor() {
         super();
-        lego.event.on(ProgressBarModelEvent.progressUpdate, this._updateProgress, this);
-        lego.event.on(ProgressUpdateViewEvent.start, this._buildFill, this);
-        lego.event.on(BoardModelEvent.progressStepCountUpdate, this._updateProgressStepCount, this);
         this._build();
+        // lego.event.on(ProgressUpdateViewEvent.start, this._startAnim, this);
+        lego.event.on(BoardModelEvent.progressUpdate, this._updateProgress, this);
     }
 
     private _updateProgress(progress: number): void {
-        this._fill.width = this._maxWidth * progress;
+        if (this._anim) {
+            return;
+        }
+        // this._activeLine.visible = true;
+        this._startAnim();
     }
 
     private _updateProgressStepCount(progress: number): void {
-        console.warn(progress);
+        // const anim = gsap.to(this.scale, { x: progress, duration: levelLength });
+    }
+
+    private _createLine(color: number): NineSlicePlane {
+        const line = makeNineSlice(getProgressBarFillPatchConfig());
+        line.width = 1400;
+        line.tint = color;
+        return line;
     }
 
     private _build(): void {
-        const fillBg = makeNineSlice(getProgressBarFillPatchConfig());
-        fillBg.tint = 0xff0000;
-        this.addChild(fillBg);
+        this.addChild((this._passiveLine = this._createLine(0xff0000)));
+        this.addChild((this._activeLine = this._createLine(0x00ff00)));
+        this._passiveLine.alpha = 1;
+        this._activeLine.width = 0;
+        // this._activeLine.visible = false;
     }
 
-    private _buildFill(value: number): void {
-        const fill = makeNineSlice(getProgressBarFillPatchConfig());
-        this.addChild((this._fill = fill));
-        this._fill.scale.x = 0.001;
+    private _startAnim(): void {
+        // return;
+
+        this._anim = gsap.to(this._activeLine, {
+            width: this._passiveLine.width,
+            duration: levelLength,
+            ease: 'Power0.easeNone',
+            onComplete: () => {
+                this._activeLine.visible = false;
+            },
+        });
     }
 }

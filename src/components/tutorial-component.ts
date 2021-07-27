@@ -3,8 +3,8 @@ import { AnimatedSprite } from '@pixi/sprite-animated';
 import { Text } from '@pixi/text';
 import { gsap } from 'gsap';
 import { getAfterTutorialTextConfig, getBeforeTutorialTextConfig } from '../constants/configs/text-configs';
-import { BoardModelEvent, TutorialModelEvent } from '../events/model';
-import { MainViewEvent, PadComponentEvent, ProgressUpdateViewEvent, TutorialViewEvent } from '../events/view';
+import { BoardModelEvent } from '../events/model';
+import { MainViewEvent, PadViewEvent, ProgressUpdateViewEvent, TutorialViewEvent } from '../events/view';
 import { BoardState } from '../models/board-model';
 import { makeText, postRunnable } from '../utils';
 import { Container } from '../utils/container';
@@ -22,10 +22,10 @@ export class TutorialComponent extends Container {
 
         postRunnable(this._show, this);
 
-        lego.event.on(TutorialModelEvent.completeUpdate, this._onTutorialCompleteUpdate, this);
+        // lego.event.on(TutorialModelEvent.completeUpdate, this._onTutorialCompleteUpdate, this);
         lego.event.on(BoardModelEvent.stateUpdate, this._onBoardstateUpdate, this);
         lego.event.on(ProgressUpdateViewEvent.finish, this._buildLabel, this);
-        lego.event.on(PadComponentEvent.click, this._onTutorialCompleteUpdate, this);
+        lego.event.on(PadViewEvent.click, this._onTutorialCompleteUpdate, this);
     }
 
     private _show(): void {

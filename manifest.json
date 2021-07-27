@@ -54,16 +54,16 @@
             "options": ["Tutorial Text", "Other Tutorial Text"]
         },
         "persistentCtaBtn": {
-            "value": true,
+            "value": false,
             "description": "When true, the cta button is displayed at all times."
         },
         "idleTimeToCta": {
-            "value": 45,
+            "value": 145,
             "description": "AFK time to open the CTA (seconds)",
             "range": [10, 45]
         },
         "ctaScreenClickable": {
-            "value": true,
+            "value": false,
             "description": "The entire CTA screen is clickable to the App store. When false, only CTA button is clickable."
         },
         "ctaPrimaryBtnText": {
