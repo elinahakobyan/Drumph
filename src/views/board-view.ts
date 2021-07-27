@@ -23,7 +23,7 @@ export class BoardView extends PixiGrid {
         lego.event.on(BoardModelEvent.padsUpdate, this._onPadsUpdate, this);
         lego.event.on(BoardModelEvent.stateUpdate, this._onStateUpdate, this);
         lego.event.on(BoardModelEvent.levelPatternUpdate, this._onLevelPadsUpdate, this);
-        lego.event.on(ProgressUpdateViewEvent.update, this._onUpdateImitacia, this);
+        lego.event.on(ProgressUpdateViewEvent.update, this._onUpdateBoard, this);
         lego.event.on(ProgressUpdateViewEvent.finish, this._onCampletUpdateImitacia, this);
         lego.event.on(ProgressUpdateViewEvent.start, this._onCampletUpdateImitacia, this);
         this._build();
@@ -76,17 +76,29 @@ export class BoardView extends PixiGrid {
         ///
     }
 
-    private _onUpdateImitacia(padId: string): void {
-        // console.warn(padId);
-        const pad = this._getPad(padId);
-        pad.activate();
-        delayRunnable(
-            0.5,
-            () => {
-                pad.deactivate();
-            },
-            this,
-        );
+    private _onUpdateBoard(progresConfig: ProgresConfig): void {
+        if (progresConfig.state === BoardState.play) {
+            this.onPadsClick();
+        } else {
+            const pads: string[] = progresConfig.pads;
+
+            this._onUpdateImitacia(pads);
+        }
+    }
+
+    private _onUpdateImitacia(pads: string[]): void {
+        console.warn(pads);
+        pads.forEach((padId) => {
+            const pad = this._getPad(padId);
+            pad.activate();
+            delayRunnable(
+                0.5,
+                () => {
+                    pad.deactivate();
+                },
+                this,
+            );
+        });
         ///
     }
 

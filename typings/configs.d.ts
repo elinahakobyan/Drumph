@@ -59,6 +59,11 @@ type TextConfig = {
     style?: PIXI.TextStyle;
 };
 
+type ProgresConfig = {
+    pads: string[];
+    state: BoardState;
+};
+
 type ParticleConfig = {
     data: import('@armathai/pixi-particles').ParticleEffectConfig;
     x?: number;

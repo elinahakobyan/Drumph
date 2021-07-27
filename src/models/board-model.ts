@@ -83,7 +83,10 @@ export class BoardModel extends ObservableModel {
         lego.event.emit(ProgressUpdateViewEvent.start, false);
 
         this._onProgressStepCountUpdate();
-        lego.event.emit(ProgressUpdateViewEvent.update, this._levelPattern[0]);
+        lego.event.emit(ProgressUpdateViewEvent.update, {
+            pads: [this._levelPattern[0]],
+            state: BoardState.imitacia,
+        });
 
         this._levelPattern.shift();
         console.warn(levelLength / this._progressStepCount);
@@ -91,11 +94,46 @@ export class BoardModel extends ObservableModel {
         this._visibilityRunnable = loopRunnable(levelLength / this._levelPattern.length, this._progressEmitter, this);
     }
 
+    public startPlayLevel(padId: string): void {
+        console.warn(padId);
+        !this._progress ? this._createlevelPattern() : false;
+        // this._onProgressStepCountUpdate();
+        console.warn(this._progress);
+        console.warn(this._levelPattern.length);
+
+        console.warn(this._progressStep);
+        console.warn(this._progressStepCount);
+        lego.event.emit(ProgressUpdateViewEvent.start, false);
+        this._onProgressStepCountUpdate();
+        lego.event.emit(ProgressUpdateViewEvent.update, { pads: null, state: BoardState.play });
+        // console.warn(levelLength / this._progressStepCount);
+        this._visibilityRunnable = loopRunnable(
+            levelLength / this._levelPattern.length,
+            this._progressPlayEmitter,
+            this,
+        );
+    }
+
     private _progressEmitter(): void {
         if (this._levelPattern.length > 0) {
             this._onProgressUpdate();
-            lego.event.emit(ProgressUpdateViewEvent.update, this._levelPattern[0]);
+            lego.event.emit(ProgressUpdateViewEvent.update, {
+                pads: [this._levelPattern[0]],
+                state: BoardState.imitacia,
+            });
             this._levelPattern.shift();
+        } else {
+            removeRunnable(this._visibilityRunnable);
+            lego.event.emit(ProgressUpdateViewEvent.finish, true);
+            this._progress = null;
+            this._progressStep = null;
+        }
+    }
+
+    private _progressPlayEmitter(): void {
+        if (this._progress < 1) {
+            this._onProgressUpdate();
+            lego.event.emit(ProgressUpdateViewEvent.update, { pads: null, state: BoardState.play });
         } else {
             removeRunnable(this._visibilityRunnable);
             lego.event.emit(ProgressUpdateViewEvent.finish, true);
