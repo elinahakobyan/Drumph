@@ -1,5 +1,5 @@
 import { lego } from '@armathai/lego';
-import { levelLength, levels, padsConfigs, timerDellay } from '../constants/constants';
+import { levelLength, levels, padsConfigs, timerDelay } from '../constants/constants';
 import { BoardModelEvent } from '../events/model';
 import { ProgressUpdateViewEvent } from '../events/view';
 import { loopRunnable, removeRunnable } from '../utils';
@@ -9,7 +9,7 @@ import { PadModel } from './pads/pad-model';
 export enum BoardState {
     unknown = 'unknown',
     play = 'play',
-    imitacia = 'imitacia',
+    imitation = 'imitation',
     tutorial = 'tutorial',
     passive = 'passive',
     showResult = 'showResult',
@@ -27,7 +27,7 @@ export class BoardModel extends ObservableModel {
     private _progress: number = null;
     private _progressStep: number = null;
     private _levelPattern: string[] = null;
-    private _imitacia = false;
+    private _imitation = false;
 
     public constructor() {
         super('BoardModel');
@@ -47,12 +47,12 @@ export class BoardModel extends ObservableModel {
         return this._timer;
     }
 
-    public get imitacia(): boolean {
-        return this._imitacia;
+    public get imitation(): boolean {
+        return this._imitation;
     }
 
-    public set imitacia(value: boolean) {
-        this._imitacia = value;
+    public set imitation(value: boolean) {
+        this._imitation = value;
     }
 
     public get level(): number {
@@ -82,16 +82,16 @@ export class BoardModel extends ObservableModel {
     public initialize(): void {
         this._state = BoardState.passive;
         this._createPads();
-        this._createlevelPattern();
+        this._createLevelPattern();
     }
 
-    public startEmitacia(): void {
+    public startImitation(): void {
         lego.event.emit(ProgressUpdateViewEvent.start, false);
 
         this._onProgressStepCountUpdate();
         lego.event.emit(ProgressUpdateViewEvent.update, {
             pads: [this._levelPattern[0]],
-            state: BoardState.imitacia,
+            state: BoardState.imitation,
         });
 
         this._levelPattern.shift();
@@ -102,7 +102,7 @@ export class BoardModel extends ObservableModel {
 
     public startPlayLevel(padId: string): void {
         console.warn(padId);
-        !this._progress ? this._createlevelPattern() : false;
+        !this._progress ? this._createLevelPattern() : false;
         // this._onProgressStepCountUpdate();
         console.warn(this._progress);
         console.warn(this._levelPattern.length);
@@ -126,7 +126,7 @@ export class BoardModel extends ObservableModel {
             this._onProgressUpdate();
             lego.event.emit(ProgressUpdateViewEvent.update, {
                 pads: [this._levelPattern[0]],
-                state: BoardState.imitacia,
+                state: BoardState.imitation,
             });
             this._levelPattern.shift();
         } else {
@@ -159,11 +159,11 @@ export class BoardModel extends ObservableModel {
 
     private _onLevelUpdate(level: number): void {
         this._level = level;
-        this._createlevelPattern();
+        this._createLevelPattern();
         this._state = BoardState.tutorial;
     }
 
-    private _createlevelPattern(): void {
+    private _createLevelPattern(): void {
         const levelPads = levels[this._level - 1];
         this._levelPattern ? (this._levelPattern.length = 0) : (this._levelPattern = []);
         const levelPattern: string[] = [];
@@ -189,7 +189,7 @@ export class BoardModel extends ObservableModel {
             removeRunnable(this._timerPRunnable);
             return;
         }
-        this._timer.entryTimer += timerDellay;
+        this._timer.entryTimer += timerDelay;
         console.warn(this._timer.entryTimer);
     }
 
@@ -201,6 +201,6 @@ export class BoardModel extends ObservableModel {
         }
         console.warn(this._timer.pointers);
 
-        this._timerPRunnable = loopRunnable(timerDellay, this._onTimerUpdate, this);
+        this._timerPRunnable = loopRunnable(timerDelay, this._onTimerUpdate, this);
     }
 }

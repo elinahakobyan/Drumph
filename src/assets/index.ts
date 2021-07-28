@@ -54,6 +54,18 @@ export const assets = {
             return {
                 sound: {
                     chime: require('../../assets/sounds/chime.mp3'),
+                    ice_cream_a_arp_01: require('../../assets/sounds/ice_cream_a_arp_01.mp3'),
+                    ice_cream_a_bell_01: require('../../assets/sounds/ice_cream_a_bell_01.mp3'),
+                    ice_cream_a_bell_02: require('../../assets/sounds/ice_cream_a_bell_02.mp3'),
+                    ice_cream_a_chords_01: require('../../assets/sounds/ice_cream_a_chords_01.mp3'),
+                    ice_cream_a_chords_02: require('../../assets/sounds/ice_cream_a_chords_02.mp3'),
+                    ice_cream_a_chords_03: require('../../assets/sounds/ice_cream_a_chords_03.mp3'),
+                    ice_cream_a_chords_04: require('../../assets/sounds/ice_cream_a_chords_04.mp3'),
+                    ice_cream_a_hat_01: require('../../assets/sounds/ice_cream_a_hat_01.mp3'),
+                    ice_cream_a_kick_01: require('../../assets/sounds/ice_cream_a_kick_01.mp3'),
+                    ice_cream_a_snare_01: require('../../assets/sounds/ice_cream_a_snare_01.mp3'),
+                    ice_cream_a_vocals_01: require('../../assets/sounds/ice_cream_a_vocals_01.mp3'),
+                    ice_cream_a_vocals_02: require('../../assets/sounds/ice_cream_a_vocals_02.mp3'),
                     theme: require('../../assets/sounds/theme.mp3'),
                 },
             };

@@ -59,7 +59,7 @@ type TextConfig = {
     style?: PIXI.TextStyle;
 };
 
-type ProgresConfig = {
+type ProgressConfig = {
     pads: string[];
     state: BoardState;
 };
@@ -108,7 +108,7 @@ type PadModelConfig = {
     col: number;
     sound?: number;
     colorPassive?: number;
-    colorAtive?: number;
+    colorActive?: number;
 };
 
 type LevelConfig = LevelPadConfig[];

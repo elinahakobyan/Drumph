@@ -14,7 +14,8 @@ export class PadModel extends ObservableModel {
     public constructor(config: PadModelConfig) {
         super('BoardModel');
         this._name = config.name;
-        this._activeColor = config.colorAtive;
+        this._config = config;
+        this._activeColor = config.colorActive;
         this._passiveColor = config.colorPassive;
         this.makeObservable();
     }
@@ -27,9 +28,14 @@ export class PadModel extends ObservableModel {
         this._state = value;
     }
 
+    public get config(): PadModelConfig {
+        return this._config;
+    }
+
     public get activeColor(): number {
         return this._activeColor;
     }
+
     public get passiveColor(): number {
         return this._passiveColor;
     }

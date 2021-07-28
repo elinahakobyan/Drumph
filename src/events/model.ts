@@ -1,5 +1,6 @@
 export enum PadModelEvent {
     stateUpdate = 'PadModelStateUpdate',
+    configUpdate = 'PadModelConfigUpdate',
     activeColorUpdate = 'PadModelActiveColorUpdate',
     passiveColorUpdate = 'PadModelPassiveColorUpdate',
     nameUpdate = 'PadModelNameUpdate',
@@ -7,7 +8,8 @@ export enum PadModelEvent {
 
 export enum BoardModelEvent {
     stateUpdate = 'BoardModelStateUpdate',
-    imitaciaUpdate = 'BoardModelImitaciaUpdate',
+    timerUpdate = 'BoardModelTimerUpdate',
+    imitationUpdate = 'BoardModelImitationUpdate',
     levelUpdate = 'BoardModelLevelUpdate',
     padsUpdate = 'BoardModelPadsUpdate',
     levelPatternUpdate = 'BoardModelLevelPatternUpdate',

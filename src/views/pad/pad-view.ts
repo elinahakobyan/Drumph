@@ -24,6 +24,8 @@ export class PadComponent extends Container {
 
     //private _uuid: string, private _color: number, private _audio: string, private _index: number
     public constructor(padModel: PadModel) {
+        console.warn('hasdaa');
+
         super();
         this._config = padModel;
 
