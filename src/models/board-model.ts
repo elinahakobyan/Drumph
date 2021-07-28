@@ -165,7 +165,7 @@ export class BoardModel extends ObservableModel {
                     levelLength / this._levelPattern.length > pointers[i].position - entryTimer &&
                     pointers[i].position - entryTimer > 0
                 ) {
-                    console.warn('asasas');
+                    // console.warn('asasas');
                     return true;
                 }
             }
