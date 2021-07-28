@@ -87,7 +87,6 @@ export class BoardView extends PixiGrid {
     }
 
     private _onUpdateImitacia(pads: string[]): void {
-        console.warn(pads);
         pads.forEach((padId) => {
             const pad = this._getPad(padId);
             pad.activate();

@@ -64,6 +64,13 @@ type ProgresConfig = {
     state: BoardState;
 };
 
+type BoardTimer = {
+    entryTimer: number;
+    start: number;
+    end: number;
+    pointers?: number[];
+};
+
 type ParticleConfig = {
     data: import('@armathai/pixi-particles').ParticleEffectConfig;
     x?: number;

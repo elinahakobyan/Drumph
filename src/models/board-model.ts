@@ -1,5 +1,5 @@
 import { lego } from '@armathai/lego';
-import { levelLength, levels, padsConfigs } from '../constants/constants';
+import { levelLength, levels, padsConfigs, timerDellay } from '../constants/constants';
 import { BoardModelEvent } from '../events/model';
 import { ProgressUpdateViewEvent } from '../events/view';
 import { loopRunnable, removeRunnable } from '../utils';
@@ -18,9 +18,11 @@ export const duration = 1.5;
 export class BoardModel extends ObservableModel {
     private _state = BoardState.unknown;
     private _visibilityRunnable: Runnable;
+    private _timerPRunnable: Runnable;
 
     private _pads: Map<string, PadModel> = null;
     private _level: number = null;
+    private _timer: BoardTimer = null;
     private _progressStepCount: number = null;
     private _progress: number = null;
     private _progressStep: number = null;
@@ -39,6 +41,10 @@ export class BoardModel extends ObservableModel {
 
     public set state(value: BoardState) {
         this._state = value;
+    }
+
+    public get timer(): BoardTimer {
+        return this._timer;
     }
 
     public get imitacia(): boolean {
@@ -106,6 +112,7 @@ export class BoardModel extends ObservableModel {
         lego.event.emit(ProgressUpdateViewEvent.start, false);
         this._onProgressStepCountUpdate();
         lego.event.emit(ProgressUpdateViewEvent.update, { pads: null, state: BoardState.play });
+        this._onTimerStart();
         // console.warn(levelLength / this._progressStepCount);
         this._visibilityRunnable = loopRunnable(
             levelLength / this._levelPattern.length,
@@ -175,5 +182,25 @@ export class BoardModel extends ObservableModel {
 
     private _onProgressUpdate(): void {
         this._progress += this._progressStep;
+    }
+
+    private _onTimerUpdate(): void {
+        if (this._timer.entryTimer >= this._timer.end) {
+            removeRunnable(this._timerPRunnable);
+            return;
+        }
+        this._timer.entryTimer += timerDellay;
+        console.warn(this._timer.entryTimer);
+    }
+
+    private _onTimerStart(): void {
+        this._timer = { start: 0, entryTimer: 0, end: levelLength, pointers: [0] };
+
+        for (let index = 1; index < this._levelPattern.length - 1; index++) {
+            this._timer.pointers.push(index * (levelLength / this.levelPattern.length));
+        }
+        console.warn(this._timer.pointers);
+
+        this._timerPRunnable = loopRunnable(timerDellay, this._onTimerUpdate, this);
     }
 }
