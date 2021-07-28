@@ -9,7 +9,7 @@ import { PadModel } from './pads/pad-model';
 export enum BoardState {
     unknown = 'unknown',
     play = 'play',
-    imitacia = 'imitacia',
+    imitation = 'imitation',
     tutorial = 'tutorial',
     passive = 'passive',
     showResult = 'showResult',
@@ -28,6 +28,9 @@ export class BoardModel extends ObservableModel {
     private _progressStep: number = null;
     private _levelPattern: string[] = null;
     private _imitacia = false;
+    private _entryPointer = 0;
+    private _bestInStep = 0;
+    private _score = 0;
 
     public constructor() {
         super('BoardModel');
@@ -45,6 +48,10 @@ export class BoardModel extends ObservableModel {
 
     public get timer(): BoardTimer {
         return this._timer;
+    }
+
+    public get score(): number {
+        return this._score;
     }
 
     public get imitacia(): boolean {
@@ -85,13 +92,19 @@ export class BoardModel extends ObservableModel {
         this._createlevelPattern();
     }
 
-    public startEmitacia(): void {
+    public checkPad(padUUid: string): void {
+        const entryTimer = this._timer.entryTimer;
+
+        this._checkIsTruePad(padUUid, entryTimer);
+    }
+
+    public startImitation(): void {
         lego.event.emit(ProgressUpdateViewEvent.start, false);
 
         this._onProgressStepCountUpdate();
         lego.event.emit(ProgressUpdateViewEvent.update, {
             pads: [this._levelPattern[0]],
-            state: BoardState.imitacia,
+            state: BoardState.imitation,
         });
 
         this._levelPattern.shift();
@@ -104,11 +117,6 @@ export class BoardModel extends ObservableModel {
         console.warn(padId);
         !this._progress ? this._createlevelPattern() : false;
         // this._onProgressStepCountUpdate();
-        console.warn(this._progress);
-        console.warn(this._levelPattern.length);
-
-        console.warn(this._progressStep);
-        console.warn(this._progressStepCount);
         lego.event.emit(ProgressUpdateViewEvent.start, false);
         this._onProgressStepCountUpdate();
         lego.event.emit(ProgressUpdateViewEvent.update, { pads: null, state: BoardState.play });
@@ -126,7 +134,7 @@ export class BoardModel extends ObservableModel {
             this._onProgressUpdate();
             lego.event.emit(ProgressUpdateViewEvent.update, {
                 pads: [this._levelPattern[0]],
-                state: BoardState.imitacia,
+                state: BoardState.imitation,
             });
             this._levelPattern.shift();
         } else {
@@ -145,6 +153,28 @@ export class BoardModel extends ObservableModel {
             removeRunnable(this._visibilityRunnable);
             lego.event.emit(ProgressUpdateViewEvent.finish, true);
         }
+    }
+
+    private _checkIsTruePad(padUUid: string, entryTimer: number): boolean {
+        //
+        const pointers = this._timer.pointers;
+        for (let i = 0; i < pointers.length; i++) {
+            //
+            if (padUUid === pointers[i].padUUid) {
+                if (
+                    levelLength / this._levelPattern.length > pointers[i].position - entryTimer &&
+                    pointers[i].position - entryTimer > 0
+                ) {
+                    console.warn('asasas');
+                    return true;
+                }
+            }
+        }
+        return true;
+    }
+
+    private _checkscore(entryTimer: number): void {
+        //
     }
 
     private _createPads(): void {
@@ -190,16 +220,20 @@ export class BoardModel extends ObservableModel {
             return;
         }
         this._timer.entryTimer += timerDellay;
-        console.warn(this._timer.entryTimer);
+        this._timer.entryTimer % levelLength === 0
+            ? (this._score = this._bestInStep)
+            : console.warn(this._timer.entryTimer);
     }
 
     private _onTimerStart(): void {
-        this._timer = { start: 0, entryTimer: 0, end: levelLength, pointers: [0] };
+        this._timer = { start: 0, entryTimer: 0, end: levelLength, pointers: [] };
 
-        for (let index = 1; index < this._levelPattern.length - 1; index++) {
-            this._timer.pointers.push(index * (levelLength / this.levelPattern.length));
+        for (let index = 1; index <= this._levelPattern.length; index++) {
+            this._timer.pointers.push({
+                padUUid: this._levelPattern[index - 1],
+                position: index * (levelLength / this._levelPattern.length),
+            });
         }
-        console.warn(this._timer.pointers);
 
         this._timerPRunnable = loopRunnable(timerDellay, this._onTimerUpdate, this);
     }

@@ -14,7 +14,7 @@ export const onUserInteractionCommand = (): void => {
         .guard(hintModelGuard)
         .execute(updateHintStateCommand)
         .guard(boardBeforeTutorialGuard)
-        .payload(BoardState.imitacia)
+        .payload(BoardState.imitation)
         .execute(updateBoardStateCommand, onStartBoardLevelImitaciaCommand)
         .guard(boardBeforeTutorialGuard);
     // .payload(BoardState.imitacia)

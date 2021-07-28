@@ -10,11 +10,12 @@ export const onPadClickCommand = (padId: string): void => {
     lego.command
         .guard(boardStateImitaciaFinishGuard)
         .execute(destroyTutorialModelCommand)
-        .guard(boardStatePlayGuard, lego.not(boardprogresGuard))
         .payload(padId)
-        .execute(onUpadatePlayLevelCommand, onCheckPlayLevelCommand)
         .guard(boardStatePlayGuard, boardprogresGuard)
+        .execute(onCheckPlayLevelCommand)
+        //
         .payload(padId)
-        .execute(onCheckPlayLevelCommand);
-    console.warn(padId);
+        .guard(boardStatePlayGuard, lego.not(boardprogresGuard))
+        .execute(onUpadatePlayLevelCommand, onCheckPlayLevelCommand);
+    //
 };

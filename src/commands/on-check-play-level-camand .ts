@@ -1,3 +1,5 @@
+import { store } from '../models/store';
+
 export const onCheckPlayLevelCommand = (padId: string): void => {
-    console.warn('cheq', padId);
+    store.play.board.checkPad(padId);
 };

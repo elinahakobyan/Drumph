@@ -77,7 +77,7 @@ export class TutorialComponent extends Container {
         console.warn(value);
 
         switch (value) {
-            case BoardState.imitacia:
+            case BoardState.imitation:
                 this._onTutorialCompleteUpdate();
                 break;
             case BoardState.play:
