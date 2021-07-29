@@ -1,6 +1,6 @@
 import { ObservableModel } from '../observable-model';
 export enum PadState {
-    unknown = 'unknown',
+    unknown = 'blocked',
     active = 'active',
     passive = 'passive',
 }

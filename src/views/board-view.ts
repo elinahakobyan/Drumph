@@ -3,10 +3,10 @@ import { ICellConfig, PixiGrid } from '@armathai/pixi-grid';
 import { DisplayObject } from '@pixi/display';
 import { NineSlicePlane } from '@pixi/mesh-extras';
 import { getBoardGridConfig } from '../constants/configs/grid-configs';
-import { BoardModelEvent } from '../events/model';
-import { BoardViewEvent, ProgressUpdateViewEvent } from '../events/view';
-import { BoardState } from '../models/board-model';
-import { PadModel } from '../models/pads/pad-model';
+import { BoardModelEvent, PadModelEvent } from '../events/model';
+import { BoardViewEvent } from '../events/view';
+import { BoardState, BoardStatus } from '../models/board-model';
+import { PadModel, PadState } from '../models/pads/pad-model';
 import { delayRunnable } from '../utils';
 import { PadComponent } from './pad/pad-view';
 
@@ -23,9 +23,10 @@ export class BoardView extends PixiGrid {
         lego.event.on(BoardModelEvent.padsUpdate, this._onPadsUpdate, this);
         lego.event.on(BoardModelEvent.stateUpdate, this._onStateUpdate, this);
         lego.event.on(BoardModelEvent.levelPatternUpdate, this._onLevelPadsUpdate, this);
-        lego.event.on(ProgressUpdateViewEvent.update, this._onUpdateBoard, this);
-        lego.event.on(ProgressUpdateViewEvent.finish, this._onCampletUpdateImitacia, this);
-        lego.event.on(ProgressUpdateViewEvent.start, this._onCampletUpdateImitacia, this);
+        // lego.event.on(ProgressUpdateViewEvent.update, this._onUpdateBoard, this);
+        lego.event.on(PadModelEvent.stateUpdate, this._onUpdateBoard, this);
+        lego.event.on(BoardModelEvent.statusUpdate, this._onCampletUpdateImitacia, this);
+        lego.event.on(BoardModelEvent.statusUpdate, this._onCampletUpdateImitacia, this);
         this._build();
     }
 
@@ -76,15 +77,17 @@ export class BoardView extends PixiGrid {
         ///
     }
 
-    private _onUpdateBoard(progresConfig: ProgresConfig): void {
-        if (progresConfig.state === BoardState.play) {
-            this.onPadsClick();
-            console.warn(progresConfig.pads);
-        } else {
-            const pads: string[] = progresConfig.pads;
+    private _onUpdateBoard(value: PadState): void {
+        console.warn(value);
 
-            this._onUpdateImitacia(pads);
-        }
+        // if (progresConfig.state === BoardState.play) {
+        //     this.onPadsClick();
+        //     console.warn(progresConfig.pads);
+        // } else {
+        //     const pads: string[] = progresConfig.pads;
+
+        //     this._onUpdateImitacia(pads);
+        // }
     }
 
     private _onUpdateImitacia(pads: string[]): void {
@@ -102,12 +105,17 @@ export class BoardView extends PixiGrid {
         ///
     }
 
-    private _onCampletUpdateImitacia(isCamplet: boolean): void {
-        console.warn(isCamplet);
-        if (isCamplet) {
-            this.onPadsClick();
-        } else {
-            this.offPadsClick();
+    private _onCampletUpdateImitacia(value: BoardStatus): void {
+        switch (value) {
+            case BoardStatus.finish:
+                this.offPadsClick();
+
+                break;
+
+            case BoardStatus.finish:
+                this.onPadsClick();
+
+                break;
         }
 
         ///

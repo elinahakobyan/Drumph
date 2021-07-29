@@ -1,10 +1,7 @@
-import { lego } from '@armathai/lego';
-import { levelLength, levels, padsConfigs, timerDellay } from '../constants/constants';
-import { BoardModelEvent } from '../events/model';
-import { ProgressUpdateViewEvent } from '../events/view';
-import { loopRunnable, removeRunnable } from '../utils';
+import { levelLength, levels, padsConfigs } from '../constants/constants';
+import { loopRunnable } from '../utils';
 import { ObservableModel } from './observable-model';
-import { PadModel } from './pads/pad-model';
+import { PadModel, PadState } from './pads/pad-model';
 
 export enum BoardState {
     unknown = 'unknown',
@@ -14,9 +11,16 @@ export enum BoardState {
     passive = 'passive',
     showResult = 'showResult',
 }
+
+export enum BoardStatus {
+    start = 'start',
+    finish = 'finish',
+    unknown = 'unknown',
+}
 export const duration = 1.5;
 export class BoardModel extends ObservableModel {
     private _state = BoardState.unknown;
+    private _status = BoardStatus.unknown;
     private _visibilityRunnable: Runnable;
     private _timerPRunnable: Runnable;
 
@@ -34,7 +38,7 @@ export class BoardModel extends ObservableModel {
 
     public constructor() {
         super('BoardModel');
-        lego.event.on(BoardModelEvent.levelUpdate, this._onLevelUpdate, this);
+        // lego.event.on(BoardModelEvent.levelUpdate, this._onLevelUpdate, this);
         this.makeObservable();
     }
 
@@ -44,6 +48,14 @@ export class BoardModel extends ObservableModel {
 
     public set state(value: BoardState) {
         this._state = value;
+    }
+
+    public get status(): BoardStatus {
+        return this._status;
+    }
+
+    public set status(value: BoardStatus) {
+        this._status = value;
     }
 
     public get timer(): BoardTimer {
@@ -92,95 +104,98 @@ export class BoardModel extends ObservableModel {
         this._createlevelPattern();
     }
 
-    public checkPad(padUUid: string): void {
-        const entryTimer = this._timer.entryTimer;
+    // public checkPad(padUUid: string): void {
+    //     const entryTimer = this._timer.entryTimer;
 
-        this._isEntryTruePad ? false : this._checkIsTruePad(padUUid, entryTimer);
+    //     this._isEntryTruePad ? false : this._checkIsTruePad(padUUid, entryTimer);
+    // }
+
+    public onLevelUpdate(level = 1): void {
+        this._level = level;
+        this._createlevelPattern();
+        this._state = BoardState.tutorial;
     }
 
     public startImitation(): void {
-        lego.event.emit(ProgressUpdateViewEvent.start, false);
+        this._status = BoardStatus.start;
 
-        this._onProgressStepCountUpdate();
-        lego.event.emit(ProgressUpdateViewEvent.update, {
-            pads: [this._levelPattern[0]],
-            state: BoardState.imitation,
-        });
+        // this._onProgressStepCountUpdate();
+        // this._getPads(this._levelPattern[this._progress * this._levelPattern.length]).state = PadState.active;
 
-        this._levelPattern.shift();
-
-        this._visibilityRunnable = loopRunnable(this._levelConstInterval, this._progressEmitter, this);
+        // this._visibilityRunnable = loopRunnable(this._levelConstInterval, this._progressEmitter, this);
     }
 
-    public startPlayLevel(): void {
-        !this._progress ? this._createlevelPattern() : false;
-        lego.event.emit(ProgressUpdateViewEvent.start, false);
-        this._onProgressStepCountUpdate();
-        lego.event.emit(ProgressUpdateViewEvent.update, {
-            pads: this._levelPattern[this._progress * this._levelPattern.length - 1],
-            state: BoardState.play,
-        });
-        console.warn(this._progress * this._levelPattern.length);
+    // public startPlayLevel(): void {
+    //     !this._progress ? this._createlevelPattern() : false;
+    //     lego.event.emit(ProgressUpdateViewEvent.start, false);
+    //     this._onProgressStepCountUpdate();
+    //     lego.event.emit(ProgressUpdateViewEvent.update, {
+    //         pads: this._levelPattern[this._progress * this._levelPattern.length - 1],
+    //         state: BoardState.play,
+    //     });
+    //     console.warn(this._progress * this._levelPattern.length);
 
-        this._onTimerStart();
-        this._visibilityRunnable = loopRunnable(this._levelConstInterval, this._progressPlayEmitter, this);
+    //     this._onTimerStart();
+    //     this._visibilityRunnable = loopRunnable(this._levelConstInterval, this._progressPlayEmitter, this);
+    // }
+
+    private _getPads(padsUUid: string): PadModel {
+        return this._pads.get(padsUUid);
     }
 
     private _progressEmitter(): void {
-        if (this._levelPattern.length > 0) {
-            this._onProgressUpdate();
-            lego.event.emit(ProgressUpdateViewEvent.update, {
-                pads: [this._levelPattern[0]],
-                state: BoardState.imitation,
-            });
-            this._levelPattern.shift();
-        } else {
-            removeRunnable(this._visibilityRunnable);
-            lego.event.emit(ProgressUpdateViewEvent.finish, true);
-            this._progress = null;
-            this._progressStep = null;
-        }
+        console.warn(this._progress);
+        // if (this._progress >= 1) {
+        //     this._getPads(this._levelPattern[this._progress * this._levelPattern.length]).state = PadState.passive;
+
+        //     this._onProgressUpdate();
+        //     this._getPads(this._levelPattern[this._progress * this._levelPattern.length]).state = PadState.active;
+        // } else {
+        //     removeRunnable(this._visibilityRunnable);
+        //     lego.event.emit(ProgressUpdateViewEvent.finish, true);
+        //     this._progress = null;
+        //     this._progressStep = null;}
     }
 
-    private _progressPlayEmitter(): void {
-        if (this._progress < 1) {
-            this._onProgressUpdate();
-            lego.event.emit(ProgressUpdateViewEvent.update, {
-                pads: this._levelPattern[this._progress * this._levelPattern.length - 1],
-                state: BoardState.play,
-            });
-            console.warn(this._progress * this._levelPattern.length);
-        } else {
-            removeRunnable(this._visibilityRunnable);
-            lego.event.emit(ProgressUpdateViewEvent.finish, true);
-        }
-    }
+    // private _progressPlayEmitter(): void {
+    //     if (this._progress < 1) {
+    //         this._onProgressUpdate();
+    //         lego.event.emit(ProgressUpdateViewEvent.update, {
+    //             pads: this._levelPattern[this._progress * this._levelPattern.length - 1],
+    //             state: BoardState.play,
+    //         });
+    //         console.warn(this._progress * this._levelPattern.length);
+    //     } else {
+    //         removeRunnable(this._visibilityRunnable);
+    //         lego.event.emit(ProgressUpdateViewEvent.finish, true);
+    //     }
+    // }
 
-    private _checkIsTruePad(padUUid: string, entryTimer: number): void {
-        //
-        const pointers = this._timer.pointers;
-        for (let i = 0; i < pointers.length; i++) {
-            //
-            if (padUUid === pointers[i].padUUid) {
-                if (
-                    this._levelConstInterval >= pointers[i].position - entryTimer &&
-                    pointers[i].position - entryTimer >= 0
-                ) {
-                    // console.warn('asasas');
-                    this._isEntryTruePad = true;
-                    this._checkscore(pointers[i].position - entryTimer);
-                    return;
-                }
-            }
-        }
-    }
+    // private _checkIsTruePad(padUUid: string, entryTimer: number): void {
+    //     //
+    //     const pointers = this._timer.pointers;
+    //     for (let i = 0; i < pointers.length; i++) {
+    //         //
+    //         if (padUUid === pointers[i].padUUid) {
+    //             if (
+    //                 this._levelConstInterval >= pointers[i].position - entryTimer &&
+    //                 pointers[i].position - entryTimer >= 0
+    //             ) {
+    //                 // console.warn('asasas');
+    //                 this._isEntryTruePad = true;
+    //                 this._checkscore(pointers[i].position - entryTimer);
+    //                 return;
+    //             }
+    //         }
+    //     }
+    // }
 
-    private _checkscore(entryTimer: number): void {
-        const x = entryTimer / this._levelConstInterval;
+    // private _checkscore(entryTimer: number): void {
+    //     const x = entryTimer / this._levelConstInterval;
 
-        this._score += x / this._levelPattern.length;
-        //
-    }
+    //     this._score += x / this._levelPattern.length;
+    //     //
+    // }
 
     private _createPads(): void {
         const pads = new Map();
@@ -190,12 +205,6 @@ export class BoardModel extends ObservableModel {
             pads.set(padModel.name, padModel);
         });
         this._pads = pads;
-    }
-
-    private _onLevelUpdate(level: number): void {
-        this._level = level;
-        this._createlevelPattern();
-        this._state = BoardState.tutorial;
     }
 
     private _createlevelPattern(): void {
@@ -216,31 +225,32 @@ export class BoardModel extends ObservableModel {
         !this._progressStep ? (this._progressStep = this._progress = this._progressStepCount) : false;
     }
 
-    private _onProgressUpdate(): void {
-        this._progress += this._progressStep;
-    }
+    // private _onProgressUpdate(): void {
+    //     this._progress += this._progressStep;
+    //     console.warn(this._progress, this._progressStep);
+    // }
 
-    private _onTimerUpdate(): void {
-        if (this._timer.entryTimer >= this._timer.end) {
-            removeRunnable(this._timerPRunnable);
-            return;
-        }
-        this._timer.entryTimer += timerDellay;
-        this._timer.entryTimer % this._levelConstInterval === 0
-            ? (this._isEntryTruePad = false)
-            : (this._isEntryTruePad = true);
-    }
+    // private _onTimerUpdate(): void {
+    //     if (this._timer.entryTimer >= this._timer.end) {
+    //         removeRunnable(this._timerPRunnable);
+    //         return;
+    //     }
+    //     this._timer.entryTimer += timerDellay;
+    //     this._timer.entryTimer % this._levelConstInterval === 0
+    //         ? (this._isEntryTruePad = false)
+    //         : (this._isEntryTruePad = true);
+    // }
 
-    private _onTimerStart(): void {
-        this._timer = { start: 0, entryTimer: 0, end: levelLength, pointers: [] };
+    // private _onTimerStart(): void {
+    //     this._timer = { start: 0, entryTimer: 0, end: levelLength, pointers: [] };
 
-        for (let index = 1; index <= this._levelPattern.length; index++) {
-            this._timer.pointers.push({
-                padUUid: this._levelPattern[index - 1],
-                position: index * this._levelConstInterval,
-            });
-        }
+    //     for (let index = 1; index <= this._levelPattern.length; index++) {
+    //         this._timer.pointers.push({
+    //             padUUid: this._levelPattern[index - 1],
+    //             position: index * this._levelConstInterval,
+    //         });
+    //     }
 
-        this._timerPRunnable = loopRunnable(timerDellay, this._onTimerUpdate, this);
-    }
+    //     this._timerPRunnable = loopRunnable(timerDellay, this._onTimerUpdate, this);
+    // }
 }
