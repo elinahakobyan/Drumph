@@ -14,7 +14,9 @@ export enum BoardState {
     passive = 'passive',
     showResult = 'showResult',
 }
+
 export const duration = 1.5;
+
 export class BoardModel extends ObservableModel {
     private _state = BoardState.unknown;
     private _visibilityRunnable: Runnable;
@@ -95,7 +97,6 @@ export class BoardModel extends ObservableModel {
         });
 
         this._levelPattern.shift();
-        console.warn(levelLength / this._progressStepCount);
 
         this._visibilityRunnable = loopRunnable(levelLength / this._levelPattern.length, this._progressEmitter, this);
     }
@@ -190,7 +191,7 @@ export class BoardModel extends ObservableModel {
             return;
         }
         this._timer.entryTimer += timerDelay;
-        console.warn(this._timer.entryTimer);
+        // console.warn(this._timer.entryTimer);
     }
 
     private _onTimerStart(): void {

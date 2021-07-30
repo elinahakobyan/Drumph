@@ -55,13 +55,16 @@ export class BoardView extends Container {
     private _onPadsUpdate(padsConfig: Map<string, PadModel>): void {
         this._pads = [];
         const { width, height } = cellSize;
+
         padsConfig.forEach((padConfig) => {
             const { row, col } = padConfig.config;
             const pad = new PadComponent(padConfig);
             pad.position.set(col * (width + cellsGap), row * (height + cellsGap));
             this._pads.push(pad);
+            pad.block();
             this.addChild(pad);
         });
+
         this.emit('createPads');
 
         lego.event.emit(BoardViewEvent.addPads);
@@ -71,7 +74,7 @@ export class BoardView extends Container {
     private _onLevelPadsUpdate(levelPattern: string[]): void {
         levelPattern.forEach((patternPad) => {
             const pad = <PadComponent>this._getPad(patternPad);
-            pad ? pad.deactivate() : false;
+            pad ? pad.activate() : false;
         });
         ///
     }
@@ -89,11 +92,13 @@ export class BoardView extends Container {
     private _onUpdateImitation(pads: string[]): void {
         pads.forEach((padId) => {
             const pad = this._getPad(padId);
-            pad.activate();
+            pad.showHint();
+            // pad.activate();
             delayRunnable(
                 0.5,
                 () => {
-                    pad.deactivate();
+                    pad.hideHint();
+                    // pad.deactivate();
                 },
                 this,
             );

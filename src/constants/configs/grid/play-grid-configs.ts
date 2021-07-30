@@ -20,8 +20,8 @@ export const getPlayGridLandscapeConfig = (): ICellConfig => {
         cells: [
             {
                 name: 'board',
+                debug: { color: 0x2fc900 },
                 bounds: { x: (1 - boardW) / 2, y: logoH + progressBarH, width: boardW, height: boardH },
-
                 scale: CellScale.showAll,
             },
             {

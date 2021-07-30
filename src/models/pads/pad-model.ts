@@ -12,7 +12,7 @@ export class PadModel extends ObservableModel {
     private _activeColor: number;
     private _passiveColor: number;
     public constructor(config: PadModelConfig) {
-        super('BoardModel');
+        super('PadModel');
         this._name = config.name;
         this._config = config;
         this._activeColor = config.colorActive;

@@ -107,7 +107,7 @@ type PadModelConfig = {
     row: number;
     col: number;
     sound?: number;
-    colorPassive?: number;
+    colorPassive?: CellColors;
     colorActive?: number;
 };
 

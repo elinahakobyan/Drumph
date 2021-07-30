@@ -15,3 +15,19 @@ export const getStarRatingCtaStarHalfSpriteConfig = (): SpriteConfig | string =>
 export const getStarRatingCtaIconSpriteConfig = (): SpriteConfig | string => {
     return textures['ui/cta_icon' as keyof typeof textures];
 };
+
+export const getCellBgSpriteConfig = (color: number, level: string): SpriteConfig | string => {
+    return textures[`pads/${color}_${level}` as keyof typeof textures];
+};
+
+export const getCellBlockSpriteConfig = (color: string): SpriteConfig | string => {
+    return textures[`pads/${color}` as keyof typeof textures];
+};
+
+export const getHintImageSpriteConfig = (): SpriteConfig | string => {
+    return textures['pads/circle' as keyof typeof textures];
+};
+
+export const getPadGlowImageSpriteConfig = (): SpriteConfig | string => {
+    return textures['pads/glow' as keyof typeof textures];
+};
