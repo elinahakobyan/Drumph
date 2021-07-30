@@ -80,3 +80,12 @@ export const getStarRatingCtaSecondaryButtonUpPatchesConfig = (): NineSliceConfi
         height: 110,
     };
 };
+
+export const getTutorialPopUpConfigs = (): NineSliceConfig => {
+    return {
+        texture: textures['play/tutorial_bg'],
+        data: [24, 24, 24, 24],
+        width: 800,
+        height: 350,
+    };
+};

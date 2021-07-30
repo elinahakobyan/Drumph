@@ -72,7 +72,7 @@
         "y": 0.5
       }
     },
-    "pads/blue.png": {
+    "pads/color3_3.png": {
       "frame": {
         "x": 399,
         "y": 1399,
@@ -312,7 +312,7 @@
         "y": 0.5
       }
     },
-    "pads/color3_3.png": {
+    "pads/blue.png": {
       "frame": {
         "x": 2559,
         "y": 1399,
@@ -456,7 +456,7 @@
         "y": 0.5
       }
     },
-    "pads/color3_1.png": {
+    "pads/color4_1.png": {
       "frame": {
         "x": 1081,
         "y": 1615,
@@ -480,9 +480,33 @@
         "y": 0.5
       }
     },
-    "pads/color2_1.png": {
+    "pads/color3_1.png": {
       "frame": {
         "x": 1295,
+        "y": 1615,
+        "w": 208,
+        "h": 208
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 1,
+        "y": 1,
+        "w": 208,
+        "h": 208
+      },
+      "sourceSize": {
+        "w": 210,
+        "h": 210
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "pads/color2_1.png": {
+      "frame": {
+        "x": 1509,
         "y": 1615,
         "w": 208,
         "h": 208
@@ -505,30 +529,6 @@
       }
     },
     "pads/color1_1.png": {
-      "frame": {
-        "x": 1509,
-        "y": 1615,
-        "w": 208,
-        "h": 208
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 1,
-        "y": 1,
-        "w": 208,
-        "h": 208
-      },
-      "sourceSize": {
-        "w": 210,
-        "h": 210
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "pads/color4_1.png": {
       "frame": {
         "x": 1723,
         "y": 1615,
@@ -570,6 +570,30 @@
       "sourceSize": {
         "w": 120,
         "h": 120
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "play/tutorial_bg.png": {
+      "frame": {
+        "x": 561,
+        "y": 1831,
+        "w": 73,
+        "h": 73
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 73,
+        "h": 73
+      },
+      "sourceSize": {
+        "w": 73,
+        "h": 73
       },
       "pivot": {
         "x": 0.5,

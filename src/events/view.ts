@@ -26,6 +26,7 @@ export enum CTAViewEvent {
 
 export enum TutorialViewEvent {
     click = 'TutorialViewEventClick',
+    sequenceHideComplete = 'TutorialViewEventSequenceHideComplete',
     hideComplete = 'TutorialViewEventHideComplete',
 }
 

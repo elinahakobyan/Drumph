@@ -3,7 +3,7 @@ import { ICellConfig, PixiGrid } from '@armathai/pixi-grid';
 import { HintComponent } from '../components/hint-component';
 import { LogoComponent } from '../components/logo-component';
 import { SoundToggleComponent } from '../components/sound-toggle-component';
-import { TutorialComponent } from '../components/tutorial-component';
+import { TutorialView } from '../components/tutorial-view';
 import { getForegroundGridConfig } from '../constants/configs/grid-configs';
 import { PlayableModelEvent, SoundModelEvent } from '../events/model';
 import { HintModel } from '../models/hint-model';
@@ -14,7 +14,7 @@ export class ForegroundView extends PixiGrid {
     private _logo: LogoComponent;
     private _sound: SoundToggleComponent;
     private _hint: HintComponent;
-    private _tutorial: TutorialComponent;
+    private _tutorial: TutorialView;
 
     public constructor() {
         super();
@@ -82,7 +82,7 @@ export class ForegroundView extends PixiGrid {
     }
 
     private _buildTutorial(): void {
-        this.setChild('tutorial', (this._tutorial = new TutorialComponent()));
+        this.setChild('tutorial', (this._tutorial = new TutorialView()));
     }
 
     private _destroyTutorial(): void {

@@ -1,9 +1,12 @@
-import { delayRunnable, getParams, removeRunnable } from '../utils';
+import { getTutorialConfig } from '../constants/configs/tutorial-config';
 import { ObservableModel } from './observable-model';
+import { TutorialSequenceModel } from './tutorial-sequence-model';
 
 export class TutorialModel extends ObservableModel {
     private _complete = false;
-    private _completeDelayRunnable: Runnable;
+    private _skip = false;
+    private _sequences: TutorialSequenceModel[];
+    private _currentIndex: number;
 
     public constructor() {
         super('TutorialModel');
@@ -17,29 +20,59 @@ export class TutorialModel extends ObservableModel {
     public set complete(value: boolean) {
         this._complete = value;
     }
+    public get skip(): boolean {
+        return this._skip;
+    }
+
+    public set skip(value: boolean) {
+        this._skip = value;
+    }
+
+    public get sequences(): TutorialSequenceModel[] {
+        return this._sequences;
+    }
+
+    public get current(): TutorialSequenceModel {
+        return this._sequences[this._currentIndex];
+    }
+
+    public get currentIndex(): number {
+        return this._currentIndex;
+    }
+
+    public getSequenceByUuid(uuid: string): TutorialSequenceModel {
+        return this._sequences.find((sequence) => sequence.uuid === uuid);
+    }
 
     public initialize(): void {
         super.initialize();
-        this._startCompleteTimer();
+
+        this._initSequences();
+
+        this.nextSequence();
+        this.showSequence();
     }
 
     public destroy(): void {
         super.destroy();
-        this._stopCompleteTimer();
     }
 
-    public resetCompleteTimer(): void {
-        this._stopCompleteTimer();
-        this._startCompleteTimer();
+    public nextSequence(): void {
+        this.current && this.completeSequence();
+        this._currentIndex = this.current ? this._currentIndex + 1 : 0;
     }
 
-    private _startCompleteTimer(): void {
-        this._completeDelayRunnable = delayRunnable(getParams().tutorialTime.value, () => {
-            this._complete = true;
-        });
+    public completeSequence(): void {
+        console.warn('complete');
+
+        this.current.complete = true;
     }
 
-    private _stopCompleteTimer(): void {
-        removeRunnable(this._completeDelayRunnable);
+    public showSequence(): void {
+        this.current.show = true;
+    }
+
+    private _initSequences(): void {
+        this._sequences = getTutorialConfig().map((config, index) => new TutorialSequenceModel(config, index));
     }
 }
