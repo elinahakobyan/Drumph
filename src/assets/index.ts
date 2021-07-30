@@ -5,7 +5,7 @@ export const assets = {
     atlases: {
         bg: {
             json: require('../../assets/atlases/bg.json'),
-            image: require('../../assets/atlases/bg.jpg'),
+            image: require('../../assets/atlases/bg.png'),
         },
         main: {
             json: require('../../assets/atlases/main.json'),

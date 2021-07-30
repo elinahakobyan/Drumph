@@ -1,16 +1,16 @@
 import { lego } from '@armathai/lego';
-import { ICellConfig, PixiGrid } from '@armathai/pixi-grid';
 import { DisplayObject } from '@pixi/display';
 import { NineSlicePlane } from '@pixi/mesh-extras';
-import { getBoardGridConfig } from '../constants/configs/grid-configs';
+import { Container } from 'pixi.js';
+import { cellsGap, cellSize } from '../constants/constants';
 import { BoardModelEvent, PadModelEvent } from '../events/model';
 import { BoardViewEvent } from '../events/view';
-import { BoardState, BoardStatus } from '../models/board-model';
+import { BoardState } from '../models/board-model';
 import { PadModel, PadState } from '../models/pads/pad-model';
 import { delayRunnable } from '../utils';
 import { PadComponent } from './pad/pad-view';
 
-export class BoardView extends PixiGrid {
+export class BoardView extends Container {
     private _bg: NineSlicePlane;
     private _icon: DisplayObject;
     private _pads: PadComponent[];
@@ -21,17 +21,14 @@ export class BoardView extends PixiGrid {
         this._bg = null;
         this.name = 'BoardView';
         lego.event.on(BoardModelEvent.padsUpdate, this._onPadsUpdate, this);
-        lego.event.on(BoardModelEvent.stateUpdate, this._onStateUpdate, this);
-        lego.event.on(BoardModelEvent.levelPatternUpdate, this._onLevelPadsUpdate, this);
-        // lego.event.on(ProgressUpdateViewEvent.update, this._onUpdateBoard, this);
-        lego.event.on(PadModelEvent.stateUpdate, this._onUpdateBoard, this);
-        lego.event.on(BoardModelEvent.statusUpdate, this._onCampletUpdateImitacia, this);
-        lego.event.on(BoardModelEvent.statusUpdate, this._onCampletUpdateImitacia, this);
-        this._build();
-    }
+        // lego.event.on(BoardModelEvent.stateUpdate, this._onStateUpdate, this);
+        lego.event.on(PadModelEvent.stateUpdate, this._onPadStateUpdate, this);
 
-    public getGridConfig(): ICellConfig {
-        return getBoardGridConfig();
+        // lego.event.on(BoardModelEvent.levelPatternUpdate, this._onLevelPadsUpdate, this);
+        // lego.event.on(ProgressUpdateViewEvent.update, this._onUpdateBoard, this);
+        // lego.event.on(ProgressUpdateViewEvent.finish, this._onCompleteUpdateImitation, this);
+        // lego.event.on(ProgressUpdateViewEvent.start, this._onCompleteUpdateImitation, this);
+        this._build();
     }
 
     public onPadsClick(): void {
@@ -59,13 +56,21 @@ export class BoardView extends PixiGrid {
 
     private _onPadsUpdate(padsConfig: Map<string, PadModel>): void {
         this._pads = [];
-        padsConfig.forEach((padConfig) => {
-            const pad = new PadComponent(padConfig);
-            this._pads.push(pad);
-            this.setChild(pad.name, pad);
-        });
-        lego.event.emit(BoardViewEvent.addPads);
+        const { width, height } = cellSize;
 
+        padsConfig.forEach((padConfig) => {
+            const { row, col } = padConfig.config;
+            const pad = new PadComponent(padConfig);
+            pad.position.set(col * (width + cellsGap), row * (height + cellsGap));
+            this._pads.push(pad);
+            // pad.block();
+            this.addChild(pad);
+        });
+
+        this.emit('createPads');
+        // console.warn(this._pads);
+
+        lego.event.emit(BoardViewEvent.addPads);
         ///
     }
 
@@ -77,27 +82,26 @@ export class BoardView extends PixiGrid {
         ///
     }
 
-    private _onUpdateBoard(value: PadState, oldValue: PadState, uuid: string): void {
-        console.warn(value, uuid);
+    private _onUpdateBoard(progressConfig: ProgressConfig): void {
+        if (progressConfig.state === BoardState.play) {
+            this.onPadsClick();
+        } else {
+            const pads: string[] = progressConfig.pads;
 
-        // if (progresConfig.state === BoardState.play) {
-        //     this.onPadsClick();
-        //     console.warn(progresConfig.pads);
-        // } else {
-        //     const pads: string[] = progresConfig.pads;
-
-        //     this._onUpdateImitacia(pads);
-        // }
+            this._onUpdateImitation(pads);
+        }
     }
 
-    private _onUpdateImitacia(pads: string[]): void {
+    private _onUpdateImitation(pads: string[]): void {
         pads.forEach((padId) => {
             const pad = this._getPad(padId);
-            pad.activate();
+            pad.showHint();
+            // pad.activate();
             delayRunnable(
                 0.5,
                 () => {
-                    pad.deactivate();
+                    pad.hideHint();
+                    // pad.deactivate();
                 },
                 this,
             );
@@ -105,26 +109,53 @@ export class BoardView extends PixiGrid {
         ///
     }
 
-    private _onCampletUpdateImitacia(value: BoardStatus): void {
-        switch (value) {
-            case BoardStatus.finish:
-                this.offPadsClick();
-
-                break;
-
-            case BoardStatus.finish:
-                this.onPadsClick();
-
-                break;
+    private _onCompleteUpdateImitation(isComplete: boolean): void {
+        console.warn(isComplete);
+        if (isComplete) {
+            this.onPadsClick();
+        } else {
+            this.offPadsClick();
         }
 
         ///
     }
 
     private _getPad(name: string): PadComponent {
-        const cell = this._pads.find((pad) => pad.name === name);
+        const cell = this._pads.find((pad) => pad.uuid === name);
+        // console.warn(cell);
 
         return cell ? cell : null;
         ///
+    }
+
+    private _onPadStateUpdate(newState: string, oldState: string, uuid: string): void {
+        // console.warn(uuid);
+        // console.warn(newState);
+
+        switch (newState) {
+            case PadState.blocked:
+                this._getPad(uuid).deactivate();
+
+                break;
+            case PadState.active:
+                this._getPad(uuid).activate();
+
+                break;
+            case PadState.deactivate:
+                this._getPad(uuid).block();
+
+                break;
+            case PadState.showHint:
+                this._getPad(uuid).showHint();
+
+                break;
+            case PadState.hideShow:
+                this._getPad(uuid).hideHint();
+
+                break;
+
+            default:
+                break;
+        }
     }
 }

@@ -23,7 +23,7 @@ export class TutorialComponent extends Container {
         postRunnable(this._show, this);
 
         // lego.event.on(TutorialModelEvent.completeUpdate, this._onTutorialCompleteUpdate, this);
-        lego.event.on(BoardModelEvent.stateUpdate, this._onBoardstateUpdate, this);
+        lego.event.on(BoardModelEvent.stateUpdate, this._onBoardStateUpdate, this);
         lego.event.on(ProgressUpdateViewEvent.finish, this._buildLabel, this);
         lego.event.on(PadViewEvent.click, this._onTutorialCompleteUpdate, this);
     }
@@ -73,7 +73,7 @@ export class TutorialComponent extends Container {
         lego.event.emit(TutorialViewEvent.hideComplete);
     }
 
-    private _onBoardstateUpdate(value: BoardState): void {
+    private _onBoardStateUpdate(value: BoardState): void {
         console.warn(value);
 
         switch (value) {

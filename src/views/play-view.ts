@@ -3,6 +3,7 @@ import { ICellConfig, PixiGrid } from '@armathai/pixi-grid';
 import { getPlayGridConfig } from '../constants/configs/grid-configs';
 import { BoardModelEvent, PlayModelEvent } from '../events/model';
 import { BoardModel, BoardState } from '../models/board-model';
+import { lp } from '../utils';
 import { BoardView } from './board-view';
 
 export class PlayView extends PixiGrid {
@@ -13,6 +14,14 @@ export class PlayView extends PixiGrid {
         this.name = 'PlayView';
         lego.event.on(PlayModelEvent.boardUpdate, this._onBoardUpdate, this);
         lego.event.on(BoardModelEvent.stateUpdate, this._onBoardStateUpdate, this);
+    }
+
+    public rebuild(config: ICellConfig): void {
+        super.rebuild(config);
+        if (this._board) {
+            this._board.rotation = lp(0, Math.PI * 0.5);
+            this.setChild('board', this._board);
+        }
     }
 
     public getGridConfig(): ICellConfig {
@@ -38,7 +47,11 @@ export class PlayView extends PixiGrid {
     }
 
     private _buildBoard(): void {
-        this.setChild('board', (this._board = new BoardView()));
+        this._board = new BoardView();
+        this._board.on('createPads', () => {
+            this.setChild('board', this._board);
+        });
+        this._board.rotation = lp(0, Math.PI * 0.5);
     }
 
     private _destroyBoard(): void {

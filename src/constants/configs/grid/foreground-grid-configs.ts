@@ -31,7 +31,7 @@ export const getForegroundGridLandscapeConfig = (): ICellConfig => {
                 align: CellAlign.leftCenter,
             },
             {
-                // debug: { color: 0xd95027 },
+                debug: { color: 0xd95027 },
                 name: 'tutorial',
                 bounds: {
                     x: (1 - boardW) / 2,

@@ -1,6 +1,6 @@
 {
     "spine": true,
-    "legologger": false,
+    "legologger": true,
     "variation": {
         "image": {
             "bg/play/bg.jpg": {
@@ -87,6 +87,16 @@
                 "name": "hint",
                 "value": true
             }
+        },
+        "square_color_patterns": {
+            "value": "1",
+            "description": "Determines the color/pattern of the squares.",
+            "options": ["1", "2", "3"]
+        },
+        "emptySquareColor": {
+            "value": "Black",
+            "description": "Determines the color of the empty square(s).",
+            "options": ["Black", "Red", "Blue", "Purple", "White"]
         }
     },
     "size": {

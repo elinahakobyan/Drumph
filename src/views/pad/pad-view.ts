@@ -1,47 +1,53 @@
-// const cellColorsCode: ColorsCode = {
-//     [CellColors.blue]: 'blue',
-//     [CellColors.green]: 'green',
-//     [CellColors.red]: 'red',
-//     [CellColors.yellow]: 'yellow',
-//     [CellColors.pink]: 'pink',
-// };
-
 import { lego } from '@armathai/lego';
-import { NineSlicePlane, Rectangle, Sprite } from 'pixi.js';
-import { getPadBgPatchConfig } from '../../constants/configs/nineslice-configs';
+import { Rectangle, Sprite } from 'pixi.js';
+import {
+    getCellBgSpriteConfig,
+    getCellBlockSpriteConfig,
+    getHintImageSpriteConfig,
+    getPadGlowImageSpriteConfig,
+} from '../../constants/configs/sprite-configs';
 import { PadViewEvent } from '../../events/view';
 import { PadModel } from '../../models/pads/pad-model';
-import { makeNineSlice } from '../../utils';
+import { getParams, makeSprite } from '../../utils';
 import { Container } from '../../utils/container';
 
 export class PadComponent extends Container {
-    private _cell: Sprite;
     private _blocker: Sprite;
-    private _bg: NineSlicePlane;
+    private _pad: Sprite;
     private _hint: Sprite;
-    private _name: string;
+    private _glow: Sprite;
+    private _uuid: string;
     private _config: PadModel;
+    private _color: number;
 
     //private _uuid: string, private _color: number, private _audio: string, private _index: number
     public constructor(padModel: PadModel) {
         super();
         this._config = padModel;
+        this._color = padModel.passiveColor;
+        this._uuid = padModel.uuid;
 
-        this._name = padModel.name;
+        this.name = 'PadComponent';
         this.interactive = true;
         this._build();
     }
 
     public get uuid(): string {
-        return this._name;
-    }
-
-    public get name(): string {
-        return this._name;
+        return this._uuid;
     }
 
     public block(): void {
         this._blocker.visible = true;
+        this.interactive = false;
+    }
+
+    public activate(): void {
+        this._blocker.visible = false;
+        this.interactive = true;
+    }
+
+    public deactivate(): void {
+        this._blocker.visible = false;
         this.interactive = false;
     }
 
@@ -51,12 +57,15 @@ export class PadComponent extends Container {
         // this.interactive = false;
     }
 
-    public activate(): void {
-        this._bg.tint = this._config.activeColor;
-    }
+    public showHint(): void {
+        this._hint.alpha = 1;
+        // this._glow.alpha = 1;
 
-    public deactivate(): void {
-        this._bg.tint = this._config.passiveColor;
+        // gsap.from(this._hint, {
+        //     alpha: 1,
+        //     duration: 14,
+        //     ease: 'Cubic.InOut',
+        // });
     }
 
     public showAnimation(): void {
@@ -72,62 +81,60 @@ export class PadComponent extends Container {
         // this.addChild(tw);
     }
 
-    // public showPrompt(promptString: string): void {
-    //     if (promptString) {
-    //         const commitText = makeText(getPromptTextConfig(promptString));
-    //         commitText.rotation = lp(0, -Math.PI * 0.5);
-    //         this.addChild(commitText);
-    //         commitText.alpha = 0;
-    //         gsap.from(commitText, {
-    //             alpha: 1,
-    //             duration: 0.6,
-    //             ease: 'Cubic.InOut',
-    //         });
-    //     }
-    // }
+    public hideHint(): void {
+        this._hint.alpha = 0;
+        // this._glow.alpha = 0;
 
-    // public showHint(): void {
-    //     this._hint.alpha = 1;
-    //     // gsap.from(this._hint, {
-    //     //     alpha: 1,
-    //     //     duration: 14,
-    //     //     ease: 'Cubic.InOut',
-    //     // });
-    // }
+        // gsap.from(this._hint, {
+        //     alpha: 0,
+        //     duration: 14,
+        //     ease: 'Cubic.InOut',
+        // });
+    }
 
-    // public hideHint(): void {
-    //     this._hint.alpha = 0;
-
-    //     // gsap.from(this._hint, {
-    //     //     alpha: 0,
-    //     //     duration: 14,
-    //     //     ease: 'Cubic.InOut',
-    //     // });
-    // }
     public getBounds(): Rectangle {
-        return this._bg.getBounds();
+        return this._pad.getBounds();
     }
 
     private _build(): void {
         this._buildBg();
-
-        // this._buildHint();
+        this._buildBlocker();
+        this._buildHint();
+        // this._buildGlow();
     }
 
     private _buildBg(): void {
-        const bg = makeNineSlice(getPadBgPatchConfig());
-        bg.tint = 0x282829;
-        this.addChild((this._bg = bg));
+        const cell = makeSprite(getCellBgSpriteConfig(this._color, getParams().square_color_patterns.value));
+        this.addChild((this._pad = cell));
     }
 
-    //     private _buildHint(): void {
-    //         const hint = makeSprite(getHintImageSpriteConfig());
-    //         hint.scale.set(0.3);
-    //         hint.position.x = -this._cell.width * 0.5 + 40;
-    //         hint.position.y = this._cell.height * 0.5 - 40;
-    //         hint.alpha = 0;
-    //         this.addChild((this._hint = hint));
-    //     }
+    private _buildBlocker(): void {
+        console.warn(getParams().emptySquareColor.value.toLowerCase());
+
+        const blocker = makeSprite(getCellBlockSpriteConfig(getParams().emptySquareColor.value.toLowerCase()));
+        blocker.visible = true;
+        this._pad.addChild((this._blocker = blocker));
+    }
+
+    private _buildHint(): void {
+        const hint = makeSprite(getHintImageSpriteConfig());
+        hint.scale.set(0.3);
+        hint.position.x = -this._pad.width * 0.5 + 40;
+        hint.position.y = this._pad.height * 0.5 - 40;
+        hint.alpha = 0;
+        this.addChild((this._hint = hint));
+    }
+
+    private _buildGlow(): void {
+        const glow = makeSprite(getPadGlowImageSpriteConfig());
+        glow.alpha = 0;
+
+        // glow.scale.set(0.3);
+        // glow.position.x = -this._pad.width * 0.5 + 40;
+        // glow.position.y = this._pad.height * 0.5 - 40;
+        // glow.alpha = 0;
+        this.addChild((this._glow = glow));
+    }
 
     private _addListener(): void {
         this.on('pointerdown', this._click);
@@ -138,6 +145,20 @@ export class PadComponent extends Container {
     }
 
     private _click(): void {
-        lego.event.emit(PadViewEvent.click, this._name);
+        lego.event.emit(PadViewEvent.click, this._uuid);
     }
 }
+
+// public showPrompt(promptString: string): void {
+//     if (promptString) {
+//         const commitText = makeText(getPromptTextConfig(promptString));
+//         commitText.rotation = lp(0, -Math.PI * 0.5);
+//         this.addChild(commitText);
+//         commitText.alpha = 0;
+//         gsap.from(commitText, {
+//             alpha: 1,
+//             duration: 0.6,
+//             ease: 'Cubic.InOut',
+//         });
+//     }
+// }
