@@ -148,8 +148,6 @@ export class PadComponent extends Container {
     }
 
     private _click(): void {
-        console.warn(this._name);
-
         lego.event.emit(PadViewEvent.click, this._name);
     }
 }

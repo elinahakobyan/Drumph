@@ -68,7 +68,7 @@ type BoardTimer = {
     entryTimer: number;
     start: number;
     end: number;
-    pointers?: number[];
+    pointers?: { padUUid: string; position: number }[];
 };
 
 type ParticleConfig = {

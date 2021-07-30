@@ -34,6 +34,7 @@ export class CtaModel extends ObservableModel {
     }
 
     public interaction(): void {
+        return;
         removeRunnable(this._revelationRunnable);
         this._revelationRunnable = delayRunnable(
             getParams().idleTimeToCta.value,

@@ -1,10 +1,7 @@
-import { lego } from '@armathai/lego';
-import { levelLength, levels, padsConfigs, timerDelay } from '../constants/constants';
-import { BoardModelEvent } from '../events/model';
-import { ProgressUpdateViewEvent } from '../events/view';
+import { levelLength, levels, padsConfigs, timerDellay } from '../constants/constants';
 import { loopRunnable, removeRunnable } from '../utils';
 import { ObservableModel } from './observable-model';
-import { PadModel } from './pads/pad-model';
+import { PadModel, PadState } from './pads/pad-model';
 
 export enum BoardState {
     unknown = 'unknown',
@@ -15,10 +12,16 @@ export enum BoardState {
     showResult = 'showResult',
 }
 
+export enum BoardStatus {
+    start = 'start',
+    finish = 'finish',
+    unknown = 'unknown',
+}
 export const duration = 1.5;
 
 export class BoardModel extends ObservableModel {
     private _state = BoardState.unknown;
+    private _status = BoardStatus.unknown;
     private _visibilityRunnable: Runnable;
     private _timerPRunnable: Runnable;
 
@@ -29,11 +32,14 @@ export class BoardModel extends ObservableModel {
     private _progress: number = null;
     private _progressStep: number = null;
     private _levelPattern: string[] = null;
-    private _imitation = false;
+    private _imitacia = false;
+    private _isEntryTruePad = false;
+    private _levelConstInterval = 0;
+    private _score = 0;
 
     public constructor() {
         super('BoardModel');
-        lego.event.on(BoardModelEvent.levelUpdate, this._onLevelUpdate, this);
+        // lego.event.on(BoardModelEvent.levelUpdate, this._onLevelUpdate, this);
         this.makeObservable();
     }
 
@@ -45,16 +51,28 @@ export class BoardModel extends ObservableModel {
         this._state = value;
     }
 
+    public get status(): BoardStatus {
+        return this._status;
+    }
+
+    public set status(value: BoardStatus) {
+        this._status = value;
+    }
+
     public get timer(): BoardTimer {
         return this._timer;
     }
 
-    public get imitation(): boolean {
-        return this._imitation;
+    public get score(): number {
+        return this._score;
+    }
+
+    public get imitacia(): boolean {
+        return this._imitacia;
     }
 
     public set imitation(value: boolean) {
-        this._imitation = value;
+        this._imitacia = value;
     }
 
     public get level(): number {
@@ -84,68 +102,84 @@ export class BoardModel extends ObservableModel {
     public initialize(): void {
         this._state = BoardState.passive;
         this._createPads();
-        this._createLevelPattern();
+        this._createlevelPattern();
+    }
+
+    public checkPad(padUUid: string): void {
+        const entryTimer = this._timer.entryTimer;
+
+        this._isEntryTruePad ? false : this._checkIsTruePad(padUUid, entryTimer);
+    }
+
+    public onLevelUpdate(level = 1): void {
+        this._level = level;
+        this._createlevelPattern();
+        this._state = BoardState.tutorial;
     }
 
     public startImitation(): void {
-        lego.event.emit(ProgressUpdateViewEvent.start, false);
-
+        // this._status = BoardStatus.start;
         this._onProgressStepCountUpdate();
-        lego.event.emit(ProgressUpdateViewEvent.update, {
-            pads: [this._levelPattern[0]],
-            state: BoardState.imitation,
-        });
+        this._getPads(this._levelPattern[this._progress * this._levelPattern.length]).state = PadState.active;
 
-        this._levelPattern.shift();
-
-        this._visibilityRunnable = loopRunnable(levelLength / this._levelPattern.length, this._progressEmitter, this);
+        this._visibilityRunnable = loopRunnable(this._levelConstInterval, this._progressEmitter, this);
     }
 
-    public startPlayLevel(padId: string): void {
-        console.warn(padId);
-        !this._progress ? this._createLevelPattern() : false;
-        // this._onProgressStepCountUpdate();
-        console.warn(this._progress);
-        console.warn(this._levelPattern.length);
+    // public startPlayLevel(): void {
+    //     !this._progress ? this._createlevelPattern() : false;
+    //     lego.event.emit(ProgressUpdateViewEvent.start, false);
+    //     this._onProgressStepCountUpdate();
+    //     lego.event.emit(ProgressUpdateViewEvent.update, {
+    //         pads: this._levelPattern[this._progress * this._levelPattern.length - 1],
+    //         state: BoardState.play,
+    //     });
+    //     console.warn(this._progress * this._levelPattern.length);
 
-        console.warn(this._progressStep);
-        console.warn(this._progressStepCount);
-        lego.event.emit(ProgressUpdateViewEvent.start, false);
-        this._onProgressStepCountUpdate();
-        lego.event.emit(ProgressUpdateViewEvent.update, { pads: null, state: BoardState.play });
-        this._onTimerStart();
-        // console.warn(levelLength / this._progressStepCount);
-        this._visibilityRunnable = loopRunnable(
-            levelLength / this._levelPattern.length,
-            this._progressPlayEmitter,
-            this,
-        );
+    //     this._onTimerStart();
+    //     this._visibilityRunnable = loopRunnable(this._levelConstInterval, this._progressPlayEmitter, this);
+    // }
+
+    private _getPads(padsUUid: string): PadModel {
+        return this._pads.get(padsUUid);
     }
 
     private _progressEmitter(): void {
-        if (this._levelPattern.length > 0) {
-            this._onProgressUpdate();
-            lego.event.emit(ProgressUpdateViewEvent.update, {
-                pads: [this._levelPattern[0]],
-                state: BoardState.imitation,
-            });
-            this._levelPattern.shift();
+        this._onProgressUpdate();
+        if (this._progress < 1) {
+            this._getPads(this._levelPattern[this._progress * this._levelPattern.length - 1]).state = PadState.passive;
+            this._getPads(this._levelPattern[this._progress * this._levelPattern.length]).state = PadState.active;
         } else {
+            this._getPads(this._levelPattern[this._progress * this._levelPattern.length - 1]).state = PadState.passive;
+
             removeRunnable(this._visibilityRunnable);
-            lego.event.emit(ProgressUpdateViewEvent.finish, true);
             this._progress = null;
             this._progressStep = null;
         }
     }
 
-    private _progressPlayEmitter(): void {
-        if (this._progress < 1) {
-            this._onProgressUpdate();
-            lego.event.emit(ProgressUpdateViewEvent.update, { pads: null, state: BoardState.play });
-        } else {
-            removeRunnable(this._visibilityRunnable);
-            lego.event.emit(ProgressUpdateViewEvent.finish, true);
+    private _checkIsTruePad(padUUid: string, entryTimer: number): void {
+        //
+        const pointers = this._timer.pointers;
+        for (let i = 0; i < pointers.length; i++) {
+            //
+            if (padUUid === pointers[i].padUUid) {
+                if (
+                    this._levelConstInterval >= pointers[i].position - entryTimer &&
+                    pointers[i].position - entryTimer >= 0
+                ) {
+                    this._isEntryTruePad = true;
+                    this._checkscore(pointers[i].position - entryTimer);
+                    return;
+                }
+            }
         }
+    }
+
+    private _checkscore(entryTimer: number): void {
+        const x = entryTimer / this._levelConstInterval;
+
+        this._score += x / this._levelPattern.length;
+        //
     }
 
     private _createPads(): void {
@@ -158,13 +192,7 @@ export class BoardModel extends ObservableModel {
         this._pads = pads;
     }
 
-    private _onLevelUpdate(level: number): void {
-        this._level = level;
-        this._createLevelPattern();
-        this._state = BoardState.tutorial;
-    }
-
-    private _createLevelPattern(): void {
+    private _createlevelPattern(): void {
         const levelPads = levels[this._level - 1];
         this._levelPattern ? (this._levelPattern.length = 0) : (this._levelPattern = []);
         const levelPattern: string[] = [];
@@ -172,13 +200,15 @@ export class BoardModel extends ObservableModel {
             levelPattern.push(`pad_${levelPads.row}_${levelPads.col}`);
         });
         this._levelPattern = levelPattern;
+        this._levelConstInterval = levelLength / this._levelPattern.length;
     }
 
     private _onProgressStepCountUpdate(): void {
         this._levelPattern.length > 0
             ? (this._progressStepCount = 1 / this._levelPattern.length)
             : (this._progressStepCount = 0);
-        !this._progressStep ? (this._progressStep = this._progress = this._progressStepCount) : false;
+        !this._progressStep ? (this._progressStep = this._progressStepCount) : false;
+        this._progress = 0;
     }
 
     private _onProgressUpdate(): void {
@@ -190,18 +220,22 @@ export class BoardModel extends ObservableModel {
             removeRunnable(this._timerPRunnable);
             return;
         }
-        this._timer.entryTimer += timerDelay;
-        // console.warn(this._timer.entryTimer);
+        this._timer.entryTimer += timerDellay;
+        this._timer.entryTimer % this._levelConstInterval === 0
+            ? (this._isEntryTruePad = false)
+            : (this._isEntryTruePad = true);
     }
 
     private _onTimerStart(): void {
-        this._timer = { start: 0, entryTimer: 0, end: levelLength, pointers: [0] };
+        this._timer = { start: 0, entryTimer: 0, end: levelLength, pointers: [] };
 
-        for (let index = 1; index < this._levelPattern.length - 1; index++) {
-            this._timer.pointers.push(index * (levelLength / this.levelPattern.length));
+        for (let index = 1; index <= this._levelPattern.length; index++) {
+            this._timer.pointers.push({
+                padUUid: this._levelPattern[index - 1],
+                position: index * this._levelConstInterval,
+            });
         }
-        console.warn(this._timer.pointers);
 
-        this._timerPRunnable = loopRunnable(timerDelay, this._onTimerUpdate, this);
+        this._timerPRunnable = loopRunnable(timerDellay, this._onTimerUpdate, this);
     }
 }

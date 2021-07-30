@@ -61,10 +61,8 @@ export const padsConfigs: PadModelConfig[] = [
 ];
 
 export const cellsGap = 10;
-
-export const levelLength = 3;
-
-export const timerDelay = 0.05;
+export const levelLength = 3.2;
+export const timerDellay = 0.5;
 
 export const logoPaddingY = 0.25;
 

@@ -1,6 +1,6 @@
 import { store } from '../models/store';
 
-export const onStartBoardLevelImitationCommand = (): void => {
+export const onStartBoardLevelImitaciaCommand = (): void => {
     store.play.board.startImitation();
     //
 };
