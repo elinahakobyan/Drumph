@@ -1,10 +1,10 @@
 import { lego } from '@armathai/lego';
 import { DisplayObject } from '@pixi/display';
 import { NineSlicePlane } from '@pixi/mesh-extras';
-import { Container } from 'pixi.js';
+import { Container, Rectangle } from 'pixi.js';
 import { cellsGap, cellSize } from '../constants/constants';
 import { BoardModelEvent, PadModelEvent } from '../events/model';
-import { BoardViewEvent } from '../events/view';
+import { BoardViewEvent, ProgressUpdateViewEvent } from '../events/view';
 import { BoardState } from '../models/board-model';
 import { PadModel, PadState } from '../models/pads/pad-model';
 import { delayRunnable } from '../utils';
@@ -15,6 +15,7 @@ export class BoardView extends Container {
     private _icon: DisplayObject;
     private _pads: PadComponent[];
     private _padsInteractive = false;
+
     public constructor() {
         super();
 
@@ -24,11 +25,25 @@ export class BoardView extends Container {
         // lego.event.on(BoardModelEvent.stateUpdate, this._onStateUpdate, this);
         lego.event.on(PadModelEvent.stateUpdate, this._onPadStateUpdate, this);
 
-        // lego.event.on(BoardModelEvent.levelPatternUpdate, this._onLevelPadsUpdate, this);
-        // lego.event.on(ProgressUpdateViewEvent.update, this._onUpdateBoard, this);
-        // lego.event.on(ProgressUpdateViewEvent.finish, this._onCompleteUpdateImitation, this);
-        // lego.event.on(ProgressUpdateViewEvent.start, this._onCompleteUpdateImitation, this);
+        lego.event.on(BoardModelEvent.levelPatternUpdate, this._onLevelPadsUpdate, this);
+        lego.event.on(ProgressUpdateViewEvent.update, this._onUpdateBoard, this);
+        lego.event.on(ProgressUpdateViewEvent.finish, this._onCompleteUpdateImitation, this);
+        lego.event.on(ProgressUpdateViewEvent.start, this._onCompleteUpdateImitation, this);
         this._build();
+    }
+
+    public getBounds(): Rectangle {
+        // const gr = new Graphics();
+        // gr.beginFill(0x00ff00, 0.5);
+        // gr.drawRect(-105, -105, 4 * 210 + 3 * cellsGap, 3 * 210 + 2 * cellsGap);
+        // this.addChild(gr);
+
+        return new Rectangle(
+            -cellSize.width * 0.5,
+            -cellSize.height * 0.5,
+            4 * cellSize.width + 3 * cellsGap,
+            3 * cellSize.height + 2 * cellsGap,
+        );
     }
 
     public onPadsClick(): void {
