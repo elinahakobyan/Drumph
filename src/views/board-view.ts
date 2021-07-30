@@ -77,8 +77,8 @@ export class BoardView extends PixiGrid {
         ///
     }
 
-    private _onUpdateBoard(value: PadState): void {
-        console.warn(value);
+    private _onUpdateBoard(value: PadState, oldValue: PadState, uuid: string): void {
+        console.warn(value, uuid);
 
         // if (progresConfig.state === BoardState.play) {
         //     this.onPadsClick();
