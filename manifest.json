@@ -1,6 +1,6 @@
 {
     "spine": true,
-    "legologger": false,
+    "legologger": true,
     "variation": {
         "image": {
             "bg/play/bg.jpg": {

@@ -1,3 +1,3 @@
-export const onUpadatePlayLevelCommand = (): void => {
+export const onUpdatePlayLevelCommand = (): void => {
     // store.play.board.startPlayLevel();
 };

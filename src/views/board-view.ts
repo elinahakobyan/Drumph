@@ -3,10 +3,10 @@ import { DisplayObject } from '@pixi/display';
 import { NineSlicePlane } from '@pixi/mesh-extras';
 import { Container } from 'pixi.js';
 import { cellsGap, cellSize } from '../constants/constants';
-import { BoardModelEvent } from '../events/model';
-import { BoardViewEvent, ProgressUpdateViewEvent } from '../events/view';
+import { BoardModelEvent, PadModelEvent } from '../events/model';
+import { BoardViewEvent } from '../events/view';
 import { BoardState } from '../models/board-model';
-import { PadModel } from '../models/pads/pad-model';
+import { PadModel, PadState } from '../models/pads/pad-model';
 import { delayRunnable } from '../utils';
 import { PadComponent } from './pad/pad-view';
 
@@ -21,11 +21,13 @@ export class BoardView extends Container {
         this._bg = null;
         this.name = 'BoardView';
         lego.event.on(BoardModelEvent.padsUpdate, this._onPadsUpdate, this);
-        lego.event.on(BoardModelEvent.stateUpdate, this._onStateUpdate, this);
-        lego.event.on(BoardModelEvent.levelPatternUpdate, this._onLevelPadsUpdate, this);
-        lego.event.on(ProgressUpdateViewEvent.update, this._onUpdateBoard, this);
-        lego.event.on(ProgressUpdateViewEvent.finish, this._onCompleteUpdateImitation, this);
-        lego.event.on(ProgressUpdateViewEvent.start, this._onCompleteUpdateImitation, this);
+        // lego.event.on(BoardModelEvent.stateUpdate, this._onStateUpdate, this);
+        lego.event.on(PadModelEvent.stateUpdate, this._onPadStateUpdate, this);
+
+        // lego.event.on(BoardModelEvent.levelPatternUpdate, this._onLevelPadsUpdate, this);
+        // lego.event.on(ProgressUpdateViewEvent.update, this._onUpdateBoard, this);
+        // lego.event.on(ProgressUpdateViewEvent.finish, this._onCompleteUpdateImitation, this);
+        // lego.event.on(ProgressUpdateViewEvent.start, this._onCompleteUpdateImitation, this);
         this._build();
     }
 
@@ -61,11 +63,12 @@ export class BoardView extends Container {
             const pad = new PadComponent(padConfig);
             pad.position.set(col * (width + cellsGap), row * (height + cellsGap));
             this._pads.push(pad);
-            pad.block();
+            // pad.block();
             this.addChild(pad);
         });
 
         this.emit('createPads');
+        // console.warn(this._pads);
 
         lego.event.emit(BoardViewEvent.addPads);
         ///
@@ -74,7 +77,7 @@ export class BoardView extends Container {
     private _onLevelPadsUpdate(levelPattern: string[]): void {
         levelPattern.forEach((patternPad) => {
             const pad = <PadComponent>this._getPad(patternPad);
-            pad ? pad.activate() : false;
+            pad ? pad.deactivate() : false;
         });
         ///
     }
@@ -118,9 +121,41 @@ export class BoardView extends Container {
     }
 
     private _getPad(name: string): PadComponent {
-        const cell = this._pads.find((pad) => pad.name === name);
+        const cell = this._pads.find((pad) => pad.uuid === name);
+        // console.warn(cell);
 
         return cell ? cell : null;
         ///
+    }
+
+    private _onPadStateUpdate(newState: string, oldState: string, uuid: string): void {
+        // console.warn(uuid);
+        // console.warn(newState);
+
+        switch (newState) {
+            case PadState.blocked:
+                this._getPad(uuid).deactivate();
+
+                break;
+            case PadState.active:
+                this._getPad(uuid).activate();
+
+                break;
+            case PadState.deactivate:
+                this._getPad(uuid).block();
+
+                break;
+            case PadState.showHint:
+                this._getPad(uuid).showHint();
+
+                break;
+            case PadState.hideShow:
+                this._getPad(uuid).hideHint();
+
+                break;
+
+            default:
+                break;
+        }
     }
 }

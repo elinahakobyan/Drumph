@@ -1,5 +1,5 @@
 import { store } from '../models/store';
 
-export const boardprogresGuard = (): boolean => {
+export const boardProgressGuard = (): boolean => {
     return store.play.board.progress !== null;
 };

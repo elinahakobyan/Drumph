@@ -16,7 +16,7 @@ export class PadComponent extends Container {
     private _pad: Sprite;
     private _hint: Sprite;
     private _glow: Sprite;
-    private _name: string;
+    private _uuid: string;
     private _config: PadModel;
     private _color: number;
 
@@ -25,18 +25,15 @@ export class PadComponent extends Container {
         super();
         this._config = padModel;
         this._color = padModel.passiveColor;
+        this._uuid = padModel.uuid;
 
-        this._name = padModel.name;
+        this.name = 'PadComponent';
         this.interactive = true;
         this._build();
     }
 
     public get uuid(): string {
-        return this._name;
-    }
-
-    public get name(): string {
-        return this._name;
+        return this._uuid;
     }
 
     public block(): void {
@@ -62,7 +59,7 @@ export class PadComponent extends Container {
 
     public showHint(): void {
         this._hint.alpha = 1;
-        this._glow.alpha = 1;
+        // this._glow.alpha = 1;
 
         // gsap.from(this._hint, {
         //     alpha: 1,
@@ -86,7 +83,7 @@ export class PadComponent extends Container {
 
     public hideHint(): void {
         this._hint.alpha = 0;
-        this._glow.alpha = 0;
+        // this._glow.alpha = 0;
 
         // gsap.from(this._hint, {
         //     alpha: 0,
@@ -115,7 +112,7 @@ export class PadComponent extends Container {
         console.warn(getParams().emptySquareColor.value.toLowerCase());
 
         const blocker = makeSprite(getCellBlockSpriteConfig(getParams().emptySquareColor.value.toLowerCase()));
-        blocker.visible = false;
+        blocker.visible = true;
         this._pad.addChild((this._blocker = blocker));
     }
 
@@ -148,7 +145,7 @@ export class PadComponent extends Container {
     }
 
     private _click(): void {
-        lego.event.emit(PadViewEvent.click, this._name);
+        lego.event.emit(PadViewEvent.click, this._uuid);
     }
 }
 

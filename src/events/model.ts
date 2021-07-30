@@ -11,7 +11,7 @@ export enum BoardModelEvent {
     statusUpdate = 'BoardModelStatusUpdate',
     timerUpdate = 'BoardModelTimerUpdate',
     scoreUpdate = 'BoardModelScoreUpdate',
-    imitaciaUpdate = 'BoardModelImitaciaUpdate',
+    imitationUpdate = 'BoardModelImitationUpdate',
     levelUpdate = 'BoardModelLevelUpdate',
     padsUpdate = 'BoardModelPadsUpdate',
     levelPatternUpdate = 'BoardModelLevelPatternUpdate',

@@ -1,12 +1,15 @@
 import { ObservableModel } from '../observable-model';
 export enum PadState {
-    unknown = 'blocked',
+    unknown = 'unknown',
     active = 'active',
-    passive = 'passive',
+    deactivate = 'deactivate',
+    blocked = 'blocked',
+    showHint = 'showHint',
+    hideShow = 'hideShow',
 }
 
 export class PadModel extends ObservableModel {
-    private _state = PadState.unknown;
+    private _state: PadState = null;
     private _config: PadModelConfig;
     private _name: string;
     private _activeColor: number;
@@ -45,6 +48,6 @@ export class PadModel extends ObservableModel {
     }
 
     public initialize(): void {
-        this._state = PadState.passive;
+        this._state = PadState.deactivate;
     }
 }

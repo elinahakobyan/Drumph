@@ -32,7 +32,7 @@ export class BoardModel extends ObservableModel {
     private _progress: number = null;
     private _progressStep: number = null;
     private _levelPattern: string[] = null;
-    private _imitacia = false;
+    private _imitation = false;
     private _isEntryTruePad = false;
     private _levelConstInterval = 0;
     private _score = 0;
@@ -67,12 +67,12 @@ export class BoardModel extends ObservableModel {
         return this._score;
     }
 
-    public get imitacia(): boolean {
-        return this._imitacia;
+    public get imitation(): boolean {
+        return this._imitation;
     }
 
     public set imitation(value: boolean) {
-        this._imitacia = value;
+        this._imitation = value;
     }
 
     public get level(): number {
@@ -102,7 +102,7 @@ export class BoardModel extends ObservableModel {
     public initialize(): void {
         this._state = BoardState.passive;
         this._createPads();
-        this._createlevelPattern();
+        this._createLevelPattern();
     }
 
     public checkPad(padUUid: string): void {
@@ -113,14 +113,14 @@ export class BoardModel extends ObservableModel {
 
     public onLevelUpdate(level = 1): void {
         this._level = level;
-        this._createlevelPattern();
+        this._createLevelPattern();
         this._state = BoardState.tutorial;
     }
 
     public startImitation(): void {
         // this._status = BoardStatus.start;
         this._onProgressStepCountUpdate();
-        this._getPads(this._levelPattern[this._progress * this._levelPattern.length]).state = PadState.active;
+        this._getPads(this._levelPattern[this._progress * this._levelPattern.length]).state = PadState.showHint;
 
         this._visibilityRunnable = loopRunnable(this._levelConstInterval, this._progressEmitter, this);
     }
@@ -146,10 +146,10 @@ export class BoardModel extends ObservableModel {
     private _progressEmitter(): void {
         this._onProgressUpdate();
         if (this._progress < 1) {
-            this._getPads(this._levelPattern[this._progress * this._levelPattern.length - 1]).state = PadState.passive;
-            this._getPads(this._levelPattern[this._progress * this._levelPattern.length]).state = PadState.active;
+            this._getPads(this._levelPattern[this._progress * this._levelPattern.length - 1]).state = PadState.hideShow;
+            this._getPads(this._levelPattern[this._progress * this._levelPattern.length]).state = PadState.showHint;
         } else {
-            this._getPads(this._levelPattern[this._progress * this._levelPattern.length - 1]).state = PadState.passive;
+            this._getPads(this._levelPattern[this._progress * this._levelPattern.length - 1]).state = PadState.hideShow;
 
             removeRunnable(this._visibilityRunnable);
             this._progress = null;
@@ -168,14 +168,14 @@ export class BoardModel extends ObservableModel {
                     pointers[i].position - entryTimer >= 0
                 ) {
                     this._isEntryTruePad = true;
-                    this._checkscore(pointers[i].position - entryTimer);
+                    this._checkScore(pointers[i].position - entryTimer);
                     return;
                 }
             }
         }
     }
 
-    private _checkscore(entryTimer: number): void {
+    private _checkScore(entryTimer: number): void {
         const x = entryTimer / this._levelConstInterval;
 
         this._score += x / this._levelPattern.length;
@@ -189,15 +189,18 @@ export class BoardModel extends ObservableModel {
             const padModel = new PadModel(padConfig);
             pads.set(padModel.name, padModel);
         });
+
         this._pads = pads;
+        console.warn(this._pads);
     }
 
-    private _createlevelPattern(): void {
+    private _createLevelPattern(): void {
         const levelPads = levels[this._level - 1];
         this._levelPattern ? (this._levelPattern.length = 0) : (this._levelPattern = []);
         const levelPattern: string[] = [];
         levelPads.forEach((levelPads) => {
             levelPattern.push(`pad_${levelPads.row}_${levelPads.col}`);
+            this._getPads(`pad_${levelPads.row}_${levelPads.col}`).state = PadState.active;
         });
         this._levelPattern = levelPattern;
         this._levelConstInterval = levelLength / this._levelPattern.length;
