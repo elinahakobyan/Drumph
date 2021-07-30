@@ -1,3 +1,7 @@
+import { store } from '../models/store';
+
 export const onUpdatePlayLevelCommand = (): void => {
-    // store.play.board.startPlayLevel();
+    console.warn('llll');
+
+    store.play.board.startImitation();
 };

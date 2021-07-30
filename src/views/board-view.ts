@@ -21,7 +21,7 @@ export class BoardView extends Container {
         this._bg = null;
         this.name = 'BoardView';
         lego.event.on(BoardModelEvent.padsUpdate, this._onPadsUpdate, this);
-        // lego.event.on(BoardModelEvent.stateUpdate, this._onStateUpdate, this);
+        lego.event.on(BoardModelEvent.stateUpdate, this._onBoardStateUpdate, this);
         lego.event.on(PadModelEvent.stateUpdate, this._onPadStateUpdate, this);
 
         // lego.event.on(BoardModelEvent.levelPatternUpdate, this._onLevelPadsUpdate, this);
@@ -39,6 +39,7 @@ export class BoardView extends Container {
     }
 
     public offPadsClick(): void {
+        return;
         this._padsInteractive = true;
         this._pads.forEach((pad) => {
             pad.updateClickListener(false);
@@ -49,9 +50,23 @@ export class BoardView extends Container {
         //
     }
 
-    private _onStateUpdate(value: BoardState): void {
+    private _onBoardStateUpdate(value: BoardState, oldValue: BoardState): void {
         //
-        console.warn(value);
+        console.warn(value, oldValue);
+        switch (value) {
+            case BoardState.play:
+                // this.onPadsClick();
+                break;
+            case BoardState.idle:
+                this.offPadsClick();
+                break;
+            case BoardState.imitation:
+                // this.offPadsClick();
+                break;
+
+            default:
+                break;
+        }
     }
 
     private _onPadsUpdate(padsConfig: Map<string, PadModel>): void {

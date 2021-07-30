@@ -7,9 +7,7 @@ export enum BoardState {
     unknown = 'unknown',
     play = 'play',
     imitation = 'imitation',
-    tutorial = 'tutorial',
-    passive = 'passive',
-    showResult = 'showResult',
+    idle = 'idle',
 }
 
 export enum BoardStatus {
@@ -100,21 +98,20 @@ export class BoardModel extends ObservableModel {
     }
 
     public initialize(): void {
-        this._state = BoardState.passive;
+        this._state = BoardState.idle;
         this._createPads();
         this._createLevelPattern();
     }
 
     public checkPad(padUUid: string): void {
-        const entryTimer = this._timer.entryTimer;
-
-        this._isEntryTruePad ? false : this._checkIsTruePad(padUUid, entryTimer);
+        // const entryTimer = this._timer.entryTimer;
+        // this._isEntryTruePad ? false : this._checkIsTruePad(padUUid, entryTimer);
     }
 
     public onLevelUpdate(level = 1): void {
         this._level = level;
         this._createLevelPattern();
-        this._state = BoardState.tutorial;
+        this._state = BoardState.idle;
     }
 
     public startImitation(): void {
@@ -152,9 +149,30 @@ export class BoardModel extends ObservableModel {
             this._getPads(this._levelPattern[this._progress * this._levelPattern.length - 1]).state = PadState.hideShow;
 
             removeRunnable(this._visibilityRunnable);
+            this._nextToState();
             this._progress = null;
             this._progressStep = null;
         }
+    }
+
+    private _nextToState(): void {
+        console.warn(this._state);
+
+        switch (this._state) {
+            case BoardState.imitation:
+                this._state = BoardState.play;
+                break;
+            case BoardState.play:
+                this._state = BoardState.idle;
+                break;
+            case BoardState.idle:
+                this._state = BoardState.imitation;
+                break;
+
+            default:
+                break;
+        }
+        console.warn(this._state);
     }
 
     private _checkIsTruePad(padUUid: string, entryTimer: number): void {

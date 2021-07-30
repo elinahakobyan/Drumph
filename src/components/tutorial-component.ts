@@ -82,7 +82,7 @@ export class TutorialComponent extends Container {
                 break;
             case BoardState.play:
                 break;
-            case BoardState.tutorial:
+            case BoardState.idle:
                 break;
 
             default:

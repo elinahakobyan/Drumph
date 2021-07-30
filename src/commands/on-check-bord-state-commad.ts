@@ -9,7 +9,7 @@ import { showResultCommand } from './show-result-command';
 export const onCheckBoardStateCommand = (): void => {
     lego.command
         .guard(boardStatePlayGuard)
-        .payload(BoardState.showResult)
+        .payload(BoardState.idle)
         .execute(showResultCommand)
         .guard(boardStateImitaciaGuard, lego.not(boardStateImitationFinishGuard))
         .payload(BoardState.play)

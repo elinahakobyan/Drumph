@@ -36,14 +36,13 @@ export class PlayView extends PixiGrid {
 
     private _onBoardStateUpdate(state: BoardState): void {
         // board ? this._buildBoard() : this._destroyBoard();
-        switch (state) {
-            case BoardState.showResult:
-                this._buildScoreComponent();
-                break;
-
-            default:
-                break;
-        }
+        // switch (state) {
+        // case BoardState.showResult:
+        //     this._buildScoreComponent();
+        //     break;
+        // default:
+        //     break;
+        // }
     }
 
     private _buildBoard(): void {

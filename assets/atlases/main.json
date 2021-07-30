@@ -336,7 +336,7 @@
         "y": 0.5
       }
     },
-    "ui/sound_on.png": {
+    "ui/sound_off.png": {
       "frame": {
         "x": 676,
         "y": 3,
@@ -360,7 +360,7 @@
         "y": 0.5
       }
     },
-    "ui/sound_off.png": {
+    "ui/sound_on.png": {
       "frame": {
         "x": 676,
         "y": 69,
