@@ -127,8 +127,8 @@ export class BoardModel extends ObservableModel {
     public checkPad = (padUUid: string): void => {
         // console.warn(this);
         console.warn(this._timer);
-
-        this._isEntryTruePad ? false : this._checkIsTruePad(padUUid);
+        this._checkIsTruePad(padUUid);
+        // this._isEntryTruePad ? false : this._checkIsTruePad(padUUid);
     };
 
     public checkLevelScore(): void {
@@ -165,7 +165,7 @@ export class BoardModel extends ObservableModel {
             this._getPads(this._levelPattern[this._progress * this._levelPattern.length - 1]).state = PadState.hideShow;
 
             removeRunnable(this._visibilityRunnable);
-            this.state = BoardState.play;
+            // this.state = BoardState.play;
             this._progress = null;
             this._progressStep = null;
         }
