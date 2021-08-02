@@ -7,6 +7,7 @@ import { updateBoardStateCommand } from './on-update-bord-state-commad';
 import { showResultCommand } from './show-result-command';
 
 export const onCheckBoardStateCommand = (): void => {
+    return;
     lego.command
         .guard(boardStatePlayGuard)
         .payload(BoardState.idle)

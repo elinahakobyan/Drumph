@@ -1,5 +1,5 @@
 import { lego } from '@armathai/lego';
-import { boardBeforeTutorialGuard } from '../guards/board-before-tutorial-guard';
+import { boardIdleStateGuard } from '../guards/board-idle-state-guard';
 import { hintModelGuard } from '../guards/hint-model-guard';
 import { BoardState } from '../models/board-model';
 import { store } from '../models/store';
@@ -13,10 +13,10 @@ export const onUserInteractionCommand = (): void => {
     lego.command
         .guard(hintModelGuard)
         .execute(updateHintStateCommand)
-        .guard(boardBeforeTutorialGuard)
+        .guard(boardIdleStateGuard)
         .payload(BoardState.imitation)
-        .execute(updateBoardStateCommand, onStartBoardLevelImitaciaCommand)
-        .guard(boardBeforeTutorialGuard);
+        .execute(updateBoardStateCommand, onStartBoardLevelImitaciaCommand);
+    // .guard(boardBeforeTutorialGuard);
     // .payload(BoardState.imitacia)
     // .execute(updateHintStateCommand);
 };

@@ -5,7 +5,7 @@ import { Container } from 'pixi.js';
 import { cellsGap, cellSize } from '../constants/constants';
 import { BoardModelEvent, PadModelEvent } from '../events/model';
 import { BoardViewEvent } from '../events/view';
-import { BoardState } from '../models/board-model';
+import { BoardState, BoardStatus } from '../models/board-model';
 import { PadModel, PadState } from '../models/pads/pad-model';
 import { delayRunnable } from '../utils';
 import { PadComponent } from './pad/pad-view';
@@ -14,6 +14,7 @@ export class BoardView extends Container {
     private _bg: NineSlicePlane;
     private _icon: DisplayObject;
     private _pads: PadComponent[];
+    private _patternPads: PadComponent[] = [];
     private _padsInteractive = false;
     public constructor() {
         super();
@@ -23,9 +24,11 @@ export class BoardView extends Container {
         lego.event.on(BoardModelEvent.padsUpdate, this._onPadsUpdate, this);
         lego.event.on(BoardModelEvent.stateUpdate, this._onBoardStateUpdate, this);
         lego.event.on(PadModelEvent.stateUpdate, this._onPadStateUpdate, this);
+        lego.event.on(BoardModelEvent.statusUpdate, this._onBoardStatusUpdate, this);
+        lego.event.on(BoardModelEvent.scoreUpdate, this._onBoardScoreUpdate, this);
 
         // lego.event.on(BoardModelEvent.levelPatternUpdate, this._onLevelPadsUpdate, this);
-        // lego.event.on(ProgressUpdateViewEvent.update, this._onUpdateBoard, this);
+        // lego.event.on(BoardModelEvent.update, this._onUpdateBoard, this);
         // lego.event.on(ProgressUpdateViewEvent.finish, this._onCompleteUpdateImitation, this);
         // lego.event.on(ProgressUpdateViewEvent.start, this._onCompleteUpdateImitation, this);
         this._build();
@@ -33,15 +36,14 @@ export class BoardView extends Container {
 
     public onPadsClick(): void {
         this._padsInteractive = true;
-        this._pads.forEach((pad) => {
+        this._patternPads.forEach((pad) => {
             pad.updateClickListener(true);
         });
     }
 
     public offPadsClick(): void {
-        return;
-        this._padsInteractive = true;
-        this._pads.forEach((pad) => {
+        this._padsInteractive = false;
+        this._patternPads.forEach((pad) => {
             pad.updateClickListener(false);
         });
     }
@@ -55,13 +57,28 @@ export class BoardView extends Container {
         console.warn(value, oldValue);
         switch (value) {
             case BoardState.play:
-                // this.onPadsClick();
+                this.onPadsClick();
                 break;
             case BoardState.idle:
                 this.offPadsClick();
                 break;
             case BoardState.imitation:
-                // this.offPadsClick();
+                this.offPadsClick();
+                break;
+
+            default:
+                break;
+        }
+    }
+    private _onBoardStatusUpdate(value: BoardStatus, oldValue: BoardStatus): void {
+        //
+        console.warn(value, oldValue);
+        switch (value) {
+            case BoardStatus.start:
+                this.onPadsClick();
+                break;
+            case BoardStatus.finish:
+                this.offPadsClick();
                 break;
 
             default:
@@ -94,6 +111,14 @@ export class BoardView extends Container {
             const pad = <PadComponent>this._getPad(patternPad);
             pad ? pad.deactivate() : false;
         });
+        ///
+    }
+
+    private _onBoardScoreUpdate(score: number): void {
+        console.warn('mtav');
+
+        console.warn(score);
+
         ///
     }
 
@@ -154,6 +179,7 @@ export class BoardView extends Container {
                 break;
             case PadState.active:
                 this._getPad(uuid).activate();
+                this._patternPads.push(this._getPad(uuid));
 
                 break;
             case PadState.deactivate:

@@ -1,7 +1,9 @@
 import { lego } from '@armathai/lego';
-import { TutorialModelEvent } from '../events/model';
+import { BoardModelEvent, TutorialModelEvent } from '../events/model';
 import { MainViewEvent, PadViewEvent, ProgressUpdateViewEvent, TutorialViewEvent } from '../events/view';
+import { onBoardProgressUpdate } from './on-board-progress-update-camand';
 import { onCheckBoardStateCommand } from './on-check-bord-state-commad';
+import { onCheckLevelScoreCommand } from './on-check-level-score-camand';
 import { onPadClickCommand } from './on-pad-click-camand';
 import { onTutorialClickCommand } from './on-tutorial-click-command';
 import { onTutorialCompleteCommand } from './on-tutorial-complete-command';
@@ -13,6 +15,8 @@ export const mapPlayCommandsCommand = (): void => {
         .on(TutorialViewEvent.click, onTutorialClickCommand)
         .on(ProgressUpdateViewEvent.finish, onCheckBoardStateCommand)
         .on(PadViewEvent.click, onPadClickCommand)
+        .on(BoardModelEvent.progressUpdate, onBoardProgressUpdate)
+        .on(BoardModelEvent.statusUpdate, onCheckLevelScoreCommand)
         // .on(TutorialViewEvent.hideComplete, onTutorialHideCompleteCommand)
         .on(MainViewEvent.click, onUserInteractionCommand);
 };
