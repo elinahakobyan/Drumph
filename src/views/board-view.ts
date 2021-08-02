@@ -117,7 +117,7 @@ export class BoardView extends Container {
     private _onBoardScoreUpdate(score: number): void {
         console.warn('mtav');
 
-        console.warn(score);
+        console.warn(score, 'score');
 
         ///
     }

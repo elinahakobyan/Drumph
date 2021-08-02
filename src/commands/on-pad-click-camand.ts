@@ -13,9 +13,11 @@ export const onPadClickCommand = (padId: string): void => {
         // .guard(boardStatePlayGuard, boardProgressGuard)
         // .execute(onCheckPlayLevelCommand)
         // //
-        // .payload(padId)
+        .payload(padId)
         .guard(boardStatePlayGuard, boardProgressIsNullGuard)
         .execute(onUpdatePlayLevelCommand, onCheckPlayLevelCommand)
+        //
+        .payload(padId)
         .guard(boardStatePlayGuard, lego.not(boardProgressIsNullGuard))
         .execute(onCheckPlayLevelCommand);
     //
