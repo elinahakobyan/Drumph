@@ -1,6 +1,6 @@
 import { lego } from '@armathai/lego';
 import { boardStateImitationFinishGuard } from '../guards/board-state-finish-imitacia-guard';
-import { boardStateImitaciaGuard } from '../guards/board-state-imitacia-guard';
+import { boardStateImitationGuard } from '../guards/board-state-imitacia-guard';
 import { boardStatePlayGuard } from '../guards/board-state-play-guard';
 import { BoardState } from '../models/board-model';
 import { updateBoardStateCommand } from './on-update-bord-state-commad';
@@ -11,8 +11,9 @@ export const onCheckBoardStateCommand = (): void => {
         .guard(boardStatePlayGuard)
         .payload(BoardState.showResult)
         .execute(showResultCommand)
-        .guard(boardStateImitaciaGuard, lego.not(boardStateImitationFinishGuard))
+        .guard(boardStateImitationGuard, lego.not(boardStateImitationFinishGuard))
         .payload(BoardState.play)
         .execute(updateBoardStateCommand);
+
     //
 };

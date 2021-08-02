@@ -105,8 +105,6 @@ export class PadComponent extends Container {
     }
 
     private _buildBlocker(): void {
-        console.warn(getParams().emptySquareColor.value.toLowerCase());
-
         const blocker = makeSprite(getCellBlockSpriteConfig(getParams().emptySquareColor.value.toLowerCase()));
         blocker.visible = true;
         this._pad.addChild((this._blocker = blocker));

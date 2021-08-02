@@ -53,9 +53,9 @@ export class TutorialView extends PixiGrid {
     private _buildSequence(sequence: TutorialSequenceModel): void {
         const { config, index } = sequence;
         this._current = new TutorialSequenceView(config, index);
-        this.setChild('sequence', this._current);
 
         postRunnable(() => {
+            this.setChild('sequence', this._current);
             this._current.show();
             const { clickToComplete } = store.playable.tutorial.current.config;
             this._switchScreenInput(clickToComplete);

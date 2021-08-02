@@ -21,7 +21,6 @@ export const getPersistentCtaButtonUpTextConfig = (): TextConfig => {
 };
 
 export const getTutorialTextConfig = (text: string): TextConfig => {
-    console.warn(phrases[`${text}` as keyof typeof phrases]);
     return {
         text: localization.t(phrases[`${text}` as keyof typeof phrases]),
         style: new TextStyle({
@@ -36,42 +35,6 @@ export const getTutorialTextConfig = (text: string): TextConfig => {
             dropShadowBlur: 2,
             dropShadowColor: '#078dff',
             dropShadowDistance: 16,
-        }),
-    };
-};
-
-export const getAfterTutorialTextConfig = (): TextConfig => {
-    return {
-        text: localization.t(phrases['TAP TO REPEAT THE RHYTHM!']),
-        style: new TextStyle({
-            fontFamily: fonts['solomon-sans-black'],
-            fontSize: 62,
-            fill: '#ffffff',
-            align: 'center',
-            strokeThickness: 8,
-            stroke: '#3eb4ff',
-            dropShadow: true,
-            dropShadowAngle: 2,
-            dropShadowBlur: 2,
-            dropShadowColor: '#078dff',
-            dropShadowDistance: 16,
-        }),
-    };
-};
-export const getBeforeTutorialTextConfig = (): TextConfig => {
-    return {
-        text: localization.t(phrases['TAP TO LISTEN']),
-        style: new TextStyle({
-            fontFamily: fonts['solomon-sans-black'],
-            fontSize: 62,
-            fill: '#ffffff',
-            align: 'center',
-            stroke: '#3eb4ff',
-            dropShadow: true,
-            dropShadowAngle: 1.5,
-            dropShadowBlur: 4,
-            dropShadowColor: '#078dff',
-            dropShadowDistance: 8,
         }),
     };
 };

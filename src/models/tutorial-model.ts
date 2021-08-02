@@ -63,8 +63,6 @@ export class TutorialModel extends ObservableModel {
     }
 
     public completeSequence(): void {
-        console.warn('complete');
-
         this.current.complete = true;
     }
 
