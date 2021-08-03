@@ -26,7 +26,7 @@ export const getPlayGridLandscapeConfig = (): ICellConfig => {
             },
             {
                 // debug: { color: 0x2fc900 },
-                name: 'popUp',
+                name: 'score',
                 bounds: {
                     x: (1 - boardW) / 2,
                     y: logoH + progressBarH + boardH * 0.05,
@@ -86,6 +86,21 @@ export const getPlayGridPortraitConfig = (): ICellConfig => {
                 bounds: { x: (1 - w) / 2, y: logoH + 0.15 + progressBarH, width: w, height: h },
                 align: CellAlign.centerTop,
                 scale: CellScale.showAll,
+            },
+            {
+                // debug: { color: 0x2fc900 },
+                name: 'score',
+                bounds: { x: (1 - boardW) / 2, y: logoH + 0.25 + progressBarH, height: 0.3 },
+            },
+            {
+                // debug: { color: 0x000000 },
+                name: 'text',
+                bounds: {
+                    x: (1 - boardW) / 2,
+                    y: logoH + progressBarH + boardH * 0.35,
+                    width: boardW,
+                    height: boardH * 0.3,
+                },
             },
         ],
     };

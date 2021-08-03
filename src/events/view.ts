@@ -35,3 +35,7 @@ export enum ProgressUpdateViewEvent {
     start = 'ProgressUpdateViewEventStart',
     finish = 'ProgressUpdateViewEventFinish',
 }
+
+export enum PlayViewEvent {
+    onScoreBtnClick = 'PlayViewEventOnScoreBtnClick',
+}

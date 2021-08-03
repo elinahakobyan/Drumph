@@ -1,3 +1,4 @@
+import gsap from 'gsap/gsap-core';
 import { NineSlicePlane, Texture } from 'pixi.js';
 import { getScoreNextLevelButtonConfig } from '../constants/configs/button-configs';
 import { getScoreNumberConfig, getScorePopUpTextConfig } from '../constants/configs/text-configs';
@@ -16,6 +17,12 @@ export class ScoreComponent extends NineSlicePlane {
         this._build();
     }
 
+    public show(): void {
+        gsap.to(this.position, {
+            duration: 0.8,
+        });
+    }
+
     private _build(): void {
         this._buildBtn();
         this._buildText();
@@ -24,8 +31,7 @@ export class ScoreComponent extends NineSlicePlane {
     private _buildText(): void {
         const text = makeText(getScorePopUpTextConfig());
         const scoreNumbers = makeText(getScoreNumberConfig(store.play.board.score));
-        // console.warn(store.play.board.score, 'SCORE');
-        scoreNumbers.position.set(420, 180);
+        scoreNumbers.position.set(420, 190);
         text.position.set(420, 100);
         this.addChild(text);
         this.addChild(scoreNumbers);
@@ -35,9 +41,10 @@ export class ScoreComponent extends NineSlicePlane {
         const btn = new Button(getScoreNextLevelButtonConfig());
         btn.position.set(55, 260);
         btn.interactive = true;
-        // btn.on('pointerup', () => {
-        //     lego.event.emit(PlayViewEvent.onScoreBtnClick);
-        // });
+        btn.on('pointerdown', () => {
+            btn.alpha = 0.56;
+            this.emit('scoreBtnClick', btn);
+        });
         this.addChild(btn);
     }
 }
