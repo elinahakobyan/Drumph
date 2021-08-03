@@ -56,7 +56,7 @@ export class BoardView extends Container {
     //         3 * cellSize.height + 2 * cellsGap,
     //     );
     // }
-
+   
     public onPadsClick(): void {
         this._padsInteractive = true;
         this._patternPads.forEach((pad) => {
@@ -65,6 +65,8 @@ export class BoardView extends Container {
     }
 
     public offPadsClick(): void {
+        // console.warn('offPadsClick');
+
         this._padsInteractive = false;
         this._patternPads.forEach((pad) => {
             pad.updateClickListener(false);
@@ -76,6 +78,8 @@ export class BoardView extends Container {
     }
 
     private _onBoardStateUpdate(value: BoardState, oldValue: BoardState): void {
+        //
+        // console.warn('BoardState', value, oldValue);
         switch (value) {
             case BoardState.play:
                 this.onPadsClick();
@@ -96,6 +100,8 @@ export class BoardView extends Container {
         }
     }
     private _onBoardStatusUpdate(value: BoardStatus, oldValue: BoardStatus): void {
+        //
+        // console.warn('BoardStatus', value, oldValue);
         switch (value) {
             case BoardStatus.start:
                 this.onPadsClick();
