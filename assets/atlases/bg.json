@@ -72,7 +72,7 @@
         "y": 0.5
       }
     },
-    "pads/color3_3.png": {
+    "pads/color1_2.png": {
       "frame": {
         "x": 399,
         "y": 1399,
@@ -96,7 +96,7 @@
         "y": 0.5
       }
     },
-    "pads/white.png": {
+    "pads/color1_3.png": {
       "frame": {
         "x": 615,
         "y": 1399,
@@ -120,7 +120,7 @@
         "y": 0.5
       }
     },
-    "pads/color1_2.png": {
+    "pads/color2_2.png": {
       "frame": {
         "x": 831,
         "y": 1399,
@@ -144,7 +144,7 @@
         "y": 0.5
       }
     },
-    "pads/color1_3.png": {
+    "pads/color2_3.png": {
       "frame": {
         "x": 1047,
         "y": 1399,
@@ -168,7 +168,7 @@
         "y": 0.5
       }
     },
-    "pads/red.png": {
+    "pads/color3_2.png": {
       "frame": {
         "x": 1263,
         "y": 1399,
@@ -192,7 +192,7 @@
         "y": 0.5
       }
     },
-    "pads/color2_2.png": {
+    "pads/color3_3.png": {
       "frame": {
         "x": 1479,
         "y": 1399,
@@ -216,7 +216,7 @@
         "y": 0.5
       }
     },
-    "pads/color2_3.png": {
+    "pads/blue.png": {
       "frame": {
         "x": 1695,
         "y": 1399,
@@ -240,7 +240,7 @@
         "y": 0.5
       }
     },
-    "pads/purple.png": {
+    "pads/color4_2.png": {
       "frame": {
         "x": 1911,
         "y": 1399,
@@ -264,7 +264,7 @@
         "y": 0.5
       }
     },
-    "pads/color3_2.png": {
+    "pads/color4_3.png": {
       "frame": {
         "x": 2127,
         "y": 1399,
@@ -288,7 +288,7 @@
         "y": 0.5
       }
     },
-    "pads/black.png": {
+    "pads/color5_2.png": {
       "frame": {
         "x": 2343,
         "y": 1399,
@@ -312,7 +312,7 @@
         "y": 0.5
       }
     },
-    "pads/blue.png": {
+    "pads/color5_3.png": {
       "frame": {
         "x": 2559,
         "y": 1399,
@@ -336,7 +336,7 @@
         "y": 0.5
       }
     },
-    "pads/color4_2.png": {
+    "pads/white.png": {
       "frame": {
         "x": 3,
         "y": 1793,
@@ -360,7 +360,7 @@
         "y": 0.5
       }
     },
-    "pads/color4_3.png": {
+    "pads/purple.png": {
       "frame": {
         "x": 219,
         "y": 1793,
@@ -384,7 +384,7 @@
         "y": 0.5
       }
     },
-    "pads/color5_3.png": {
+    "pads/red.png": {
       "frame": {
         "x": 435,
         "y": 1615,
@@ -408,7 +408,7 @@
         "y": 0.5
       }
     },
-    "pads/color5_2.png": {
+    "pads/black.png": {
       "frame": {
         "x": 651,
         "y": 1615,
@@ -432,7 +432,7 @@
         "y": 0.5
       }
     },
-    "pads/color5_1.png": {
+    "pads/color1_1.png": {
       "frame": {
         "x": 867,
         "y": 1615,
@@ -456,7 +456,7 @@
         "y": 0.5
       }
     },
-    "pads/color4_1.png": {
+    "pads/color3_1.png": {
       "frame": {
         "x": 1081,
         "y": 1615,
@@ -480,33 +480,9 @@
         "y": 0.5
       }
     },
-    "pads/color3_1.png": {
-      "frame": {
-        "x": 1295,
-        "y": 1615,
-        "w": 208,
-        "h": 208
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 1,
-        "y": 1,
-        "w": 208,
-        "h": 208
-      },
-      "sourceSize": {
-        "w": 210,
-        "h": 210
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
     "pads/color2_1.png": {
       "frame": {
-        "x": 1509,
+        "x": 1295,
         "y": 1615,
         "w": 208,
         "h": 208
@@ -528,7 +504,31 @@
         "y": 0.5
       }
     },
-    "pads/color1_1.png": {
+    "pads/color5_1.png": {
+      "frame": {
+        "x": 1509,
+        "y": 1615,
+        "w": 208,
+        "h": 208
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 1,
+        "y": 1,
+        "w": 208,
+        "h": 208
+      },
+      "sourceSize": {
+        "w": 210,
+        "h": 210
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "pads/color4_1.png": {
       "frame": {
         "x": 1723,
         "y": 1615,
@@ -576,10 +576,34 @@
         "y": 0.5
       }
     },
-    "play/tutorial_bg.png": {
+    "play/score_bg.png": {
       "frame": {
         "x": 561,
         "y": 1831,
+        "w": 73,
+        "h": 73
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 73,
+        "h": 73
+      },
+      "sourceSize": {
+        "w": 73,
+        "h": 73
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "play/tutorial_bg.png": {
+      "frame": {
+        "x": 561,
+        "y": 1910,
         "w": 73,
         "h": 73
       },

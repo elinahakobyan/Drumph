@@ -1,11 +1,13 @@
 import {
     getPersistentCtaButtonUpPatchesConfig,
+    getScoreNextLevelButtonConfigUpConfigs,
     getStarRatingCtaPrimaryButtonUpPatchesConfig,
     getStarRatingCtaSecondaryButtonUpPatchesConfig,
     getTraditionalCtaPrimaryButtonUpPatchesConfig,
 } from './nineslice-configs';
 import {
     getPersistentCtaButtonUpTextConfig,
+    getScoreNextLevelButtonConfigUpTextConfig,
     getStarRatingCtaPrimaryButtonUpTextConfig,
     getStarRatingCtaSecondaryButtonUpTextConfig,
     getTraditionalCtaPrimaryButtonUpTextConfig,
@@ -51,6 +53,17 @@ export const getStarRatingCtaSecondaryButtonConfig = (): ButtonConfig => {
             up: {
                 bg: getStarRatingCtaSecondaryButtonUpPatchesConfig(),
                 label: getStarRatingCtaSecondaryButtonUpTextConfig(),
+            },
+        },
+    };
+};
+
+export const getScoreNextLevelButtonConfig = (): ButtonConfig => {
+    return {
+        states: {
+            up: {
+                bg: getScoreNextLevelButtonConfigUpConfigs(),
+                label: getScoreNextLevelButtonConfigUpTextConfig(),
             },
         },
     };

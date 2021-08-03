@@ -89,3 +89,21 @@ export const getTutorialPopUpConfigs = (): NineSliceConfig => {
         height: 350,
     };
 };
+
+export const getScoreBoxConfig = (): NineSliceConfig => {
+    return {
+        texture: textures['play/score_bg'],
+        data: [24, 24, 24, 24],
+        width: 800,
+        height: 350,
+    };
+};
+
+export const getScoreNextLevelButtonConfigUpConfigs = (): NineSliceConfig => {
+    return {
+        texture: textures['ui/cta_btn'],
+        data: [13, 13, 13, 19],
+        width: 700,
+        height: 50,
+    };
+};

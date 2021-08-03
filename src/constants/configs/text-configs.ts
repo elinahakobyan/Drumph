@@ -58,6 +58,43 @@ export const getTraditionalCtaPrimaryButtonUpTextConfig = (): TextConfig => {
     };
 };
 
+export const getScorePopUpTextConfig = (): TextConfig => {
+    return {
+        text: localization.t(phrases['your score' as keyof typeof phrases]),
+        style: new TextStyle({
+            fontFamily: ['solomon-sans-black'],
+            fontSize: 52,
+            fill: '#000000',
+            align: 'center',
+        }),
+    };
+};
+
+export const getScoreNumberConfig = (score: number): TextConfig => {
+    return {
+        text: `${score}`,
+        style: new TextStyle({
+            fontFamily: ['solomon-sans-black'],
+            fontSize: 52,
+            fill: '#000000',
+            align: 'center',
+        }),
+    };
+};
+
+export const getScoreNextLevelButtonConfigUpTextConfig = (): TextConfig => {
+    return {
+        text: localization.t(phrases['Next' as keyof typeof phrases]),
+        // y: -3,
+        style: new TextStyle({
+            fontFamily: fonts['solomon-sans-black'],
+            fontSize: 60,
+            fill: '#000000',
+            align: 'center',
+        }),
+    };
+};
+
 export const getTraditionalCtaPopupTitleTextConfig = (): TextConfig => {
     return {
         text: localization.t(phrases['GREAT JOB!']),
