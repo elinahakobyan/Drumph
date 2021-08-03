@@ -1,9 +1,10 @@
 import { lego } from '@armathai/lego';
 import { sound } from '@pixi/sound';
 import { utils } from 'pixi.js';
-import { SoundModelEvent } from '../events/model';
+import { PadModelEvent, SoundModelEvent } from '../events/model';
 import { PlayableEvent } from '../events/playable';
 import { PadViewEvent } from '../events/view';
+import { PadStatus } from '../models/pads/pad-model';
 import { getPlayable, postRunnable } from '../utils';
 
 export class SoundObservant {
@@ -16,6 +17,7 @@ export class SoundObservant {
             .on(PadViewEvent.click, this._onPadClick, this)
             .on(PlayableEvent.pause, this._pause, this)
             .on(PlayableEvent.resume, this._resume, this)
+            .on(PadModelEvent.statusUpdate, this._onPlayImitationSound, this)
             .on(PlayableEvent.volumeChange, this._volumeChange, this)
             .on(SoundModelEvent.muteUpdate, this._onSoundMuteUpdate, this);
         postRunnable(() => {
@@ -61,9 +63,16 @@ export class SoundObservant {
 
     private _onPadClick(padUUid: string): void {
         ///
+        // console.warn(padUUid);
+
         sound.play(padUUid);
         // this._play('padUUid');
-        console.warn(sound);
+    }
+
+    private _onPlayImitationSound(newValue: PadStatus, oldValue: PadStatus, uuid: string): void {
+        ///
+        newValue === PadStatus.play ? sound.play(uuid) : false;
+        // this._play('padUUid');
     }
 
     private _play(

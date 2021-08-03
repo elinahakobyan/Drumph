@@ -26,6 +26,14 @@ export class BoardView extends Container {
         lego.event.on(BoardModelEvent.stateUpdate, this._onBoardStateUpdate, this);
         lego.event.on(PadModelEvent.stateUpdate, this._onPadStateUpdate, this);
         lego.event.on(BoardModelEvent.statusUpdate, this._onBoardStatusUpdate, this);
+        lego.event.on(
+            BoardModelEvent.localScoreUpdate,
+            (score: number) => {
+                console.warn(score);
+            },
+            this,
+        );
+
         lego.event.on(BoardModelEvent.scoreUpdate, this._onBoardScoreUpdate, this);
 
         // lego.event.on(BoardModelEvent.levelPatternUpdate, this._onLevelPadsUpdate, this);
@@ -68,7 +76,6 @@ export class BoardView extends Container {
     }
 
     private _onBoardStateUpdate(value: BoardState, oldValue: BoardState): void {
-        //
         switch (value) {
             case BoardState.play:
                 this.onPadsClick();
@@ -89,7 +96,6 @@ export class BoardView extends Container {
         }
     }
     private _onBoardStatusUpdate(value: BoardStatus, oldValue: BoardStatus): void {
-        //
         switch (value) {
             case BoardStatus.start:
                 this.onPadsClick();
@@ -131,8 +137,10 @@ export class BoardView extends Container {
         ///
     }
 
-    private _onBoardScoreUpdate(score: number): void {
-        console.warn(score, 'score');
+    private _onBoardScoreUpdate(score: number, oldScore: number): void {
+        console.warn();
+
+        console.warn(score, 'score', oldScore);
 
         ///
     }
@@ -165,7 +173,7 @@ export class BoardView extends Container {
     }
 
     private _onCompleteUpdateImitation(isComplete: boolean): void {
-        console.warn(isComplete);
+        // console.warn(isComplete);
         if (isComplete) {
             this.onPadsClick();
         } else {
@@ -204,7 +212,7 @@ export class BoardView extends Container {
                 this._getPad(uuid).showHint();
 
                 break;
-            case PadState.hideShow:
+            case PadState.hideHint:
                 this._getPad(uuid).hideHint();
 
                 break;
