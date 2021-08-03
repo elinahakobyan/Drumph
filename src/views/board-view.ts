@@ -35,6 +35,8 @@ export class BoardView extends Container {
     }
 
     public onPadsClick(): void {
+        console.warn('onPadsClick');
+
         this._padsInteractive = true;
         this._patternPads.forEach((pad) => {
             pad.updateClickListener(true);
@@ -42,6 +44,8 @@ export class BoardView extends Container {
     }
 
     public offPadsClick(): void {
+        console.warn('offPadsClick');
+
         this._padsInteractive = false;
         this._patternPads.forEach((pad) => {
             pad.updateClickListener(false);
@@ -65,6 +69,10 @@ export class BoardView extends Container {
             case BoardState.imitation:
                 this.offPadsClick();
                 break;
+            case BoardState.levelCamplete:
+                this.onPadsClick();
+
+                break;
 
             default:
                 break;
@@ -78,7 +86,7 @@ export class BoardView extends Container {
                 this.onPadsClick();
                 break;
             case BoardStatus.finish:
-                this.offPadsClick();
+                // this.offPadsClick();
                 break;
 
             default:
@@ -115,8 +123,6 @@ export class BoardView extends Container {
     }
 
     private _onBoardScoreUpdate(score: number): void {
-        console.warn('mtav');
-
         console.warn(score, 'score');
 
         ///

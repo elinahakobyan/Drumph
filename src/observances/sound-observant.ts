@@ -3,6 +3,7 @@ import { sound } from '@pixi/sound';
 import { utils } from 'pixi.js';
 import { SoundModelEvent } from '../events/model';
 import { PlayableEvent } from '../events/playable';
+import { PadViewEvent } from '../events/view';
 import { getPlayable, postRunnable } from '../utils';
 
 export class SoundObservant {
@@ -12,6 +13,7 @@ export class SoundObservant {
 
     private _init(): void {
         lego.event
+            .on(PadViewEvent.click, this._onPadClick, this)
             .on(PlayableEvent.pause, this._pause, this)
             .on(PlayableEvent.resume, this._resume, this)
             .on(PlayableEvent.volumeChange, this._volumeChange, this)
@@ -55,6 +57,11 @@ export class SoundObservant {
 
     private _volumeChange(volumePercentage: number): void {
         sound.volumeAll = volumePercentage / 100 || 0;
+    }
+
+    private _onPadClick(padUUid: string): void {
+        ///
+        console.warn(padUUid);
     }
 
     private _play(

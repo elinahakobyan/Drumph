@@ -8,6 +8,7 @@ export enum BoardState {
     play = 'play',
     imitation = 'imitation',
     idle = 'idle',
+    levelCamplete = 'levelCamplete',
 }
 
 export enum BoardStatus {
@@ -34,7 +35,7 @@ export class BoardModel extends ObservableModel {
     private _imitation = false;
     private _isEntryTruePad = false;
     private _levelConstInterval = 0;
-    private _score: number = null;
+    private _score = 0;
 
     public constructor() {
         super('BoardModel');
@@ -112,7 +113,7 @@ export class BoardModel extends ObservableModel {
                 this.status = BoardStatus.start;
                 break;
             case BoardState.play:
-                this._state = BoardState.idle;
+                this._state = BoardState.levelCamplete;
                 break;
             // case BoardState.idle:
             //     this._state = BoardState.imitation;
@@ -131,9 +132,11 @@ export class BoardModel extends ObservableModel {
     };
 
     public checkLevelScore(): void {
-        console.warn(this.$score);
+        this._score = 0;
+        console.warn('mtav');
 
-        this._score = this.$score;
+        this.nextToState();
+        this._score = Math.floor(this.$score * 100);
     }
 
     public onLevelUpdate(level = 1): void {
@@ -184,7 +187,6 @@ export class BoardModel extends ObservableModel {
                     pointers[i].position - entryTimer >= 0
                 ) {
                     this._isEntryTruePad = true;
-                    console.warn('hamynknum');
 
                     this._checkScore(pointers[i].position - entryTimer);
                     return;
