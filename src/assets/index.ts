@@ -53,6 +53,13 @@ export const assets = {
         if (__SOUND__) {
             return {
                 sound: {
+                    PadModel06: require('../../assets/sounds/PadModel06.mp3'),
+                    PadModel07: require('../../assets/sounds/PadModel07.mp3'),
+                    PadModel09: require('../../assets/sounds/PadModel09.mp3'),
+                    PadModel10: require('../../assets/sounds/PadModel10.mp3'),
+                    PadModel13: require('../../assets/sounds/PadModel13.mp3'),
+                    PadModel14: require('../../assets/sounds/PadModel14.mp3'),
+                    PadModel17: require('../../assets/sounds/PadModel17.mp3'),
                     chime: require('../../assets/sounds/chime.mp3'),
                     ice_cream_a_arp_01: require('../../assets/sounds/ice_cream_a_arp_01.mp3'),
                     ice_cream_a_bell_01: require('../../assets/sounds/ice_cream_a_bell_01.mp3'),

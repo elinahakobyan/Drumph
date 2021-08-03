@@ -1,6 +1,13 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
 export const sounds = {
+    PadModel06: 'PadModel06',
+    PadModel07: 'PadModel07',
+    PadModel09: 'PadModel09',
+    PadModel10: 'PadModel10',
+    PadModel13: 'PadModel13',
+    PadModel14: 'PadModel14',
+    PadModel17: 'PadModel17',
     chime: 'chime',
     iceCreamAArp01: 'ice_cream_a_arp_01',
     iceCreamABell01: 'ice_cream_a_bell_01',

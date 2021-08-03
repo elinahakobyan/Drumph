@@ -38,7 +38,7 @@ export class PlayView extends PixiGrid {
 
     private _onBoardStateUpdate(state: BoardState): void {
         switch (state) {
-            case BoardState.play:
+            case BoardState.levelCamplete:
                 this._buildScoreComponent();
                 break;
             default:
