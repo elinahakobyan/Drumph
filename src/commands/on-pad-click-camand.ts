@@ -1,5 +1,6 @@
 import { lego } from '@armathai/lego';
 import { boardProgressIsNullGuard } from '../guards/board-progres-is-null-guard';
+import { boardStateLevelCampleteGuard } from '../guards/board-state-level-camplete-guard';
 import { boardStatePlayGuard } from '../guards/board-state-play-guard';
 import { onCheckPlayLevelCommand } from './on-check-play-level-camand ';
 import { onUpdatePlayLevelCommand } from './on-update-play-level-camand ';
@@ -14,6 +15,10 @@ export const onPadClickCommand = (padId: string): void => {
         // .payload(padId)
         // .guard(boardStatePlayGuard, boardProgressGuard)
         // .execute(onCheckPlayLevelCommand)
+        // //
+        .payload(padId)
+        .guard(boardStateLevelCampleteGuard)
+        .execute(onCheckPlayLevelCommand)
         // //
         .payload(padId)
         .guard(boardStatePlayGuard, boardProgressIsNullGuard)
