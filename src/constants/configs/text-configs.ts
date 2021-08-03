@@ -72,10 +72,10 @@ export const getScorePopUpTextConfig = (): TextConfig => {
 
 export const getScoreNumberConfig = (score: number): TextConfig => {
     return {
-        text: `${score}`,
+        text: `${score} %`,
         style: new TextStyle({
             fontFamily: ['solomon-sans-black'],
-            fontSize: 52,
+            fontSize: 74,
             fill: '#000000',
             align: 'center',
         }),

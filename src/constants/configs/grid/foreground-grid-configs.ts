@@ -90,8 +90,9 @@ export const getForegroundGridPortraitConfig = (): ICellConfig => {
                 padding: { x: 0.05 },
             },
             {
+                debug: { color: 0xd95027 },
                 name: 'tutorial',
-                bounds: { x: 0, y: 0.5 },
+                bounds: { x: (1 - boardW) / 2, y: logoH + 0.25 + progressBarH, height: 0.3 },
             },
             {
                 name: 'cta_logo',

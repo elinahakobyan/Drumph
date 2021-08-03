@@ -3,19 +3,15 @@ import { boardProgressIsNullGuard } from '../guards/board-progres-is-null-guard'
 import { boardStateLevelCampleteGuard } from '../guards/board-state-level-camplete-guard';
 import { boardStatePlayGuard } from '../guards/board-state-play-guard';
 import { onCheckPlayLevelCommand } from './on-check-play-level-camand ';
+import { onTutorialClickCommand } from './on-tutorial-click-command';
 import { onUpdatePlayLevelCommand } from './on-update-play-level-camand ';
 
 export const onPadClickCommand = (padId: string): void => {
     // console.warn('click');
 
     lego.command
-        // .guard(boardStateImitationFinishGuard)
+        .execute(onTutorialClickCommand)
 
-        // .execute(destroyTutorialModelCommand)
-        // .payload(padId)
-        // .guard(boardStatePlayGuard, boardProgressGuard)
-        // .execute(onCheckPlayLevelCommand)
-        // //
         .payload(padId)
         .guard(boardStateLevelCampleteGuard)
         .execute(onCheckPlayLevelCommand)

@@ -6,7 +6,7 @@ export const getTutorialGridLandscapeConfig = (): ICellConfig => {
         // debug: { color: 0xd95027 },
         cells: [
             {
-                debug: { color: 0xd95027 },
+                // debug: { color: 0xd95027 },
                 name: 'sequence',
                 bounds: {
                     x: 0,
@@ -20,6 +20,7 @@ export const getTutorialGridLandscapeConfig = (): ICellConfig => {
 export const getTutorialGridPortraitConfig = (): ICellConfig => {
     return {
         name: 'tutorial',
+        // debug: { color: 0xd95027 },
         cells: [
             {
                 name: 'sequence',

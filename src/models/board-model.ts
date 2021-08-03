@@ -8,7 +8,7 @@ export enum BoardState {
     play = 'play',
     imitation = 'imitation',
     idle = 'idle',
-    levelCamplete = 'levelCamplete',
+    levelComplete = 'levelComplete',
 }
 
 export enum BoardStatus {
@@ -134,7 +134,7 @@ export class BoardModel extends ObservableModel {
                 this.status = BoardStatus.start;
                 break;
             case BoardState.play:
-                this._state = BoardState.levelCamplete;
+                this._state = BoardState.levelComplete;
                 break;
         }
     }

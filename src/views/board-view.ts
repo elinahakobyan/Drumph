@@ -1,7 +1,7 @@
 import { lego } from '@armathai/lego';
 import { DisplayObject } from '@pixi/display';
 import { NineSlicePlane } from '@pixi/mesh-extras';
-import { Container, Rectangle } from 'pixi.js';
+import { Container } from 'pixi.js';
 import { cellsGap, cellSize } from '../constants/constants';
 import { BoardModelEvent, PadModelEvent } from '../events/model';
 import { BoardViewEvent } from '../events/view';
@@ -43,23 +43,21 @@ export class BoardView extends Container {
         this._build();
     }
 
-    public getBounds(): Rectangle {
-        // const gr = new Graphics();
-        // gr.beginFill(0x00ff00, 0.5);
-        // gr.drawRect(-105, -105, 4 * 210 + 3 * cellsGap, 3 * 210 + 2 * cellsGap);
-        // this.addChild(gr);
+    // public getBounds(): Rectangle {
+    //     // const gr = new Graphics();
+    //     // gr.beginFill(0x00ff00, 0.5);
+    //     // gr.drawRect(-105, -105, 4 * 210 + 3 * cellsGap, 3 * 210 + 2 * cellsGap);
+    //     // this.addChild(gr);
 
-        return new Rectangle(
-            -cellSize.width * 0.5,
-            -cellSize.height * 0.5,
-            4 * cellSize.width + 3 * cellsGap,
-            3 * cellSize.height + 2 * cellsGap,
-        );
-    }
-
+    //     return new Rectangle(
+    //         -cellSize.width * 0.5,
+    //         -cellSize.height * 0.5,
+    //         4 * cellSize.width + 3 * cellsGap,
+    //         3 * cellSize.height + 2 * cellsGap,
+    //     );
+    // }
+   
     public onPadsClick(): void {
-        // console.warn('onPadsClick');
-
         this._padsInteractive = true;
         this._patternPads.forEach((pad) => {
             pad.updateClickListener(true);
@@ -92,7 +90,7 @@ export class BoardView extends Container {
             case BoardState.imitation:
                 this.offPadsClick();
                 break;
-            case BoardState.levelCamplete:
+            case BoardState.levelComplete:
                 this.onPadsClick();
 
                 break;
