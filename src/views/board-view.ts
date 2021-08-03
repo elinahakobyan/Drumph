@@ -56,7 +56,7 @@ export class BoardView extends Container {
     //         3 * cellSize.height + 2 * cellsGap,
     //     );
     // }
-   
+
     public onPadsClick(): void {
         this._padsInteractive = true;
         this._patternPads.forEach((pad) => {

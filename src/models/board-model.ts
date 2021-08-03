@@ -16,12 +16,21 @@ export enum BoardStatus {
     finish = 'finish',
     unknown = 'unknown',
 }
+
+export enum BoardPadClickStatus {
+    unknown = 'unknown',
+    perfect = 'perfect',
+    good = 'good',
+    bad = 'bad',
+    miss = 'miss',
+}
 export const duration = 1.5;
 
 export class BoardModel extends ObservableModel {
     protected $score = 0;
     private _state = BoardState.unknown;
     private _status = BoardStatus.unknown;
+    private _accuracy = BoardPadClickStatus.unknown;
     private _visibilityRunnable: Runnable;
     private _timerPRunnable: Runnable;
 
@@ -42,6 +51,10 @@ export class BoardModel extends ObservableModel {
         super('BoardModel');
         // lego.event.on(BoardModelEvent.levelUpdate, this._onLevelUpdate, this);
         this.makeObservable();
+    }
+
+    public get accuracy(): BoardPadClickStatus {
+        return this._accuracy;
     }
 
     public get state(): BoardState {
@@ -141,7 +154,6 @@ export class BoardModel extends ObservableModel {
 
     ///compare input padUUid and element on patern starting from the second
     public checkPad = (padUUid: string): void => {
-        console.warn(this._isEntryTruePad);
         this._isEntryTruePad === false ? this._checkIsTruePad(padUUid) : false;
     };
 
@@ -155,7 +167,9 @@ export class BoardModel extends ObservableModel {
             if (padUUid === this._getPads(this._levelPattern[0]).uuid) {
                 this._localScore = 1 / this._levelPattern.length;
                 this.$score = this._localScore;
+                this._boardPadClickStatusUpdate(this._levelConstInterval);
             } else {
+                this._boardPadClickStatusUpdate(-1);
                 this._localScore = 0;
             }
         }
@@ -196,7 +210,6 @@ export class BoardModel extends ObservableModel {
     //check is true input pad
     private _checkIsTruePad(padUUid: string): void {
         //
-        console.info('mtav cheq');
         const entryTimer = this._timer.entryTimer;
         const pointers = this._timer.pointers;
         for (let i = 0; i < pointers.length; i++) {
@@ -208,10 +221,12 @@ export class BoardModel extends ObservableModel {
                 ) {
                     this._isEntryTruePad = true;
                     this._checkScore(pointers[i].position - entryTimer);
+                    this._boardPadClickStatusUpdate(pointers[i].position - entryTimer);
                     return;
                 }
             }
         }
+        this._boardPadClickStatusUpdate(-1);
     }
 
     ///counts the this part score on level
@@ -259,6 +274,27 @@ export class BoardModel extends ObservableModel {
 
     private _onProgressUpdate(): void {
         this._progress += this._progressStep;
+    }
+
+    private _boardPadClickStatusUpdate(delta: number): void {
+        // this._progress += this._progressStep;
+        const value = delta / this._levelConstInterval;
+        if (delta == -1) {
+            console.warn('pstcrir');
+            this._accuracy = BoardPadClickStatus.miss;
+        } else if (value > 0.01 && value < 0.4) {
+            this._accuracy = BoardPadClickStatus.bad;
+
+            console.warn('wata', delta);
+        } else if (value >= 0.4 && value < 0.7) {
+            this._accuracy = BoardPadClickStatus.good;
+
+            console.warn('budulot');
+        } else if (value >= 0.7 && value <= 1) {
+            this._accuracy = BoardPadClickStatus.perfect;
+
+            console.warn('tuyna');
+        }
     }
 
     private _onTimerUpdate(): void {
