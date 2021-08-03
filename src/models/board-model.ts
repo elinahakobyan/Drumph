@@ -129,6 +129,8 @@ export class BoardModel extends ObservableModel {
         console.warn(this._timer);
         this._checkIsTruePad(padUUid);
         // this._isEntryTruePad ? false : this._checkIsTruePad(padUUid);
+     
+
     };
 
     public checkLevelScore(): void {
@@ -173,17 +175,21 @@ export class BoardModel extends ObservableModel {
 
     private _checkIsTruePad(padUUid: string): void {
         //
+
         const entryTimer = this._timer.entryTimer;
 
         const pointers = this._timer.pointers;
+
         for (let i = 0; i < pointers.length; i++) {
             //
-            if (padUUid === pointers[i].padUUid) {
+            if (padUUid === this._getPads(pointers[i].padUUid).uuid) {
                 if (
                     this._levelConstInterval >= pointers[i].position - entryTimer &&
                     pointers[i].position - entryTimer >= 0
                 ) {
                     this._isEntryTruePad = true;
+                    console.warn('hamynknum');
+
                     this._checkScore(pointers[i].position - entryTimer);
                     return;
                 }
