@@ -61,7 +61,9 @@ export class SoundObservant {
 
     private _onPadClick(padUUid: string): void {
         ///
-        console.warn(padUUid);
+        sound.play(padUUid);
+        // this._play('padUUid');
+        console.warn(sound);
     }
 
     private _play(
