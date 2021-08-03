@@ -6,7 +6,7 @@ import { onCheckPlayLevelCommand } from './on-check-play-level-camand ';
 import { onUpdatePlayLevelCommand } from './on-update-play-level-camand ';
 
 export const onPadClickCommand = (padId: string): void => {
-    console.warn('click');
+    // console.warn('click');
 
     lego.command
         // .guard(boardStateImitationFinishGuard)
@@ -22,7 +22,7 @@ export const onPadClickCommand = (padId: string): void => {
         // //
         .payload(padId)
         .guard(boardStatePlayGuard, boardProgressIsNullGuard)
-        .execute(onUpdatePlayLevelCommand, onCheckPlayLevelCommand)
+        .execute(onUpdatePlayLevelCommand)
         //
         .payload(padId)
         .guard(boardStatePlayGuard, lego.not(boardProgressIsNullGuard))

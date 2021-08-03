@@ -1,3 +1,4 @@
+import { delayRunnable } from '../../utils';
 import { ObservableModel } from '../observable-model';
 export enum PadState {
     unknown = 'unknown',
@@ -5,11 +6,17 @@ export enum PadState {
     deactivate = 'deactivate',
     blocked = 'blocked',
     showHint = 'showHint',
-    hideShow = 'hideShow',
+    hideHint = 'hideHint',
+}
+
+export enum PadStatus {
+    unknown = 'unknown',
+    play = 'play',
 }
 
 export class PadModel extends ObservableModel {
     private _state: PadState = null;
+    private _status: PadStatus = null;
     private _config: PadModelConfig;
     private _name: string;
     private _activeColor: number;
@@ -31,6 +38,10 @@ export class PadModel extends ObservableModel {
         this._state = value;
     }
 
+    public get status(): PadStatus {
+        return this._status;
+    }
+
     public get config(): PadModelConfig {
         return this._config;
     }
@@ -47,6 +58,16 @@ export class PadModel extends ObservableModel {
         return this._name;
     }
 
+    public runing(): void {
+        this._status = PadStatus.play;
+        delayRunnable(
+            0.01,
+            () => {
+                this._status = PadStatus.unknown;
+            },
+            this,
+        );
+    }
     public initialize(): void {
         this._state = PadState.deactivate;
     }

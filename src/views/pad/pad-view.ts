@@ -134,7 +134,7 @@ export class PadComponent extends Container {
     }
 
     private _click(): void {
-        console.warn('click');
+        // console.warn('click');
 
         lego.event.emit(PadViewEvent.click, this._uuid);
     }
