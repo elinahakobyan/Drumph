@@ -1,5 +1,5 @@
 import { lego } from '@armathai/lego';
-import { Rectangle, Sprite } from 'pixi.js';
+import { Sprite } from 'pixi.js';
 import {
     getCellBgSpriteConfig,
     getCellBlockSpriteConfig,
@@ -59,7 +59,7 @@ export class PadComponent extends Container {
 
     public showHint(): void {
         this._hint.alpha = 1;
-        // this._glow.alpha = 1;
+        this._glow.alpha = 1;
 
         // gsap.from(this._hint, {
         //     alpha: 1,
@@ -83,7 +83,7 @@ export class PadComponent extends Container {
 
     public hideHint(): void {
         this._hint.alpha = 0;
-        // this._glow.alpha = 0;
+        this._glow.alpha = 0;
 
         // gsap.from(this._hint, {
         //     alpha: 0,
@@ -92,15 +92,11 @@ export class PadComponent extends Container {
         // });
     }
 
-    public getBounds(): Rectangle {
-        return this._pad.getBounds();
-    }
-
     private _build(): void {
         this._buildBg();
         this._buildBlocker();
         this._buildHint();
-        // this._buildGlow();
+        this._buildGlow();
     }
 
     private _buildBg(): void {
@@ -126,11 +122,6 @@ export class PadComponent extends Container {
     private _buildGlow(): void {
         const glow = makeSprite(getPadGlowImageSpriteConfig());
         glow.alpha = 0;
-
-        // glow.scale.set(0.3);
-        // glow.position.x = -this._pad.width * 0.5 + 40;
-        // glow.position.y = this._pad.height * 0.5 - 40;
-        // glow.alpha = 0;
         this.addChild((this._glow = glow));
     }
 

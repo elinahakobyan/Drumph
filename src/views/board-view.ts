@@ -1,7 +1,7 @@
 import { lego } from '@armathai/lego';
 import { DisplayObject } from '@pixi/display';
 import { NineSlicePlane } from '@pixi/mesh-extras';
-import { Container } from 'pixi.js';
+import { Container, Rectangle } from 'pixi.js';
 import { cellsGap, cellSize } from '../constants/constants';
 import { BoardModelEvent, PadModelEvent } from '../events/model';
 import { BoardViewEvent } from '../events/view';
@@ -16,6 +16,7 @@ export class BoardView extends Container {
     private _pads: PadComponent[];
     private _patternPads: PadComponent[] = [];
     private _padsInteractive = false;
+
     public constructor() {
         super();
 
@@ -32,6 +33,20 @@ export class BoardView extends Container {
         // lego.event.on(ProgressUpdateViewEvent.finish, this._onCompleteUpdateImitation, this);
         // lego.event.on(ProgressUpdateViewEvent.start, this._onCompleteUpdateImitation, this);
         this._build();
+    }
+
+    public getBounds(): Rectangle {
+        // const gr = new Graphics();
+        // gr.beginFill(0x00ff00, 0.5);
+        // gr.drawRect(-105, -105, 4 * 210 + 3 * cellsGap, 3 * 210 + 2 * cellsGap);
+        // this.addChild(gr);
+
+        return new Rectangle(
+            -cellSize.width * 0.5,
+            -cellSize.height * 0.5,
+            4 * cellSize.width + 3 * cellsGap,
+            3 * cellSize.height + 2 * cellsGap,
+        );
     }
 
     public onPadsClick(): void {
@@ -58,7 +73,7 @@ export class BoardView extends Container {
 
     private _onBoardStateUpdate(value: BoardState, oldValue: BoardState): void {
         //
-        console.warn(value, oldValue);
+        console.warn('BoardState', value, oldValue);
         switch (value) {
             case BoardState.play:
                 this.onPadsClick();
@@ -80,7 +95,7 @@ export class BoardView extends Container {
     }
     private _onBoardStatusUpdate(value: BoardStatus, oldValue: BoardStatus): void {
         //
-        console.warn(value, oldValue);
+        console.warn('BoardStatus', value, oldValue);
         switch (value) {
             case BoardStatus.start:
                 this.onPadsClick();
@@ -186,7 +201,6 @@ export class BoardView extends Container {
             case PadState.active:
                 this._getPad(uuid).activate();
                 this._patternPads.push(this._getPad(uuid));
-
                 break;
             case PadState.deactivate:
                 this._getPad(uuid).block();

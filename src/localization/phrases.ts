@@ -15,5 +15,7 @@ export const phrases = {
     'Pixi Playable Template': 'Pixi Playable Template',
     '4.5 out of 5 stars': '4.5 out of 5 stars',
     'TAP TO LISTEN': 'TAP TO LISTEN',
-    'TAP TO REPEAT THE RHYTHM!': 'TAP TO REPEAT THE RHYTHM!',
+    'TAP TO REPEAT THE RHYTHM': 'TAP TO REPEAT THE RHYTHM',
+    'your score': 'your score',
+    Next: 'Next',
 };

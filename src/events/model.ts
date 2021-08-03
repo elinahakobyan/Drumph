@@ -66,4 +66,15 @@ export enum StoreEvent {
 
 export enum TutorialModelEvent {
     completeUpdate = 'TutorialModelCompleteUpdate',
+    skipUpdate = 'TutorialModelSkipUpdate',
+    sequencesUpdate = 'TutorialModelSequencesUpdate',
+    currentUpdate = 'TutorialModelCurrentUpdate',
+    currentIndexUpdate = 'TutorialModelCurrentIndexUpdate',
+}
+
+export enum TutorialSequenceModelEvent {
+    configUpdate = 'TutorialSequenceModelConfigUpdate',
+    indexUpdate = 'TutorialSequenceModelIndexUpdate',
+    completeUpdate = 'TutorialSequenceModelCompleteUpdate',
+    showUpdate = 'TutorialSequenceModelShowUpdate',
 }

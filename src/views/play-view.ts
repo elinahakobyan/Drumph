@@ -1,13 +1,16 @@
 import { lego } from '@armathai/lego';
 import { ICellConfig, PixiGrid } from '@armathai/pixi-grid';
+import { NineSlicePlane } from 'pixi.js';
 import { getPlayGridConfig } from '../constants/configs/grid-configs';
 import { BoardModelEvent, PlayModelEvent } from '../events/model';
 import { BoardModel, BoardState } from '../models/board-model';
 import { lp } from '../utils';
 import { BoardView } from './board-view';
+import { ScoreComponent } from './score-component';
 
 export class PlayView extends PixiGrid {
     private _board: BoardView;
+    private _popUp: NineSlicePlane;
 
     public constructor() {
         super();
@@ -30,19 +33,17 @@ export class PlayView extends PixiGrid {
 
     // BOARD
     private _onBoardUpdate(board: BoardModel): void {
-        // board ? this._buildBoard() : this._destroyBoard();
         board ? this._buildBoard() : false;
     }
 
     private _onBoardStateUpdate(state: BoardState): void {
-        // board ? this._buildBoard() : this._destroyBoard();
-        // switch (state) {
-        // case BoardState.showResult:
-        //     this._buildScoreComponent();
-        //     break;
-        // default:
-        //     break;
-        // }
+        switch (state) {
+            case BoardState.levelCamplete:
+                this._buildScoreComponent();
+                break;
+            default:
+                break;
+        }
     }
 
     private _buildBoard(): void {
@@ -56,9 +57,12 @@ export class PlayView extends PixiGrid {
     private _destroyBoard(): void {
         this._board.destroy();
     }
+
     // score-component
+
     private _buildScoreComponent(): void {
-        // board ? this._buildBoard() : this._destroyBoard();
+        const score = new ScoreComponent();
+        this.setChild('popUp', (this._popUp = score));
     }
 
     private _destroyScoreComponent(): void {

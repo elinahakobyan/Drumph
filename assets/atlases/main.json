@@ -288,6 +288,30 @@
         "y": 0.5
       }
     },
+    "ui/cta_btn.png": {
+      "frame": {
+        "x": 611,
+        "y": 624,
+        "w": 100,
+        "h": 50
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 100,
+        "h": 50
+      },
+      "sourceSize": {
+        "w": 100,
+        "h": 50
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
     "ui/persistent_cta_button.png": {
       "frame": {
         "x": 360,
@@ -315,7 +339,7 @@
     "star.png": {
       "frame": {
         "x": 594,
-        "y": 698,
+        "y": 730,
         "w": 76,
         "h": 72
       },
@@ -336,7 +360,7 @@
         "y": 0.5
       }
     },
-    "ui/sound_off.png": {
+    "ui/sound_on.png": {
       "frame": {
         "x": 676,
         "y": 3,
@@ -360,7 +384,7 @@
         "y": 0.5
       }
     },
-    "ui/sound_on.png": {
+    "ui/sound_off.png": {
       "frame": {
         "x": 676,
         "y": 69,
@@ -410,12 +434,12 @@
     },
     "particles/confetti/06.png": {
       "frame": {
-        "x": 594,
-        "y": 776,
+        "x": 217,
+        "y": 780,
         "w": 41,
         "h": 25
       },
-      "rotated": true,
+      "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
@@ -434,7 +458,7 @@
     },
     "particles/confetti/05.png": {
       "frame": {
-        "x": 217,
+        "x": 264,
         "y": 780,
         "w": 28,
         "h": 37
@@ -506,7 +530,7 @@
     },
     "particles/confetti/04.png": {
       "frame": {
-        "x": 251,
+        "x": 298,
         "y": 780,
         "w": 20,
         "h": 26
@@ -530,12 +554,12 @@
     },
     "particles/confetti/03.png": {
       "frame": {
-        "x": 277,
+        "x": 324,
         "y": 780,
         "w": 25,
         "h": 21
       },
-      "rotated": true,
+      "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
@@ -554,12 +578,12 @@
     },
     "particles/confetti/02.png": {
       "frame": {
-        "x": 304,
-        "y": 780,
+        "x": 676,
+        "y": 188,
         "w": 22,
         "h": 19
       },
-      "rotated": true,
+      "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,

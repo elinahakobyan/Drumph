@@ -1,6 +1,6 @@
-import { store } from '../models/store';
+import { lego } from '@armathai/lego';
+import { completeTutorialSequenceCommand } from './complete-tutorial-sequence-command';
 
 export const onTutorialClickCommand = (): void => {
-    const { tutorial } = store.playable;
-    tutorial.complete = true;
+    lego.command.execute(completeTutorialSequenceCommand);
 };

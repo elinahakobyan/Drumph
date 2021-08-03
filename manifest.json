@@ -97,6 +97,15 @@
             "value": "Black",
             "description": "Determines the color of the empty square(s).",
             "options": ["Black", "Red", "Blue", "Purple", "White"]
+        },
+        "tutorial_design": {
+            "value": true,
+            "description": "When true, remove the yellow rectangle from the tutorial box and change text to have a neon effect."
+        },
+        "background_color": {
+            "value": "Black",
+            "description": "Determines the color of the background.",
+            "options": ["Black", "Dark Red", "Dark Blue", "Dark Purple", "Dark Gray"]
         }
     },
     "size": {

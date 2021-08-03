@@ -11,6 +11,7 @@ import {
 import { getForegroundGridLandscapeConfig, getForegroundGridPortraitConfig } from './grid/foreground-grid-configs';
 import { getMainGridLandscapeConfig, getMainGridPortraitConfig } from './grid/main-grid-configs';
 import { getPlayGridLandscapeConfig, getPlayGridPortraitConfig } from './grid/play-grid-configs';
+import { getTutorialGridLandscapeConfig, getTutorialGridPortraitConfig } from './grid/tutorial-grid-configs';
 import { getUIGridLandscapeConfig, getUIGridPortraitConfig } from './grid/ui-grid-configs';
 
 export const getMainGridConfig = (): ICellConfig => {
@@ -43,4 +44,7 @@ export const getTraditionalCTAGridConfig = (): ICellConfig => {
 
 export const getStarRatingCTAGridConfig = (): ICellConfig => {
     return lp(getStarRatingCTAGridLandscapeConfig, getStarRatingCTAGridPortraitConfig).call(null);
+};
+export const getTutorialGridConfig = (): ICellConfig => {
+    return lp(getTutorialGridLandscapeConfig, getTutorialGridPortraitConfig).call(null);
 };
