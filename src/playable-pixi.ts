@@ -23,10 +23,10 @@ export class PlayablePixi extends PlayableAdapter {
     public constructor(ad: Ad) {
         super(ad);
         this._app = new Application({
-            backgroundColor: 0x1099bb,
             powerPreference: 'low-power',
             resolution: window.devicePixelRatio || 1,
             sharedTicker: true,
+            backgroundAlpha: 0,
         });
         this._app.ticker.maxFPS = 60;
         this._assignParams();
