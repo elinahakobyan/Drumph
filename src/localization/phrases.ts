@@ -18,4 +18,5 @@ export const phrases = {
     'TAP TO REPEAT THE RHYTHM': 'TAP TO REPEAT THE RHYTHM',
     'your score': 'your score',
     Next: 'Next',
+    'Make your own beat': 'Make your own beat',
 };

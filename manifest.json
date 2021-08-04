@@ -58,7 +58,7 @@
             "description": "When true, the cta button is displayed at all times."
         },
         "idleTimeToCta": {
-            "value": 145,
+            "value": 2,
             "description": "AFK time to open the CTA (seconds)",
             "range": [10, 45]
         },

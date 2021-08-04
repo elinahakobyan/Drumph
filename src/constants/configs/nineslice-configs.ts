@@ -47,10 +47,10 @@ export const getBgPatchConfig = (width: number, height: number): NineSliceConfig
 
 export const getTraditionalCtaPrimaryButtonUpPatchesConfig = (): NineSliceConfig => {
     return {
-        texture: textures['ui/cta_play_button'],
-        data: [13, 13, 13, 19],
-        width: 280,
-        height: 117,
+        texture: textures['ui/cta_btn'],
+        data: [43, 20, 42, 20],
+        width: 390,
+        height: 90,
     };
 };
 

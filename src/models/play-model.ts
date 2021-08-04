@@ -20,12 +20,13 @@ export class PlayModel extends ObservableModel {
     }
 
     public initialize(): void {
-        this.initializeBoardModel();
         this.initializeProgressBarModel();
+        this.initializeBoardModel();
     }
 
     public destroy(): void {
         this._board && this.destroyBoardModel();
+        this._progressBar && this.destroyProgressBarModel();
     }
 
     // BOARD
@@ -45,6 +46,8 @@ export class PlayModel extends ObservableModel {
     }
 
     public destroyProgressBarModel(): void {
+        console.warn('destroyProgressBarModel');
+
         this._progressBar.destroy();
         this._progressBar = null;
     }

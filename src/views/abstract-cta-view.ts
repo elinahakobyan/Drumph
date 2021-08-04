@@ -35,7 +35,7 @@ export abstract class AbstractCTAView extends PixiGrid {
                 this.removeChildren();
                 break;
             case PlayableState.cta:
-                // this.build();
+                this.build();
                 break;
             default:
         }
@@ -55,7 +55,6 @@ export abstract class AbstractCTAView extends PixiGrid {
     }
 
     private _buildButton(config: ButtonConfig, callback: Callback): Button {
-        return;
         const btn = new Button(config);
         btn.on('click', callback, this);
 

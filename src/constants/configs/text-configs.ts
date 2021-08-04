@@ -42,18 +42,25 @@ export const getTutorialTextConfig = (text: string): TextConfig => {
 export const getTraditionalCtaPrimaryButtonUpTextConfig = (): TextConfig => {
     return {
         text: localization.t(phrases[getParams().ctaPrimaryBtnText.value as keyof typeof phrases]),
-        y: -3,
+        // y: -3,
         style: new TextStyle({
-            fontFamily: fonts.KGPrimaryPenmanship,
-            fontSize: 55,
+            fontFamily: ['solomon-sans-black'],
+            fontSize: 70,
+            fill: '#000000',
+            strokeThickness: 5,
+        }),
+    };
+};
+
+export const getCtaLabelTextConfig = (): TextConfig => {
+    return {
+        text: localization.t(phrases['Make your own beat']),
+        // y: -3,
+        style: new TextStyle({
+            fontFamily: fonts['solomon-sans-black'],
+            fontSize: 60,
             fill: '#ffffff',
-            dropShadow: true,
-            dropShadowAngle: 90,
-            dropShadowDistance: 2,
-            dropShadowBlur: 5,
-            dropShadowColor: '#159b1c',
-            stroke: '#159b1c',
-            strokeThickness: 4,
+            strokeThickness: 10,
         }),
     };
 };
