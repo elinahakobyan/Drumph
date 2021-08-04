@@ -26,13 +26,6 @@ export class BoardView extends Container {
         lego.event.on(BoardModelEvent.stateUpdate, this._onBoardStateUpdate, this);
         lego.event.on(PadModelEvent.stateUpdate, this._onPadStateUpdate, this);
         lego.event.on(BoardModelEvent.statusUpdate, this._onBoardStatusUpdate, this);
-        lego.event.on(
-            BoardModelEvent.localScoreUpdate,
-            (score: number) => {
-                console.warn(score);
-            },
-            this,
-        );
 
         lego.event.on(BoardModelEvent.scoreUpdate, this._onBoardScoreUpdate, this);
 

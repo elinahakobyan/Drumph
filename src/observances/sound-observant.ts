@@ -71,7 +71,11 @@ export class SoundObservant {
 
     private _onPlayImitationSound(newValue: PadStatus, oldValue: PadStatus, uuid: string): void {
         ///
-        newValue === PadStatus.play ? sound.play(uuid) : false;
+
+        if (newValue === PadStatus.play) {
+            sound.stopAll();
+            sound.play(uuid);
+        }
         // this._play('padUUid');
     }
 

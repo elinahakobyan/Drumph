@@ -59,7 +59,7 @@ export class PadComponent extends Container {
 
     public showHint(): void {
         this._hint.alpha = 1;
-        this._glow.alpha = 1;
+        // this._glow.alpha = 1;
 
         // gsap.from(this._hint, {
         //     alpha: 1,
@@ -83,8 +83,7 @@ export class PadComponent extends Container {
 
     public hideHint(): void {
         this._hint.alpha = 0;
-        this._glow.alpha = 0;
-
+        // this._glow.alpha = 0;
         // gsap.from(this._hint, {
         //     alpha: 0,
         //     duration: 14,
@@ -96,7 +95,7 @@ export class PadComponent extends Container {
         this._buildBg();
         this._buildBlocker();
         this._buildHint();
-        this._buildGlow();
+        // this._buildGlow();
     }
 
     private _buildBg(): void {

@@ -9,6 +9,14 @@ export enum PadState {
     hideHint = 'hideHint',
 }
 
+export enum BoardPadClickStatus {
+    unknown = 'unknown',
+    perfect = 'perfect',
+    good = 'good',
+    bad = 'bad',
+    miss = 'miss',
+}
+
 export enum PadStatus {
     unknown = 'unknown',
     play = 'play',
@@ -18,6 +26,8 @@ export class PadModel extends ObservableModel {
     private _state: PadState = null;
     private _status: PadStatus = null;
     private _config: PadModelConfig;
+    private _accuracy = BoardPadClickStatus.unknown;
+
     private _name: string;
     private _activeColor: number;
     private _passiveColor: number;
@@ -28,6 +38,14 @@ export class PadModel extends ObservableModel {
         this._activeColor = config.colorActive;
         this._passiveColor = config.colorPassive;
         this.makeObservable();
+    }
+
+    public get accuracy(): BoardPadClickStatus {
+        return this._accuracy;
+    }
+
+    public set accuracy(value: BoardPadClickStatus) {
+        this._accuracy = value;
     }
 
     public get state(): PadState {
