@@ -162,8 +162,6 @@ export class BoardModel extends ObservableModel {
         if (this._state === BoardState.imitation) {
             this._getPads(this._levelPattern[this._progress * this._levelPattern.length]).runing();
         } else if ((this._state = BoardState.play)) {
-            console.warn(this._levelPattern[0]);
-
             if (padUUid === this._getPads(this._levelPattern[0]).uuid) {
                 this._localScore = 1 / this._levelPattern.length;
                 this.$score = this._localScore;
@@ -280,20 +278,13 @@ export class BoardModel extends ObservableModel {
         // this._progress += this._progressStep;
         const value = delta / this._levelConstInterval;
         if (delta == -1) {
-            console.warn('pstcrir');
             this._accuracy = BoardPadClickStatus.miss;
         } else if (value > 0.01 && value < 0.4) {
             this._accuracy = BoardPadClickStatus.bad;
-
-            console.warn('wata', delta);
         } else if (value >= 0.4 && value < 0.7) {
             this._accuracy = BoardPadClickStatus.good;
-
-            console.warn('budulot');
         } else if (value >= 0.7 && value <= 1) {
             this._accuracy = BoardPadClickStatus.perfect;
-
-            console.warn('tuyna');
         }
     }
 
@@ -302,6 +293,8 @@ export class BoardModel extends ObservableModel {
             removeRunnable(this._timerPRunnable);
             return;
         }
+        // console.warn(this._timer.entryTimer);
+
         this._timer.entryTimer += timerDellay;
         this._timer.entryTimer = Math.floor(this._timer.entryTimer * 100) / 100;
         // console.info(this.timer.pointers);

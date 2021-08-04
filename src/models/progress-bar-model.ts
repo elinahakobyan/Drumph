@@ -6,7 +6,6 @@ export class ProgressBarModel extends ObservableModel {
     public constructor() {
         super('ProgressBarModel');
         this._progress = null;
-
         this.makeObservable();
     }
 
