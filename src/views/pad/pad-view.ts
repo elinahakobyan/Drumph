@@ -28,8 +28,8 @@ export class PadComponent extends Container {
         this._uuid = padModel.uuid;
 
         this.name = 'PadComponent';
-        this.interactive = true;
         this._build();
+        this._pad.interactive = true;
     }
 
     public get uuid(): string {
@@ -38,17 +38,17 @@ export class PadComponent extends Container {
 
     public block(): void {
         this._blocker.visible = true;
-        this.interactive = false;
+        this._pad.interactive = false;
     }
 
     public activate(): void {
         this._blocker.visible = false;
-        this.interactive = true;
+        this._pad.interactive = true;
     }
 
     public deactivate(): void {
         this._blocker.visible = false;
-        this.interactive = false;
+        this._pad.interactive = false;
     }
 
     public updateClickListener(value: boolean): void {
@@ -126,16 +126,15 @@ export class PadComponent extends Container {
     }
 
     private _addListener(): void {
-        this.on('pointerdown', this._click);
+        this._pad.on('pointerdown', this._click, this);
     }
 
     private _removeListener(): void {
-        this.off('pointerdown', this._click);
+        this._pad.off('pointerdown', this._click, this);
     }
 
     private _click(): void {
-        // console.warn('click');
-
+        console.warn('click');
         lego.event.emit(PadViewEvent.click, this._uuid);
     }
 }
