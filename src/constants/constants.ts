@@ -68,7 +68,7 @@ export const logoPaddingY = 0.25;
 
 export const logoPaddingH = 0.26;
 
-export const boardPadding = 0.06;
+export const boardPadding = 0.07;
 
 export const cellSize = Object.freeze({
     width: 210,

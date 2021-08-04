@@ -101,20 +101,22 @@ export class PadComponent extends Container {
 
     private _buildBg(): void {
         const cell = makeSprite(getCellBgSpriteConfig(this._color, getParams().square_color_patterns.value));
+        cell.anchor.set(0);
         this.addChild((this._pad = cell));
     }
 
     private _buildBlocker(): void {
         const blocker = makeSprite(getCellBlockSpriteConfig(getParams().emptySquareColor.value.toLowerCase()));
         blocker.visible = true;
+        blocker.anchor.set(0);
         this._pad.addChild((this._blocker = blocker));
     }
 
     private _buildHint(): void {
         const hint = makeSprite(getHintImageSpriteConfig());
         hint.scale.set(0.3);
-        hint.position.x = -this._pad.width * 0.5 + 40;
-        hint.position.y = this._pad.height * 0.5 - 40;
+        hint.position.x = 40;
+        hint.position.y = this._pad.height - 40;
         hint.alpha = 0;
         this.addChild((this._hint = hint));
     }
@@ -122,6 +124,9 @@ export class PadComponent extends Container {
     private _buildGlow(): void {
         const glow = makeSprite(getPadGlowImageSpriteConfig());
         glow.alpha = 0;
+        glow.x = -glow.width / 2 + this._pad.width / 2;
+        glow.y = -glow.height / 2 + this._pad.height / 2;
+        glow.anchor.set(0);
         this.addChild((this._glow = glow));
     }
 

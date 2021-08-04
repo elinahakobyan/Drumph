@@ -1,7 +1,7 @@
 import { lego } from '@armathai/lego';
 import { DisplayObject } from '@pixi/display';
 import { NineSlicePlane } from '@pixi/mesh-extras';
-import { Container } from 'pixi.js';
+import { Container, Graphics, Rectangle } from 'pixi.js';
 import { cellsGap, cellSize } from '../constants/constants';
 import { BoardModelEvent, PadModelEvent } from '../events/model';
 import { BoardViewEvent } from '../events/view';
@@ -16,6 +16,7 @@ export class BoardView extends Container {
     private _pads: PadComponent[];
     private _patternPads: PadComponent[] = [];
     private _padsInteractive = false;
+    private _gr: Graphics;
 
     public constructor() {
         super();
@@ -37,26 +38,21 @@ export class BoardView extends Container {
 
         lego.event.on(BoardModelEvent.scoreUpdate, this._onBoardScoreUpdate, this);
 
+        this._build();
+
         // lego.event.on(BoardModelEvent.levelPatternUpdate, this._onLevelPadsUpdate, this);
         // lego.event.on(BoardModelEvent.update, this._onUpdateBoard, this);
         // lego.event.on(ProgressUpdateViewEvent.finish, this._onCompleteUpdateImitation, this);
         // lego.event.on(ProgressUpdateViewEvent.start, this._onCompleteUpdateImitation, this);
-        this._build();
     }
 
-    // public getBounds(): Rectangle {
-    //     // const gr = new Graphics();
-    //     // gr.beginFill(0x00ff00, 0.5);
-    //     // gr.drawRect(-105, -105, 4 * 210 + 3 * cellsGap, 3 * 210 + 2 * cellsGap);
-    //     // this.addChild(gr);
+    public getBounds(): Rectangle {
+        const { x, y, width, height } = this._gr.getBounds();
 
-    //     return new Rectangle(
-    //         -cellSize.width * 0.5,
-    //         -cellSize.height * 0.5,
-    //         4 * cellSize.width + 3 * cellsGap,
-    //         3 * cellSize.height + 2 * cellsGap,
-    //     );
-    // }
+        return new Rectangle(x, y, width, height);
+
+        // return new Rectangle(0, 0, 4 * cellSize.width + 3 * cellsGap, 3 * cellSize.height + 2 * cellsGap);
+    }
 
     public onPadsClick(): void {
         this._padsInteractive = true;
@@ -72,10 +68,6 @@ export class BoardView extends Container {
         this._patternPads.forEach((pad) => {
             pad.updateClickListener(false);
         });
-    }
-
-    private _build(): void {
-        //
     }
 
     private _onBoardStateUpdate(value: BoardState, oldValue: BoardState): void {
@@ -118,6 +110,13 @@ export class BoardView extends Container {
 
     private _onBoardAccuracyUpdate(newValue: string, oldValue: string, uuid: string): void {
         console.warn(newValue, uuid);
+    }
+
+    private _build(): void {
+        const gr = new Graphics();
+        gr.beginFill(0x00ff00, 0);
+        gr.drawRect(0, 0, 4 * cellSize.width + 3 * cellsGap, 3 * cellSize.height + 2 * cellsGap);
+        this.addChild((this._gr = gr));
     }
 
     private _onPadsUpdate(padsConfig: Map<string, PadModel>): void {
