@@ -36,13 +36,13 @@ export class PlayView extends PixiGrid {
 
     // BOARD
     private _onBoardUpdate(board: BoardModel): void {
-        board ? this._buildBoard() : false;
+        board ? this._buildBoard() : this._destroyBoard();
     }
 
     private _onBoardStateUpdate(state: BoardState): void {
         switch (state) {
             case BoardState.levelComplete:
-                this._buildScoreComponent();
+                // this._buildScoreComponent();
                 break;
             default:
                 break;
@@ -59,12 +59,13 @@ export class PlayView extends PixiGrid {
 
     private _destroyBoard(): void {
         this._board.destroy();
+        this._board = null;
     }
 
     // score-component
 
-    private _buildScoreComponent(): void {
-        const score = new ScoreComponent();
+    private _buildScoreComponent(scoreNumber: number): void {
+        const score = new ScoreComponent(scoreNumber);
         score.on('scoreBtnClick', () => {
             lego.event.emit(PlayViewEvent.onScoreBtnClick);
             this._hideScore();
@@ -89,8 +90,10 @@ export class PlayView extends PixiGrid {
         }).eventCallback('onComplete', this._destroyScoreComponent.bind(this));
     }
 
-    private _onBoardScoreUpdate(newValue: number): void {
-        // console.warn(newValue);
+    private _onBoardScoreUpdate(score: number): void {
+        if (score > 1) {
+            this._buildScoreComponent(score);
+        }
     }
 
     private _destroyScoreComponent(): void {

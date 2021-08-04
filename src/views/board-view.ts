@@ -26,6 +26,7 @@ export class BoardView extends Container {
         lego.event.on(BoardModelEvent.stateUpdate, this._onBoardStateUpdate, this);
         lego.event.on(PadModelEvent.stateUpdate, this._onPadStateUpdate, this);
         lego.event.on(BoardModelEvent.statusUpdate, this._onBoardStatusUpdate, this);
+        lego.event.on(BoardModelEvent.accuracyUpdate, this._onBoardAccuracyUpdate, this);
         lego.event.on(
             BoardModelEvent.localScoreUpdate,
             (score: number) => {
@@ -115,6 +116,10 @@ export class BoardView extends Container {
         }
     }
 
+    private _onBoardAccuracyUpdate(newValue: string, oldValue: string, uuid: string): void {
+        console.warn(newValue, uuid);
+    }
+
     private _onPadsUpdate(padsConfig: Map<string, PadModel>): void {
         this._pads = [];
         const { width, height } = cellSize;
@@ -144,8 +149,6 @@ export class BoardView extends Container {
     }
 
     private _onBoardScoreUpdate(score: number, oldScore: number): void {
-        console.warn();
-
         console.warn(score, 'score', oldScore);
 
         ///

@@ -82,15 +82,16 @@ export const getPlayGridPortraitConfig = (): ICellConfig => {
         name: 'play',
         cells: [
             {
+                debug: { color: 0x2fc900 },
                 name: 'board',
                 bounds: { x: (1 - w) / 2, y: logoH + 0.15 + progressBarH, width: w, height: h },
                 align: CellAlign.centerTop,
                 scale: CellScale.showAll,
             },
             {
-                // debug: { color: 0x2fc900 },
+                debug: { color: 0x2fc900 },
                 name: 'score',
-                bounds: { x: (1 - boardW) / 2, y: logoH + 0.25 + progressBarH, height: 0.3 },
+                bounds: { x: (1 - w) / 2, y: logoH + 0.28 + progressBarH, height: 0.25, width: w },
             },
             {
                 // debug: { color: 0x000000 },

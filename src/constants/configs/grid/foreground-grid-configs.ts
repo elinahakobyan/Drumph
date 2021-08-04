@@ -79,6 +79,7 @@ export const getForegroundGridPortraitConfig = (): ICellConfig => {
         name: 'foreground',
         cells: [
             {
+                debug: { color: 0xd95027 },
                 name: 'logo',
                 bounds: { x: (1 - w) / 2, y: 0.15, height: logoH, width: w },
                 align: CellAlign.rightTop,
@@ -92,7 +93,7 @@ export const getForegroundGridPortraitConfig = (): ICellConfig => {
             {
                 debug: { color: 0xd95027 },
                 name: 'tutorial',
-                bounds: { x: (1 - boardW) / 2, y: logoH + 0.25 + progressBarH, height: 0.3 },
+                bounds: { x: (1 - w) / 2, y: logoH + 0.28 + progressBarH, height: 0.25, width: w },
             },
             {
                 name: 'cta_logo',
