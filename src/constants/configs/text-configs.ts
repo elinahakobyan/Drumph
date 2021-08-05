@@ -25,16 +25,32 @@ export const getTutorialTextConfig = (text: string): TextConfig => {
         text: localization.t(phrases[`${text}` as keyof typeof phrases]),
         style: new TextStyle({
             fontFamily: fonts['solomon-sans-black'],
-            fontSize: 62,
+            fontSize: 70,
             fill: '#ffffff',
             align: 'center',
             strokeThickness: 8,
             stroke: '#3eb4ff',
             dropShadow: true,
-            dropShadowAngle: 2,
-            dropShadowBlur: 2,
+
             dropShadowColor: '#078dff',
             dropShadowDistance: 16,
+            wordWrap: true,
+            wordWrapWidth: 600,
+        }),
+    };
+};
+
+export const getTutorialTextWithBgConfig = (text: string): TextConfig => {
+    return {
+        text: localization.t(phrases[`${text}` as keyof typeof phrases]),
+        style: new TextStyle({
+            fontFamily: ['solomon-sans-black'],
+            fontSize: 70,
+            wordWrap: true,
+            wordWrapWidth: 600,
+            fill: '#000000',
+            align: 'center',
+            // strokeThickness: 2,
         }),
     };
 };

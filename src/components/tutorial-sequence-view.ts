@@ -1,7 +1,7 @@
 import gsap from 'gsap';
 import { Container, NineSlicePlane, Text } from 'pixi.js';
 import { getTutorialPopUpConfigs } from '../constants/configs/nineslice-configs';
-import { getTutorialTextConfig } from '../constants/configs/text-configs';
+import { getTutorialTextConfig, getTutorialTextWithBgConfig } from '../constants/configs/text-configs';
 import { getParams, makeNineSlice, makeText } from '../utils';
 
 export class TutorialSequenceView extends Container {
@@ -44,7 +44,9 @@ export class TutorialSequenceView extends Container {
     }
 
     private _buildLabel(): Text {
-        const t = makeText(getTutorialTextConfig(this._config.text));
+        const t = getParams().tutorial_design.value
+            ? makeText(getTutorialTextConfig(this._config.text))
+            : makeText(getTutorialTextWithBgConfig(this._config.text));
 
         t.position.set(this._bg.width * 0.5, this._bg.height * 0.5);
         return t;

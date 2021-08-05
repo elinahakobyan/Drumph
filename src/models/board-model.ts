@@ -115,6 +115,10 @@ export class BoardModel extends ObservableModel {
 
     public destroy(): void {
         this._score && this._destroyScore();
+        this._pads.forEach((p) => p.destroy());
+        removeRunnable(this._timerPRunnable);
+        removeRunnable(this._visibilityRunnable);
+        super.destroy();
     }
 
     ///load new level

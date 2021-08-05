@@ -2,9 +2,7 @@ import { BoardState, BoardStatus } from '../models/board-model';
 import { store } from '../models/store';
 
 export const onBoardProgressUpdate = (newValue: number, oldValue: number): void => {
-    if (store.play) {
-        store.play.progressBar.progress = newValue;
-    }
+    store.play.progressBar.progress = newValue;
 
     if (newValue === null && oldValue === 1) {
         if (store.play.board.state === BoardState.imitation) {
