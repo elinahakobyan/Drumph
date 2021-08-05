@@ -194,7 +194,6 @@ export class BoardModel extends ObservableModel {
     //update progress or remove updateing loop
     private _progressEmitter(): void {
         this._onProgressUpdate();
-        console.warn(this._progress);
         if (this._progress < 1) {
             this._getPads(this._levelPattern[this._progress * this._levelPattern.length - 1]).state = PadState.hideHint;
             this._state === BoardState.imitation
@@ -214,6 +213,8 @@ export class BoardModel extends ObservableModel {
     //check is true input pad
     private _checkIsTruePad(padUUid: string): void {
         //
+        console.warn(padUUid);
+
         const entryTimer = this._timer.entryTimer;
         const pointers = this._timer.pointers;
         for (let i = 0; i < pointers.length; i++) {
@@ -308,8 +309,7 @@ export class BoardModel extends ObservableModel {
     }
 
     private _onTimerUpdate(): void {
-        this._timer.entryTimer += timerDellay;
-        // console.warn(this._timer.entryTimer, this._timer.end);
+        this._timer.entryTimer += 4 * timerDellay;
         if (this._timer.entryTimer >= this._timer.end || this._timer.entryTimer + timerDellay > this._timer.end) {
             removeRunnable(this._timerPRunnable);
 
