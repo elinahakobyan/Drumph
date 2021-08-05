@@ -1,4 +1,5 @@
 export enum PadModelEvent {
+    accuracyUpdate = 'PadModelAccuracyUpdate',
     stateUpdate = 'PadModelStateUpdate',
     statusUpdate = 'PadModelStatusUpdate',
     configUpdate = 'PadModelConfigUpdate',
@@ -9,11 +10,11 @@ export enum PadModelEvent {
 
 export enum BoardModelEvent {
     accuracyUpdate = 'BoardModelAccuracyUpdate',
+    entryTimerUpdate = 'BoardModelEntryTimerUpdate',
     stateUpdate = 'BoardModelStateUpdate',
     statusUpdate = 'BoardModelStatusUpdate',
     timerUpdate = 'BoardModelTimerUpdate',
     scoreUpdate = 'BoardModelScoreUpdate',
-    localScoreUpdate = 'BoardModelLocalScoreUpdate',
     imitationUpdate = 'BoardModelImitationUpdate',
     levelUpdate = 'BoardModelLevelUpdate',
     padsUpdate = 'BoardModelPadsUpdate',
