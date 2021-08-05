@@ -1,7 +1,9 @@
+import { lego } from '@armathai/lego';
 import gsap from 'gsap/gsap-core';
 import { NineSlicePlane, Texture } from 'pixi.js';
 import { getScoreNextLevelButtonConfig } from '../constants/configs/button-configs';
 import { getScoreNumberConfig, getScorePopUpTextConfig } from '../constants/configs/text-configs';
+import { PlayViewEvent } from '../events/view';
 import { store } from '../models/store';
 import { makeText } from '../utils';
 import { Button } from '../utils/button';
@@ -44,6 +46,7 @@ export class ScoreComponent extends NineSlicePlane {
         btn.on('pointerdown', () => {
             btn.alpha = 0.56;
             this.emit('scoreBtnClick', btn);
+            lego.event.emit(PlayViewEvent.onScoreBtnClick);
         });
         this.addChild(btn);
     }

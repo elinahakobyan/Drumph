@@ -9,6 +9,7 @@ export enum BoardState {
     imitation = 'imitation',
     idle = 'idle',
     levelComplete = 'levelComplete',
+    gameOver = 'gameOver',
 }
 
 export enum BoardStatus {
@@ -115,9 +116,22 @@ export class BoardModel extends ObservableModel {
 
     ///load new level
     public onLevelUpdate(level = 1): void {
+        this.rebuildLevel();
+        this._progress = null;
         this._level = level;
         this._createLevelPattern();
         this._state = BoardState.idle;
+    }
+
+    public rebuildLevel(): void {
+        this._score = null;
+        this._localScore = null;
+        if (this._levelPattern) {
+            this._levelPattern.forEach((levelPads) => {
+                this._getPads(levelPads).state = PadState.blocked;
+            });
+            this._levelPattern.length = 0;
+        }
     }
 
     /// start imitiatia this level
@@ -203,7 +217,7 @@ export class BoardModel extends ObservableModel {
         //
         console.warn(padUUid);
 
-        const entryTimer = this._timer.entryTimer;
+        const entryTimer = this._entryTimer;
         const pointers = this._timer.pointers;
         for (let i = 0; i < pointers.length; i++) {
             //
@@ -297,11 +311,19 @@ export class BoardModel extends ObservableModel {
     }
 
     private _onTimerUpdate(): void {
-        this._timer.entryTimer += 4 * timerDellay;
+        this._timer.entryTimer += Math.round(4 * timerDellay * 100) / 100;
+        this._timer.entryTimer = Math.floor(this._timer.entryTimer * 100) / 100;
+        this._entryTimer = this._timer.entryTimer;
+
         if (this._timer.entryTimer >= this._timer.end || this._timer.entryTimer + timerDellay > this._timer.end) {
             removeRunnable(this._timerPRunnable);
 
             return;
+        } else if (
+            this._timer.entryTimer % (levelLength / this._levelPattern.length) < 0.3 ||
+            (this._timer.entryTimer + timerDellay) % (levelLength / this._levelPattern.length) < timerDellay
+        ) {
+            this._isEntryTruePad = false;
         }
         // this._timer.entryTimer += timerDellay;
         // console.info(this._timer.entryTimer, this._timer.end, timerDellay);
