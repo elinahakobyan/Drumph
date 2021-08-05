@@ -7,7 +7,7 @@ import { getSoundOffTextureConfig, getSoundOnTextureConfig } from '../constants/
 import { SoundModelEvent } from '../events/model';
 import { SoundToggleComponentEvent } from '../events/view';
 import { store } from '../models/store';
-import { makeTexture } from '../utils';
+import { getParams, makeTexture } from '../utils';
 
 enum ToggleState {
     off,
@@ -20,10 +20,11 @@ export class SoundToggleComponent extends Sprite {
     private _state: ToggleState = ToggleState.on;
 
     public constructor() {
-        super(makeTexture(getSoundOnTextureConfig()));
+        super(makeTexture(getSoundOnTextureConfig(getParams().sound_icon_design.value)));
+
         this.anchor.set(0.5);
         this._textureOn = this.texture;
-        this._textureOff = makeTexture(getSoundOffTextureConfig());
+        this._textureOff = makeTexture(getSoundOffTextureConfig(getParams().sound_icon_design.value));
         this.interactive = true;
         this.buttonMode = true;
         this.hitArea = this._getHitArea();

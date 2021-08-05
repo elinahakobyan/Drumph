@@ -67,11 +67,13 @@ import { makeNineSlice } from '../utils';
 export class ProgressBarView extends Container {
     private _fill: NineSlicePlane;
     private _maxWidth: number;
+
     public constructor() {
         super();
         this._maxWidth = 1400;
         this._build();
         lego.event.on(ProgressBarModelEvent.progressUpdate, this._updateProgress, this);
+        // lego.event.on(BoardModelEvent.timerUpdate, this._updateProgress, this);
     }
 
     public getBounds(): Rectangle {
@@ -79,8 +81,7 @@ export class ProgressBarView extends Container {
     }
 
     private _updateProgress(progress: number): void {
-        // console.warn('hasa');
-
+        // console.warn(progress);
         this._fill.width = this._maxWidth * progress;
     }
 

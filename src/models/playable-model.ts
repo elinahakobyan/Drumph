@@ -99,7 +99,6 @@ export class PlayableModel extends ObservableModel {
     }
 
     public destroyTutorialModel(): void {
-        return;
         this._tutorial.destroy();
         this._tutorial = null;
     }

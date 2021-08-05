@@ -113,6 +113,14 @@ export class BoardModel extends ObservableModel {
         this._createLevelPattern();
     }
 
+    public destroy(): void {
+        this._score && this._destroyScore();
+        this._pads.forEach((p) => p.destroy());
+        removeRunnable(this._timerPRunnable);
+        removeRunnable(this._visibilityRunnable);
+        super.destroy();
+    }
+
     ///load new level
     public onLevelUpdate(level = 1): void {
         this._level = level;
@@ -153,8 +161,6 @@ export class BoardModel extends ObservableModel {
         if (this._state === BoardState.imitation) {
             this._getPads(this._levelPattern[this._progress * this._levelPattern.length]).runing();
         } else if ((this._state = BoardState.play)) {
-            // console.warn(this._levelPattern[0]);
-
             if (padUUid === this._getPads(this._levelPattern[0]).uuid) {
                 this._localScore = 1 / this._levelPattern.length;
                 this.$carentScore = this._localScore;
@@ -177,6 +183,12 @@ export class BoardModel extends ObservableModel {
     ///return padModel by name or id
     private _getPads(padsUUid: string): PadModel {
         return this._pads.get(padsUUid);
+    }
+
+    private _destroyScore(): void {
+        console.warn('destroyScore');
+
+        this._score = null;
     }
 
     //update progress or remove updateing loop
@@ -303,6 +315,7 @@ export class BoardModel extends ObservableModel {
 
             return;
         }
+        // this._timer.entryTimer += timerDellay;
         // this._timer.entryTimer += timerDellay;
         // console.info(this._timer.entryTimer, this._timer.end, timerDellay);
 

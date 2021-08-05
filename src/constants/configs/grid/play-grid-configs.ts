@@ -24,16 +24,7 @@ export const getPlayGridLandscapeConfig = (): ICellConfig => {
                 bounds: { x: (1 - boardW) / 2, y: logoH + progressBarH, width: boardW, height: boardH },
                 scale: CellScale.showAll,
             },
-            {
-                // debug: { color: 0x2fc900 },
-                name: 'score',
-                bounds: {
-                    x: (1 - boardW) / 2,
-                    y: logoH + progressBarH + boardH * 0.05,
-                    width: boardW,
-                    height: boardH * 0.5,
-                },
-            },
+
             {
                 // debug: { color: 0x000000 },
                 name: 'text',
@@ -82,16 +73,13 @@ export const getPlayGridPortraitConfig = (): ICellConfig => {
         name: 'play',
         cells: [
             {
+                debug: { color: 0x2fc900 },
                 name: 'board',
                 bounds: { x: (1 - w) / 2, y: logoH + 0.15 + progressBarH, width: w, height: h },
                 align: CellAlign.centerTop,
                 scale: CellScale.showAll,
             },
-            {
-                // debug: { color: 0x2fc900 },
-                name: 'score',
-                bounds: { x: (1 - boardW) / 2, y: logoH + 0.25 + progressBarH, height: 0.3 },
-            },
+
             {
                 // debug: { color: 0x000000 },
                 name: 'text',

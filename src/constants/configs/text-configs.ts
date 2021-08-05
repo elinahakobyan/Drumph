@@ -25,16 +25,32 @@ export const getTutorialTextConfig = (text: string): TextConfig => {
         text: localization.t(phrases[`${text}` as keyof typeof phrases]),
         style: new TextStyle({
             fontFamily: fonts['solomon-sans-black'],
-            fontSize: 62,
+            fontSize: 70,
             fill: '#ffffff',
             align: 'center',
             strokeThickness: 8,
             stroke: '#3eb4ff',
             dropShadow: true,
-            dropShadowAngle: 2,
-            dropShadowBlur: 2,
+
             dropShadowColor: '#078dff',
             dropShadowDistance: 16,
+            wordWrap: true,
+            wordWrapWidth: 600,
+        }),
+    };
+};
+
+export const getTutorialTextWithBgConfig = (text: string): TextConfig => {
+    return {
+        text: localization.t(phrases[`${text}` as keyof typeof phrases]),
+        style: new TextStyle({
+            fontFamily: ['solomon-sans-black'],
+            fontSize: 70,
+            wordWrap: true,
+            wordWrapWidth: 600,
+            fill: '#000000',
+            align: 'center',
+            // strokeThickness: 2,
         }),
     };
 };
@@ -42,18 +58,25 @@ export const getTutorialTextConfig = (text: string): TextConfig => {
 export const getTraditionalCtaPrimaryButtonUpTextConfig = (): TextConfig => {
     return {
         text: localization.t(phrases[getParams().ctaPrimaryBtnText.value as keyof typeof phrases]),
-        y: -3,
+        // y: -3,
         style: new TextStyle({
-            fontFamily: fonts.KGPrimaryPenmanship,
-            fontSize: 55,
+            fontFamily: ['solomon-sans-black'],
+            fontSize: 70,
+            fill: '#000000',
+            strokeThickness: 5,
+        }),
+    };
+};
+
+export const getCtaLabelTextConfig = (): TextConfig => {
+    return {
+        text: localization.t(phrases['Make your own beat']),
+        // y: -3,
+        style: new TextStyle({
+            fontFamily: fonts['solomon-sans-black'],
+            fontSize: 60,
             fill: '#ffffff',
-            dropShadow: true,
-            dropShadowAngle: 90,
-            dropShadowDistance: 2,
-            dropShadowBlur: 5,
-            dropShadowColor: '#159b1c',
-            stroke: '#159b1c',
-            strokeThickness: 4,
+            strokeThickness: 10,
         }),
     };
 };

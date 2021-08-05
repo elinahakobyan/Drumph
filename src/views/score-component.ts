@@ -2,14 +2,13 @@ import gsap from 'gsap/gsap-core';
 import { NineSlicePlane, Texture } from 'pixi.js';
 import { getScoreNextLevelButtonConfig } from '../constants/configs/button-configs';
 import { getScoreNumberConfig, getScorePopUpTextConfig } from '../constants/configs/text-configs';
-import { store } from '../models/store';
 import { makeText } from '../utils';
 import { Button } from '../utils/button';
 
 export class ScoreComponent extends NineSlicePlane {
     private _bg: NineSliceConfig;
 
-    public constructor() {
+    public constructor(private _score: number) {
         super(Texture.from('play/score_bg.png'), 24, 24, 24, 24);
         this.width = 800;
         this.height = 350;
@@ -30,7 +29,7 @@ export class ScoreComponent extends NineSlicePlane {
 
     private _buildText(): void {
         const text = makeText(getScorePopUpTextConfig());
-        const scoreNumbers = makeText(getScoreNumberConfig(store.play.board.score));
+        const scoreNumbers = makeText(getScoreNumberConfig(this._score));
         scoreNumbers.position.set(420, 190);
         text.position.set(420, 100);
         this.addChild(text);

@@ -28,14 +28,13 @@ export const getForegroundGridLandscapeConfig = (): ICellConfig => {
                 name: 'sound',
                 bounds: { x: 0, y: 0, height: 0.3, width: (1 - boardW) / 2 },
                 padding: { y: 0.2, width: 0.7, x: 0.2 },
-                align: CellAlign.leftCenter,
+                // align: CellAlign.leftCenter,
             },
             {
-                debug: { color: 0xd95027 },
                 name: 'tutorial',
                 bounds: {
                     x: (1 - boardW) / 2,
-                    y: logoH + progressBarH + boardH * 0.05,
+                    y: logoH + progressBarH,
                     width: boardW,
                     height: boardH * 0.5,
                 },
@@ -43,6 +42,16 @@ export const getForegroundGridLandscapeConfig = (): ICellConfig => {
             {
                 name: 'cta_logo',
                 bounds: { x: 0.65, y: 0.17, width: 0.33, height: 0.3 },
+            },
+            {
+                // debug: { color: 0x2fc900 },
+                name: 'score',
+                bounds: {
+                    x: (1 - boardW) / 2,
+                    y: logoH + progressBarH + boardH * 0.05,
+                    width: boardW,
+                    height: boardH * 0.5,
+                },
             },
         ],
     };
@@ -79,6 +88,7 @@ export const getForegroundGridPortraitConfig = (): ICellConfig => {
         name: 'foreground',
         cells: [
             {
+                debug: { color: 0xd95027 },
                 name: 'logo',
                 bounds: { x: (1 - w) / 2, y: 0.15, height: logoH, width: w },
                 align: CellAlign.rightTop,
@@ -92,12 +102,17 @@ export const getForegroundGridPortraitConfig = (): ICellConfig => {
             {
                 debug: { color: 0xd95027 },
                 name: 'tutorial',
-                bounds: { x: (1 - boardW) / 2, y: logoH + 0.25 + progressBarH, height: 0.3 },
+                bounds: { x: (1 - w) / 2, y: logoH + 0.28 + progressBarH, height: 0.25, width: w },
             },
             {
                 name: 'cta_logo',
                 bounds: { x: 0, y: 0.1, width: 1, height: 0.2 },
                 padding: 0.05,
+            },
+            {
+                debug: { color: 0x2fc900 },
+                name: 'score',
+                bounds: { x: (1 - w) / 2, y: logoH + 0.28 + progressBarH, height: 0.25, width: w },
             },
         ],
     };
