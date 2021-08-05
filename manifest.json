@@ -19,24 +19,7 @@
                 "active": 0
             }
         },
-        "module": {
-            "cta": {
-                "description": "CTA style",
-                "options": {
-                    "traditional": {
-                        "path": "src/views/cta-traditional",
-                        "description": "Traditional CTA",
-                        "assets": []
-                    },
-                    "starRating": {
-                        "path": "src/views/cta-star-rating",
-                        "description": "Star Rating CTA",
-                        "assets": ["ui/star_full.png", "ui/star_half.png", "ui/cta_icon.png"]
-                    }
-                },
-                "active": "traditional"
-            }
-        }
+        "module": {}
     },
     "params": {
         "tutorial": {
@@ -67,7 +50,7 @@
             "description": "The entire CTA screen is clickable to the App store. When false, only CTA button is clickable."
         },
         "ctaPrimaryBtnText": {
-            "value": "Continue",
+            "value": "Play Now",
             "description": "Change CTA Primary button text.",
             "options": ["Play Now", "Continue", "Download Now", "PLAY NOW"]
         },

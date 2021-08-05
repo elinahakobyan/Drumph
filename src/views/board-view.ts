@@ -8,13 +8,13 @@ import { BoardViewEvent } from '../events/view';
 import { BoardState, BoardStatus } from '../models/board-model';
 import { PadModel, PadState } from '../models/pads/pad-model';
 import { delayRunnable } from '../utils';
-import { PadComponent } from './pad/pad-view';
+import { PadView } from './pad/pad-view';
 
 export class BoardView extends Container {
     private _bg: NineSlicePlane;
     private _icon: DisplayObject;
-    private _pads: PadComponent[];
-    private _patternPads: PadComponent[] = [];
+    private _pads: PadView[];
+    private _patternPads: PadView[] = [];
     private _padsInteractive = false;
     private _gr: Graphics;
 
@@ -27,7 +27,7 @@ export class BoardView extends Container {
         lego.event.on(BoardModelEvent.stateUpdate, this._onBoardStateUpdate, this);
         lego.event.on(PadModelEvent.stateUpdate, this._onPadStateUpdate, this);
         lego.event.on(BoardModelEvent.statusUpdate, this._onBoardStatusUpdate, this);
-        // lego.event.on(BoardModelEvent.accuracyUpdate, this._onBoardAccuracyUpdate, this);
+        lego.event.on(PadModelEvent.accuracyUpdate, this._onPadAccuracyUpdate, this);
 
         lego.event.on(BoardModelEvent.scoreUpdate, this._onBoardScoreUpdate, this);
 
@@ -101,8 +101,9 @@ export class BoardView extends Container {
         }
     }
 
-    private _onBoardAccuracyUpdate(newValue: string, oldValue: string, uuid: string): void {
-        console.warn(newValue, uuid);
+    private _onPadAccuracyUpdate(newValue: string, oldValue: string, uuid: string): void {
+        console.warn(newValue, 'commit');
+        this._getPad(uuid).showPrompt(newValue);
     }
 
     private _build(): void {
@@ -118,7 +119,7 @@ export class BoardView extends Container {
 
         padsConfig.forEach((padConfig) => {
             const { row, col } = padConfig.config;
-            const pad = new PadComponent(padConfig);
+            const pad = new PadView(padConfig);
             pad.position.set(col * (width + cellsGap), row * (height + cellsGap));
             this._pads.push(pad);
             // pad.block();
@@ -134,13 +135,13 @@ export class BoardView extends Container {
 
     private _onLevelPadsUpdate(levelPattern: string[]): void {
         levelPattern.forEach((patternPad) => {
-            const pad = <PadComponent>this._getPad(patternPad);
+            const pad = <PadView>this._getPad(patternPad);
             pad ? pad.deactivate() : false;
         });
         ///
     }
 
-    private _onBoardScoreUpdate(score: number, oldScore: number): void {
+    private _onBoardScoreUpdate(score: number, oldScore: number, uuid: string): void {
         console.warn(score, 'score', oldScore);
 
         ///
@@ -184,7 +185,7 @@ export class BoardView extends Container {
         ///
     }
 
-    private _getPad(name: string): PadComponent {
+    private _getPad(name: string): PadView {
         const cell = this._pads.find((pad) => pad.uuid === name);
         // console.warn(cell);
 

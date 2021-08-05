@@ -7,13 +7,15 @@ export const getTraditionalCtaGridLandscapeConfig = (): ICellConfig => {
         cells: [
             {
                 name: 'button',
-                bounds: { x: 0.55, y: 0.57, width: 0.43, height: 0.2 },
-                align: CellAlign.rightCenter,
+                bounds: { x: 0.5, y: 0.57, width: 0.48, height: 0.3 },
+                padding: { x: 0.04 },
+                align: CellAlign.leftCenter,
             },
             {
                 name: 'label',
-                bounds: { x: 0.6, y: 0.5, width: 0.37, height: 0.07 },
-                align: CellAlign.rightCenter,
+                bounds: { x: 0.5, y: 0.5, height: 0.07, width: 0.48 },
+                padding: 0.03,
+                align: CellAlign.leftCenter,
             },
             {
                 name: 'bg',

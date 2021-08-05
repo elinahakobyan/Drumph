@@ -32,7 +32,7 @@ export abstract class AbstractCTAView extends PixiGrid {
     private _onPlayableStateUpdate(status: PlayableState): void {
         switch (status) {
             case PlayableState.play:
-                this.removeChildren();
+                // this.removeChildren();
                 break;
             case PlayableState.cta:
                 this.build();

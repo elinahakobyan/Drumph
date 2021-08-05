@@ -1,4 +1,5 @@
 import { lego } from '@armathai/lego';
+import gsap from 'gsap/gsap-core';
 import { Sprite } from 'pixi.js';
 import {
     getCellBgSpriteConfig,
@@ -6,12 +7,13 @@ import {
     getHintImageSpriteConfig,
     getPadGlowImageSpriteConfig,
 } from '../../constants/configs/sprite-configs';
+import { getPromptTextConfig } from '../../constants/configs/text-configs';
 import { PadViewEvent } from '../../events/view';
 import { PadModel } from '../../models/pads/pad-model';
-import { getParams, makeSprite } from '../../utils';
+import { getParams, lp, makeSprite, makeText } from '../../utils';
 import { Container } from '../../utils/container';
 
-export class PadComponent extends Container {
+export class PadView extends Container {
     private _blocker: Sprite;
     private _pad: Sprite;
     private _hint: Sprite;
@@ -55,6 +57,20 @@ export class PadComponent extends Container {
         value ? this._addListener() : this._removeListener();
         // this._blocker.visible = true;
         // this.interactive = false;
+    }
+
+    public showPrompt(promptString: string): void {
+        if (promptString) {
+            const commitText = makeText(getPromptTextConfig(promptString));
+            commitText.rotation = lp(0, -Math.PI * 0.5);
+            this.addChild(commitText);
+            commitText.alpha = 0;
+            gsap.from(commitText, {
+                alpha: 1,
+                duration: 0.6,
+                ease: 'Cubic.InOut',
+            });
+        }
     }
 
     public showHint(): void {

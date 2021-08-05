@@ -50,7 +50,22 @@
     "Next": {
         "en": "Next"
     },
+    "Try again": {
+        "en": "Try again"
+    },
     "Make your own beat": {
         "en": "Make your own beat"
+    },
+    "Good": {
+        "en": "Good"
+    },
+    "Perfect": {
+        "en": "Perfect"
+    },
+    "Bad": {
+        "en": "Bad"
+    },
+    "Miss": {
+        "en": "Miss"
     }
 }

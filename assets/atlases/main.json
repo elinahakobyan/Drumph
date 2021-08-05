@@ -936,7 +936,7 @@
         "y": 0.5
       }
     },
-    "ui/ui/star_full.png": {
+    "ui/star_full.png": {
       "frame": {
         "x": 624,
         "y": 262,
@@ -960,7 +960,7 @@
         "y": 0.5
       }
     },
-    "ui/ui/star_half.png": {
+    "ui/star_half.png": {
       "frame": {
         "x": 624,
         "y": 305,
@@ -1410,6 +1410,54 @@
       "sourceSize": {
         "w": 115,
         "h": 98
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "ui/ui/star_full.png": {
+      "frame": {
+        "x": 624,
+        "y": 262,
+        "w": 39,
+        "h": 37
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 1,
+        "w": 39,
+        "h": 37
+      },
+      "sourceSize": {
+        "w": 39,
+        "h": 38
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "ui/ui/star_half.png": {
+      "frame": {
+        "x": 624,
+        "y": 305,
+        "w": 38,
+        "h": 37
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 1,
+        "y": 1,
+        "w": 38,
+        "h": 37
+      },
+      "sourceSize": {
+        "w": 39,
+        "h": 38
       },
       "pivot": {
         "x": 0.5,

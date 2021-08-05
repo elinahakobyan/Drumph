@@ -9,6 +9,10 @@ export const phrases = {
     cta_btn_persistent_text: 'cta_btn_persistent_text',
     'Play Now': 'Play Now',
     Retry: 'Retry',
+    Good: 'Good',
+    Perfect: 'Perfect',
+    Bad: 'Bad',
+    Miss: 'Miss',
     'PLAY NOW': 'PLAY NOW',
     'Download Now': 'Download Now',
     Continue: 'Continue',
@@ -18,5 +22,6 @@ export const phrases = {
     'TAP TO REPEAT THE RHYTHM!': 'TAP TO REPEAT THE RHYTHM!',
     'your score': 'your score',
     Next: 'Next',
+    'Try again': 'Try again',
     'Make your own beat': 'Make your own beat',
 };

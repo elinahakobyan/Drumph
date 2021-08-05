@@ -11,10 +11,10 @@ export enum PadState {
 
 export enum BoardPadClickStatus {
     unknown = 'unknown',
-    perfect = 'perfect',
-    good = 'good',
-    bad = 'bad',
-    miss = 'miss',
+    perfect = 'Perfect',
+    good = 'Good',
+    bad = 'Bad',
+    miss = 'Miss',
 }
 
 export enum PadStatus {

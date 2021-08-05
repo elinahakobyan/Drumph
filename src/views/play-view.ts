@@ -1,8 +1,8 @@
 import { lego } from '@armathai/lego';
 import { ICellConfig, PixiGrid } from '@armathai/pixi-grid';
 import { getPlayGridConfig } from '../constants/configs/grid-configs';
-import { BoardModelEvent, PlayModelEvent } from '../events/model';
-import { BoardModel, BoardState } from '../models/board-model';
+import { PlayModelEvent } from '../events/model';
+import { BoardModel } from '../models/board-model';
 import { lp } from '../utils';
 import { BoardView } from './board-view';
 
@@ -13,7 +13,6 @@ export class PlayView extends PixiGrid {
         super();
         this.name = 'PlayView';
         lego.event.on(PlayModelEvent.boardUpdate, this._onBoardUpdate, this);
-        lego.event.on(BoardModelEvent.stateUpdate, this._onBoardStateUpdate, this);
     }
 
     public rebuild(config: ICellConfig): void {
@@ -31,16 +30,6 @@ export class PlayView extends PixiGrid {
     // BOARD
     private _onBoardUpdate(board: BoardModel): void {
         board ? this._buildBoard() : this._destroyBoard();
-    }
-
-    private _onBoardStateUpdate(state: BoardState): void {
-        switch (state) {
-            case BoardState.levelComplete:
-                // this._buildScoreComponent();
-                break;
-            default:
-                break;
-        }
     }
 
     private _buildBoard(): void {

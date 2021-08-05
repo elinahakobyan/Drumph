@@ -65,8 +65,8 @@ export const textures = {
     star: 'star.png',
     'pad/pad_bg': 'pad/pad_bg.png',
     'particles/confetti/06': 'particles/confetti/06.png',
-    'ui/ui/star_full': 'ui/ui/star_full.png',
-    'ui/ui/star_half': 'ui/ui/star_half.png',
+    'ui/star_full': 'ui/star_full.png',
+    'ui/star_half': 'ui/star_half.png',
     'particles/confetti/05': 'particles/confetti/05.png',
     'particles/confetti/01': 'particles/confetti/01.png',
     'ui/fill': 'ui/fill.png',
@@ -85,4 +85,6 @@ export const textures = {
     'ui/ui/sound_off_New': 'ui/ui/sound_off_New.png',
     'ui/ui/sound_on_Black': 'ui/ui/sound_on_Black.png',
     'ui/ui/sound_on_New': 'ui/ui/sound_on_New.png',
+    'ui/ui/star_full': 'ui/ui/star_full.png',
+    'ui/ui/star_half': 'ui/ui/star_half.png',
 };

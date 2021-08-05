@@ -49,8 +49,8 @@ export const getTraditionalCtaPrimaryButtonUpPatchesConfig = (): NineSliceConfig
     return {
         texture: textures['ui/cta_btn'],
         data: [43, 20, 42, 20],
-        width: 390,
-        height: 90,
+        width: 520,
+        height: 120,
     };
 };
 

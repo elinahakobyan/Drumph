@@ -53,8 +53,8 @@ export class MainView extends PixiGrid {
         // const { CTAView } = require(__CTA_MODULE__);
         this.setChild('main', new BackgroundView());
         this.setChild('main', new PlayView());
-        this.setChild('main', new UIView());
         this.setChild('main', (this._ctaView = new CTAView()));
+        this.setChild('main', new UIView());
         this.setChild('main', new ForegroundView());
     }
 

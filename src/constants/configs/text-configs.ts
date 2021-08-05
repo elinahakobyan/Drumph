@@ -25,15 +25,18 @@ export const getTutorialTextConfig = (text: string): TextConfig => {
         text: localization.t(phrases[`${text}` as keyof typeof phrases]),
         style: new TextStyle({
             fontFamily: fonts['solomon-sans-black'],
-            fontSize: 70,
+            fontSize: 77,
             fill: '#ffffff',
             align: 'center',
-            strokeThickness: 8,
+            strokeThickness: 12,
             stroke: '#3eb4ff',
             dropShadow: true,
-
-            dropShadowColor: '#078dff',
-            dropShadowDistance: 16,
+            dropShadowAngle: Math.PI,
+            dropShadowDistance: 3.14,
+            dropShadowBlur: 45,
+            dropShadowColor: '#3eb4ff',
+            // dropShadowColor: '#078dff',
+            // dropShadowDistance: 16,
             wordWrap: true,
             wordWrapWidth: 600,
         }),
@@ -58,12 +61,26 @@ export const getTutorialTextWithBgConfig = (text: string): TextConfig => {
 export const getTraditionalCtaPrimaryButtonUpTextConfig = (): TextConfig => {
     return {
         text: localization.t(phrases[getParams().ctaPrimaryBtnText.value as keyof typeof phrases]),
-        // y: -3,
         style: new TextStyle({
             fontFamily: ['solomon-sans-black'],
-            fontSize: 70,
+            fontSize: 100,
             fill: '#000000',
             strokeThickness: 5,
+        }),
+    };
+};
+
+export const getPromptTextConfig = (text: string): TextConfig => {
+    console.warn(text);
+
+    return {
+        text: localization.t(phrases[`${text}` as keyof typeof phrases]),
+        // y: -3,
+        style: new TextStyle({
+            fontFamily: fonts['solomon-sans-black'],
+            fontSize: 60,
+            fill: '#ffffff',
+            strokeThickness: 10,
         }),
     };
 };
@@ -74,9 +91,9 @@ export const getCtaLabelTextConfig = (): TextConfig => {
         // y: -3,
         style: new TextStyle({
             fontFamily: fonts['solomon-sans-black'],
-            fontSize: 60,
+            fontSize: 70,
             fill: '#ffffff',
-            strokeThickness: 10,
+            // strokeThickness: 10,
         }),
     };
 };
@@ -105,9 +122,9 @@ export const getScoreNumberConfig = (score: number): TextConfig => {
     };
 };
 
-export const getScoreNextLevelButtonConfigUpTextConfig = (): TextConfig => {
+export const getScoreButtonConfigUpTextConfig = (text: string): TextConfig => {
     return {
-        text: localization.t(phrases['Next' as keyof typeof phrases]),
+        text: localization.t(phrases[`${text}` as keyof typeof phrases]),
         // y: -3,
         style: new TextStyle({
             fontFamily: fonts['solomon-sans-black'],

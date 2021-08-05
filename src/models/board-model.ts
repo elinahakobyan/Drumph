@@ -187,7 +187,6 @@ export class BoardModel extends ObservableModel {
 
     private _destroyScore(): void {
         console.warn('destroyScore');
-
         this._score = null;
     }
 
@@ -310,9 +309,9 @@ export class BoardModel extends ObservableModel {
 
     private _onTimerUpdate(): void {
         this._timer.entryTimer += 4 * timerDellay;
+        this._entryTimer = this._timer.entryTimer;
         if (this._timer.entryTimer >= this._timer.end || this._timer.entryTimer + timerDellay > this._timer.end) {
             removeRunnable(this._timerPRunnable);
-
             return;
         }
         // this._timer.entryTimer += timerDellay;

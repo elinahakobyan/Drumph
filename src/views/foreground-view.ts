@@ -20,7 +20,7 @@ export class ForegroundView extends PixiGrid {
     private _sound: SoundToggleComponent;
     private _hint: HintComponent;
     private _tutorial: TutorialView;
-    private _score: NineSlicePlane;
+    private _scorePopUp: NineSlicePlane;
 
     public constructor() {
         super();
@@ -64,7 +64,6 @@ export class ForegroundView extends PixiGrid {
     }
 
     private _buildSoundToggle(): void {
-        console.warn('buildSoundToggle');
         this.setChild('sound', (this._sound = new SoundToggleComponent()));
     }
 
@@ -95,8 +94,6 @@ export class ForegroundView extends PixiGrid {
     }
 
     private _destroyTutorial(): void {
-        console.warn('destroyTutorial');
-
         this._tutorial.destroy();
     }
 
@@ -104,25 +101,25 @@ export class ForegroundView extends PixiGrid {
 
     private _buildScoreComponent(scoreNumber: number): void {
         const score = new ScoreComponent(scoreNumber);
-        score.on('scoreBtnClick', () => {
-            lego.event.emit(PlayViewEvent.onScoreBtnClick);
+        score.on('scoreBtnClick', (text) => {
+            lego.event.emit(PlayViewEvent.onScoreBtnClick, text);
             this._hideScore();
         });
-        this.setChild('score', (this._score = score));
+        this.setChild('score', (this._scorePopUp = score));
         this._showScore();
     }
 
     private _showScore(): void {
-        const posY = this._score.position.y;
-        this._score.position.y = 800;
-        gsap.to(this._score.position, {
+        const posY = this._scorePopUp.position.y;
+        this._scorePopUp.position.y = 800;
+        gsap.to(this._scorePopUp.position, {
             y: posY,
             duration: 0.8,
         });
     }
 
     private _hideScore(): void {
-        gsap.to(this._score.position, {
+        gsap.to(this._scorePopUp.position, {
             y: -800,
             duration: 0.8,
         }).eventCallback('onComplete', this._destroyScoreComponent.bind(this));
@@ -130,7 +127,7 @@ export class ForegroundView extends PixiGrid {
 
     private _onBoardScoreUpdate(score: number): void {
         if (score) {
-            if (score > 1) {
+            if (score > 1 || score === 0) {
                 this._buildScoreComponent(score);
             }
         } else {
@@ -139,9 +136,7 @@ export class ForegroundView extends PixiGrid {
     }
 
     private _destroyScoreComponent(): void {
-        console.warn('hasa,scoreComponent');
-
-        this._score.destroy();
-        this._score = null;
+        this._scorePopUp.destroy();
+        this._scorePopUp = null;
     }
 }

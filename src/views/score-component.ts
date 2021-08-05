@@ -37,12 +37,13 @@ export class ScoreComponent extends NineSlicePlane {
     }
 
     private _buildBtn(): void {
-        const btn = new Button(getScoreNextLevelButtonConfig());
+        const text = this._score ? 'Next' : 'Try again';
+        const btn = new Button(getScoreNextLevelButtonConfig(text));
         btn.position.set(55, 260);
         btn.interactive = true;
         btn.on('pointerdown', () => {
             btn.alpha = 0.56;
-            this.emit('scoreBtnClick', btn);
+            this.emit('scoreBtnClick', text);
         });
         this.addChild(btn);
     }
