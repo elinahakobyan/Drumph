@@ -25,10 +25,11 @@ export const getForegroundGridLandscapeConfig = (): ICellConfig => {
                 align: CellAlign.rightTop,
             },
             {
+                debug: { color: 0xd95027 },
                 name: 'sound',
                 bounds: { x: 0, y: 0, height: 0.3, width: (1 - boardW) / 2 },
                 padding: { y: 0.2, width: 0.7, x: 0.2 },
-                align: CellAlign.leftCenter,
+                // align: CellAlign.leftCenter,
             },
             {
                 debug: { color: 0xd95027 },

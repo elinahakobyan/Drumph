@@ -38,7 +38,7 @@ export class SoundObservant {
     }
 
     private _onSoundMuteUpdate(mute: boolean): void {
-        // mute ? this._mute() : this._unmute();
+        mute ? this._mute() : this._unmute();
     }
 
     private _unmute(): void {

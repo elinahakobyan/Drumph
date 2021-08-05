@@ -12,6 +12,7 @@ import { PlayViewEvent } from '../events/view';
 import { HintModel } from '../models/hint-model';
 import { PlayableState } from '../models/playable-model';
 import { TutorialModel } from '../models/tutorial-model';
+import { getParams } from '../utils';
 import { ScoreComponent } from './score-component';
 
 export class ForegroundView extends PixiGrid {
@@ -54,6 +55,7 @@ export class ForegroundView extends PixiGrid {
 
     private _buildLogo(): void {
         this.setChild('logo', (this._logo = new LogoComponent()));
+        getParams().logo.value ? (this._logo.visible = true) : (this._logo.visible = false);
     }
 
     // SOUND
@@ -62,6 +64,7 @@ export class ForegroundView extends PixiGrid {
     }
 
     private _buildSoundToggle(): void {
+        console.warn('buildSoundToggle');
         this.setChild('sound', (this._sound = new SoundToggleComponent()));
     }
 
@@ -92,6 +95,8 @@ export class ForegroundView extends PixiGrid {
     }
 
     private _destroyTutorial(): void {
+        console.warn('destroyTutorial');
+
         this._tutorial.destroy();
     }
 
@@ -124,12 +129,18 @@ export class ForegroundView extends PixiGrid {
     }
 
     private _onBoardScoreUpdate(score: number): void {
-        if (score > 1) {
-            this._buildScoreComponent(score);
+        if (score) {
+            if (score > 1) {
+                this._buildScoreComponent(score);
+            }
+        } else {
+            this._destroyScoreComponent();
         }
     }
 
     private _destroyScoreComponent(): void {
+        console.warn('hasa,scoreComponent');
+
         this._score.destroy();
         this._score = null;
     }

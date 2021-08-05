@@ -75,6 +75,14 @@
             "value": true,
             "description": "If true, sound is played."
         },
+        "soundIcon": {
+            "value": true,
+            "description": "When false, the sound icon is not displayed",
+            "dependsOn": {
+                "name": "sound",
+                "value": true
+            }
+        },
         "hint": {
             "value": true,
             "description": "Bool to trigger nagging/arrow, param dependency example"
@@ -106,6 +114,19 @@
             "value": "Black",
             "description": "Determines the color of the background.",
             "options": ["Black", "Dark Red", "Dark Blue", "Dark Purple", "Dark Gray"]
+        },
+        "logo": {
+            "value": true,
+            "description": "When true, have logo visible. When false, do not have logo visible."
+        },
+        "sound_icon_design": {
+            "value": "Black",
+            "description": "When Black, have current sound icon. When New, have a better designed sound icon appear (use best judgement for selecting this icon).",
+            "options": ["Black", "New"]
+        },
+        "2nd_bpm": {
+            "value": true,
+            "description": "When true, slow the first beat down (should play at half the speed it currently is)."
         }
     },
     "size": {

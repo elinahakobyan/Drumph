@@ -113,6 +113,10 @@ export class BoardModel extends ObservableModel {
         this._createLevelPattern();
     }
 
+    public destroy(): void {
+        this._score && this._destroyScore();
+    }
+
     ///load new level
     public onLevelUpdate(level = 1): void {
         this._level = level;
@@ -175,6 +179,12 @@ export class BoardModel extends ObservableModel {
     ///return padModel by name or id
     private _getPads(padsUUid: string): PadModel {
         return this._pads.get(padsUUid);
+    }
+
+    private _destroyScore(): void {
+        console.warn('destroyScore');
+
+        this._score = null;
     }
 
     //update progress or remove updateing loop
@@ -295,7 +305,7 @@ export class BoardModel extends ObservableModel {
 
     private _onTimerUpdate(): void {
         this._timer.entryTimer += timerDellay;
-        console.warn(this._timer.entryTimer, this._timer.end);
+        // console.warn(this._timer.entryTimer, this._timer.end);
         if (this._timer.entryTimer >= this._timer.end || this._timer.entryTimer + timerDellay > this._timer.end) {
             removeRunnable(this._timerPRunnable);
 
