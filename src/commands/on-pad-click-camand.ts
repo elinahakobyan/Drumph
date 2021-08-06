@@ -3,6 +3,7 @@ import { boardProgressIsNullGuard } from '../guards/board-progres-is-null-guard'
 import { boardStateLevelCompleteGuard } from '../guards/board-state-level-camplete-guard';
 import { boardStatePlayGuard } from '../guards/board-state-play-guard';
 import { tutorialGuard } from '../guards/tutorial-guard';
+import { store } from '../models/store';
 import { completeTutorialSequenceCommand } from './complete-tutorial-sequence-command';
 import { onCheckPlayLevelCommand } from './on-check-play-level-camand ';
 import { onTutorialClickCommand } from './on-tutorial-click-command';
@@ -17,7 +18,10 @@ export const onPadClickCommand = (padId: string): void => {
         // .guard(boardStatePlayGuard)
         // .execute(showAnimationCommand)
 
-        .guard(tutorialGuard)
+        .guard(
+            tutorialGuard,
+            () => store.playable.tutorial.currentIndex === 1 || store.playable.tutorial.currentIndex === 3,
+        )
         .execute(completeTutorialSequenceCommand)
 
         .payload(padId)
@@ -25,7 +29,7 @@ export const onPadClickCommand = (padId: string): void => {
         .execute(onCheckPlayLevelCommand)
         // //
         .payload(padId)
-        .guard(boardStatePlayGuard, boardProgressIsNullGuard)
+        .guard(boardStatePlayGuard) // boardProgressIsNullGuard // ToDo: CHECK HERE
         .execute(onUpdatePlayLevelCommand, showAnimationCommand)
 
         //
