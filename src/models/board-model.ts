@@ -116,7 +116,6 @@ export class BoardModel extends ObservableModel {
 
     ///load new level
     public onLevelUpdate(level = 1): void {
-        this.rebuildLevel();
         this._progress = null;
         this._level = level;
         this._createLevelPattern();
@@ -219,6 +218,8 @@ export class BoardModel extends ObservableModel {
 
         const entryTimer = this._entryTimer;
         const pointers = this._timer.pointers;
+        console.warn(pointers);
+        return;
         for (let i = 0; i < pointers.length; i++) {
             //
             if (padUUid === this._getPads(pointers[i].padUUid).uuid) {
@@ -226,6 +227,8 @@ export class BoardModel extends ObservableModel {
                     this._levelConstInterval >= pointers[i].position - entryTimer &&
                     pointers[i].position - entryTimer >= 0
                 ) {
+                    console.warn(pointers[i].position, entryTimer);
+
                     this._isEntryTruePad = true;
                     this._checkScore(pointers[i].position - entryTimer);
                     this._boardPadClickStatusUpdate(
@@ -345,7 +348,7 @@ export class BoardModel extends ObservableModel {
         for (let index = 1; index <= this._levelPattern.length; index++) {
             this._timer.pointers.push({
                 padUUid: this._levelPattern[index - 1],
-                position: (index - 1) * this._levelConstInterval,
+                position: Math.round(4 * (index - 1) * this._levelConstInterval * 100) / 100,
             });
         }
 
