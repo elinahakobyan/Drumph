@@ -49,7 +49,6 @@ export class PadView extends Container {
     }
 
     public deactivate(): void {
-        console.warn('hasa');
         this._blocker.visible = false;
         this._pad.interactive = false;
     }

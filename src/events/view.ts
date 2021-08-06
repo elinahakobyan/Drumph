@@ -30,12 +30,6 @@ export enum TutorialViewEvent {
     hideComplete = 'TutorialViewEventHideComplete',
 }
 
-export enum ProgressUpdateViewEvent {
-    update = 'ProgressUpdateViewEventUpdate',
-    start = 'ProgressUpdateViewEventStart',
-    finish = 'ProgressUpdateViewEventFinish',
-}
-
 export enum PlayViewEvent {
     onScoreBtnClick = 'PlayViewEventOnScoreBtnClick',
 }

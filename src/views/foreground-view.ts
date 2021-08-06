@@ -21,6 +21,7 @@ export class ForegroundView extends PixiGrid {
     private _hint: HintComponent;
     private _tutorial: TutorialView;
     private _scorePopUp: NineSlicePlane;
+    private _score: number;
 
     public constructor() {
         super();
@@ -102,8 +103,8 @@ export class ForegroundView extends PixiGrid {
     private _buildScoreComponent(scoreNumber: number): void {
         const score = new ScoreComponent(scoreNumber);
         score.on('scoreBtnClick', (text) => {
-            lego.event.emit(PlayViewEvent.onScoreBtnClick, text);
             this._hideScore();
+            lego.event.emit(PlayViewEvent.onScoreBtnClick, text);
         });
         this.setChild('score', (this._scorePopUp = score));
         this._showScore();
@@ -122,16 +123,14 @@ export class ForegroundView extends PixiGrid {
         gsap.to(this._scorePopUp.position, {
             y: -800,
             duration: 0.8,
-        }).eventCallback('onComplete', this._destroyScoreComponent.bind(this));
+        });
+        // }).eventCallback('onComplete', this._destroyScoreComponent.bind(this));
     }
 
     private _onBoardScoreUpdate(score: number): void {
-        if (score) {
-            if (score > 1 || score === 0) {
-                this._buildScoreComponent(score);
-            }
-        } else {
-            this._destroyScoreComponent();
+        // score ? true : this._destroyScoreComponent();
+        if (score > 1 || score == 0) {
+            this._buildScoreComponent(score);
         }
     }
 

@@ -16,7 +16,7 @@ export class AgressiveCTAView extends PixiGrid {
         return null;
     }
 
-    protected build(blockerAlpha?: number): void {
+    protected build(): void {
         //
     }
 

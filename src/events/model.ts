@@ -1,4 +1,5 @@
 export enum PadModelEvent {
+    indexUpdate = 'PadModelIndexUpdate',
     accuracyUpdate = 'PadModelAccuracyUpdate',
     stateUpdate = 'PadModelStateUpdate',
     statusUpdate = 'PadModelStatusUpdate',

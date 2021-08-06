@@ -15,14 +15,15 @@ export const initializeModelsCommand = (): void => {
     lego.command
 
         .execute(initializePlayerModelCommand)
+
+        .guard(tutorialGuard)
+        .execute(initializeTutorialModelCommand)
+
         .execute(initializePlayModelCommand)
         .execute(initializeCtaModelCommand)
 
         .guard(hintGuard)
         .execute(initializeHintModelCommand)
-
-        .guard(tutorialGuard)
-        .execute(initializeTutorialModelCommand)
 
         .guard(persistentCtaGuard)
         .execute(initializePersistentCtaModelCommand)

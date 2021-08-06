@@ -32,19 +32,12 @@ export class BoardView extends Container {
         lego.event.on(BoardModelEvent.scoreUpdate, this._onBoardScoreUpdate, this);
 
         this._build();
-
-        // lego.event.on(BoardModelEvent.levelPatternUpdate, this._onLevelPadsUpdate, this);
-        // lego.event.on(BoardModelEvent.update, this._onUpdateBoard, this);
-        // lego.event.on(ProgressUpdateViewEvent.finish, this._onCompleteUpdateImitation, this);
-        // lego.event.on(ProgressUpdateViewEvent.start, this._onCompleteUpdateImitation, this);
     }
 
     public getBounds(): Rectangle {
         const { x, y, width, height } = this._gr.getBounds();
 
         return new Rectangle(x, y, width, height);
-
-        // return new Rectangle(0, 0, 4 * cellSize.width + 3 * cellsGap, 3 * cellSize.height + 2 * cellsGap);
     }
 
     public onPadsClick(): void {
@@ -63,7 +56,7 @@ export class BoardView extends Container {
         });
     }
 
-    private _onBoardStateUpdate(value: BoardState, oldValue: BoardState): void {
+    private _onBoardStateUpdate(value: BoardState): void {
         //
         // console.warn('BoardState', value, oldValue);
         switch (value) {
@@ -77,7 +70,7 @@ export class BoardView extends Container {
                 this.offPadsClick();
                 break;
             case BoardState.levelComplete:
-                this.onPadsClick();
+                // this.onPadsClick();
 
                 break;
 
@@ -85,12 +78,12 @@ export class BoardView extends Container {
                 break;
         }
     }
-    private _onBoardStatusUpdate(value: BoardStatus, oldValue: BoardStatus): void {
+    private _onBoardStatusUpdate(value: BoardStatus): void {
         //
         // console.warn('BoardStatus', value, oldValue);
         switch (value) {
             case BoardStatus.start:
-                this.onPadsClick();
+                // this.onPadsClick();
                 break;
             case BoardStatus.finish:
                 // this.offPadsClick();
@@ -102,7 +95,6 @@ export class BoardView extends Container {
     }
 
     private _onPadAccuracyUpdate(newValue: string, oldValue: string, uuid: string): void {
-        console.warn(newValue, 'commit');
         this._getPad(uuid).showPrompt(newValue);
     }
 

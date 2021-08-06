@@ -41,7 +41,7 @@ export class ScoreComponent extends NineSlicePlane {
         const btn = new Button(getScoreNextLevelButtonConfig(text));
         btn.position.set(55, 260);
         btn.interactive = true;
-        btn.on('pointerdown', () => {
+        btn.on('pointerup', () => {
             btn.alpha = 0.56;
             this.emit('scoreBtnClick', btn);
         });

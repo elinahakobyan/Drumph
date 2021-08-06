@@ -5,6 +5,7 @@ import { PadModelEvent, SoundModelEvent } from '../events/model';
 import { PlayableEvent } from '../events/playable';
 import { PadViewEvent } from '../events/view';
 import { PadStatus } from '../models/pads/pad-model';
+import { store } from '../models/store';
 import { getPlayable, postRunnable } from '../utils';
 
 export class SoundObservant {
@@ -62,19 +63,18 @@ export class SoundObservant {
     }
 
     private _onPadClick(padUUid: string): void {
-        ///
-        sound.play(padUUid);
-        // this._play('padUUid');
+        const { index } = store.play.board.getPadByUuid(padUUid);
+
+        sound.play(`${index + 1}`);
     }
 
     private _onPlayImitationSound(newValue: PadStatus, oldValue: PadStatus, uuid: string): void {
-        ///
+        const { index } = store.play.board.getPadByUuid(uuid);
 
         if (newValue === PadStatus.play) {
             sound.stopAll();
-            sound.play(uuid);
+            sound.play(`${index + 1}`);
         }
-        // this._play('padUUid');
     }
 
     private _play(

@@ -5,11 +5,10 @@ import { BoardPadClickStatus, PadModel, PadState } from './pads/pad-model';
 
 export enum BoardState {
     unknown = 'unknown',
-    play = 'play',
-    imitation = 'imitation',
     idle = 'idle',
+    imitation = 'imitation',
+    play = 'play',
     levelComplete = 'levelComplete',
-    gameOver = 'gameOver',
 }
 
 export enum BoardStatus {
@@ -107,6 +106,17 @@ export class BoardModel extends ObservableModel {
         return this._progress;
     }
 
+    public getPadByUuid(padUUid: string): PadModel {
+        let p;
+        this._pads.forEach((pad) => {
+            if (pad.uuid == padUUid) {
+                p = pad;
+            }
+        });
+
+        return p;
+    }
+
     ///initialize
     public initialize(): void {
         this._state = BoardState.idle;
@@ -126,8 +136,8 @@ export class BoardModel extends ObservableModel {
     public onLevelUpdate(level = 1): void {
         this._progress = null;
         this._level = level;
-        this._createLevelPattern();
         this._state = BoardState.idle;
+        this._createLevelPattern();
     }
 
     public rebuildLevel(): void {
@@ -146,7 +156,7 @@ export class BoardModel extends ObservableModel {
         this._onProgressStepCountUpdate();
         this._onTimerStart();
         this._getPads(this._levelPattern[this._progress * this._levelPattern.length]).state = PadState.showHint;
-        this._getPads(this._levelPattern[this._progress * this._levelPattern.length]).runing();
+        this._getPads(this._levelPattern[this._progress * this._levelPattern.length]).running();
         this._visibilityRunnable = loopRunnable(this._levelConstInterval, this._progressEmitter, this);
         this._timerPRunnable = loopRunnable(timerDelay * levelLength, this._onTimerUpdate, this);
     }
@@ -172,7 +182,7 @@ export class BoardModel extends ObservableModel {
     ///compare input padUUid and element on patern first
     public onStartPlay(padUUid: string): void {
         if (this._state === BoardState.imitation) {
-            this._getPads(this._levelPattern[this._progress * this._levelPattern.length]).runing();
+            this._getPads(this._levelPattern[this._progress * this._levelPattern.length]).running();
         } else if ((this._state = BoardState.play)) {
             if (padUUid === this._getPads(this._levelPattern[0]).uuid) {
                 this._localScore = 1 / this._levelPattern.length;
@@ -187,8 +197,6 @@ export class BoardModel extends ObservableModel {
 
     ///counts the level score
     public checkLevelScore(): void {
-        console.warn('----------------------------------');
-
         this._score = Math.floor(this.$currentScore * 100);
         this.nextToState();
     }
@@ -207,7 +215,6 @@ export class BoardModel extends ObservableModel {
     }
 
     private _destroyScore(): void {
-        console.warn('destroyScore');
         this._score = null;
     }
 
@@ -217,7 +224,7 @@ export class BoardModel extends ObservableModel {
         if (this._progress < 1) {
             this._getPads(this._levelPattern[this._progress * this._levelPattern.length - 1]).state = PadState.hideHint;
             this._state === BoardState.imitation
-                ? this._getPads(this._levelPattern[this._progress * this._levelPattern.length]).runing()
+                ? this._getPads(this._levelPattern[this._progress * this._levelPattern.length]).running()
                 : false;
             this._getPads(this._levelPattern[this._progress * this._levelPattern.length]).state = PadState.showHint;
         } else {
@@ -233,11 +240,9 @@ export class BoardModel extends ObservableModel {
     //check is true input pad
     private _checkIsTruePad(padUUid: string): void {
         //
-        console.warn(padUUid);
 
         const entryTimer = this._entryTimer;
         const pointers = this._timer.pointers;
-        console.warn(pointers);
         return;
         for (let i = 0; i < pointers.length; i++) {
             //
@@ -276,13 +281,12 @@ export class BoardModel extends ObservableModel {
     private _createPads(): void {
         const pads = new Map();
         const padsConfig = padsConfigs;
-        padsConfig.map((padConfig) => {
-            const padModel = new PadModel(padConfig);
+        padsConfig.map((padConfig, index) => {
+            const padModel = new PadModel(padConfig, index);
             pads.set(padModel.name, padModel);
         });
 
         this._pads = pads;
-        // console.warn(this._pads);
     }
 
     //create pattern in this level
@@ -315,20 +319,13 @@ export class BoardModel extends ObservableModel {
         // this._progress += this._progressStep;
         const value = delta / this._levelConstInterval;
         if (delta == -1) {
-            console.warn('pstcrir');
             padModel.accuracy = BoardPadClickStatus.miss;
         } else if (value > 0.01 && value < 0.4) {
             padModel.accuracy = BoardPadClickStatus.bad;
-
-            console.warn('wata', delta);
         } else if (value >= 0.4 && value < 0.7) {
             padModel.accuracy = BoardPadClickStatus.good;
-
-            console.warn('budulot');
         } else if (value >= 0.7 && value <= 1) {
             padModel.accuracy = BoardPadClickStatus.perfect;
-
-            console.warn('tuyna');
         }
     }
 

@@ -48,9 +48,6 @@ export class TutorialModel extends ObservableModel {
         super.initialize();
 
         this._initSequences();
-
-        this.nextSequence();
-        this.showSequence();
     }
 
     public destroy(): void {

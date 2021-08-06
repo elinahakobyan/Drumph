@@ -30,16 +30,22 @@ export class PadModel extends ObservableModel {
     private _accuracy = BoardPadClickStatus.unknown;
     private _coolDownRunnable: Runnable;
 
+    private _index: number;
     private _name: string;
     private _activeColor: number;
     private _passiveColor: number;
-    public constructor(config: PadModelConfig) {
+    public constructor(config: PadModelConfig, index: number) {
         super('PadModel');
+        this._index = index;
         this._name = config.name;
         this._config = config;
         this._activeColor = config.colorActive;
         this._passiveColor = config.colorPassive;
         this.makeObservable();
+    }
+
+    public get index(): number {
+        return this._index;
     }
 
     public get accuracy(): BoardPadClickStatus {
@@ -83,7 +89,7 @@ export class PadModel extends ObservableModel {
         super.destroy();
     }
 
-    public runing(): void {
+    public running(): void {
         this._status = PadStatus.play;
         this._coolDownRunnable = delayRunnable(0.01, () => {
             this._status = PadStatus.unknown;

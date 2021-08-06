@@ -71,8 +71,6 @@ export const getTraditionalCtaPrimaryButtonUpTextConfig = (): TextConfig => {
 };
 
 export const getPromptTextConfig = (text: string): TextConfig => {
-    console.warn(text);
-
     return {
         text: localization.t(phrases[`${text}` as keyof typeof phrases]),
         // y: -3,

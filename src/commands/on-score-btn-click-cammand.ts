@@ -1,6 +1,6 @@
 import { store } from '../models/store';
 
-export const updateLevelCammand = (): void => {
+export const onScoreBtnClickCommand = (): void => {
     const level = store.play.board.level;
     if (level === 3) {
         console.warn('agressiv cta');
