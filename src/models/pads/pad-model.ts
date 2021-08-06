@@ -1,4 +1,4 @@
-import { delayRunnable } from '../../utils';
+import { delayRunnable, removeRunnable } from '../../utils';
 import { ObservableModel } from '../observable-model';
 export enum PadState {
     unknown = 'unknown',
@@ -27,6 +27,7 @@ export class PadModel extends ObservableModel {
     private _status: PadStatus = null;
     private _config: PadModelConfig;
     private _accuracy = BoardPadClickStatus.unknown;
+    private _coolDownRunnable: Runnable;
 
     private _name: string;
     private _activeColor: number;
@@ -76,16 +77,18 @@ export class PadModel extends ObservableModel {
         return this._name;
     }
 
+    public destroy(): void {
+        removeRunnable(this._coolDownRunnable);
+        super.destroy();
+    }
+
     public runing(): void {
         this._status = PadStatus.play;
-        delayRunnable(
-            0.01,
-            () => {
-                this._status = PadStatus.unknown;
-            },
-            this,
-        );
+        this._coolDownRunnable = delayRunnable(0.01, () => {
+            this._status = PadStatus.unknown;
+        });
     }
+
     public initialize(): void {
         this._state = PadState.deactivate;
     }

@@ -1,3 +1,4 @@
+import { getParams } from '../utils';
 import { ObservableModel } from './observable-model';
 
 export class SoundModel extends ObservableModel {
@@ -19,6 +20,7 @@ export class SoundModel extends ObservableModel {
 
     public initialize(): void {
         this._mute = false;
+        this._icon = __SOUND__ && __SOUND_ICON__ && getParams().soundIcon.value;
     }
 
     public toggleMute(): void {

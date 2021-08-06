@@ -31,3 +31,7 @@ export const getHintImageSpriteConfig = (): SpriteConfig | string => {
 export const getPadGlowImageSpriteConfig = (): SpriteConfig | string => {
     return textures['pads/glow' as keyof typeof textures];
 };
+
+export const getCTABgImageSpriteConfig = (): SpriteConfig | string => {
+    return textures['play/bg' as keyof typeof textures];
+};

@@ -41,13 +41,16 @@
     "TAP TO LISTEN": {
         "en": "TAP TO LISTEN"
     },
-    "TAP TO REPEAT THE RHYTHM": {
-        "en": "TAP TO REPEAT THE RHYTHM"
+    "TAP TO REPEAT THE RHYTHM!": {
+        "en": "TAP TO REPEAT THE RHYTHM!"
     },
     "your score": {
         "en": "your score"
     },
     "Next": {
         "en": "Next"
+    },
+    "Make your own beat": {
+        "en": "Make your own beat"
     }
 }
