@@ -141,7 +141,11 @@ export class BoardView extends Container {
         ///
     }
 
-    private _onBoardScoreUpdate(score: number, oldScore: number, uuid: string): void {
+    private _onBoardScoreUpdate(score: number, oldScore: number): void {
+        if (score === null) {
+            console.warn('new level');
+            return;
+        }
         console.warn(score, 'score', oldScore);
 
         ///
@@ -199,7 +203,7 @@ export class BoardView extends Container {
 
         switch (newState) {
             case PadState.blocked:
-                this._getPad(uuid).deactivate();
+                this._getPad(uuid).block();
 
                 break;
             case PadState.active:

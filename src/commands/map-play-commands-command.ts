@@ -1,6 +1,7 @@
 import { lego } from '@armathai/lego';
 import { BoardModelEvent, TutorialModelEvent } from '../events/model';
-import { MainViewEvent, PadViewEvent, ProgressUpdateViewEvent, TutorialViewEvent } from '../events/view';
+import { MainViewEvent, PadViewEvent, PlayViewEvent, ProgressUpdateViewEvent, TutorialViewEvent } from '../events/view';
+import { ScoreComponent } from '../views/score-component';
 import { onBoardProgressUpdate } from './on-board-progress-update-camand';
 import { onBoardStateUpdateCommand } from './on-board-state-update-command';
 import { onBoardTimerUpdateCommand } from './on-board-timer-update-camand';
@@ -11,6 +12,7 @@ import { onTutorialClickCommand } from './on-tutorial-click-command';
 import { onTutorialCompleteCommand } from './on-tutorial-complete-command';
 import { onTutorialHideCompleteCommand } from './on-tutorial-hide-complete-command';
 import { onUserInteractionCommand } from './on-user-interaction-command';
+import { updateLevelCammand } from './update-level-cammand';
 
 export const mapPlayCommandsCommand = (): void => {
     lego.command
@@ -24,5 +26,6 @@ export const mapPlayCommandsCommand = (): void => {
         .on(BoardModelEvent.progressUpdate, onBoardProgressUpdate)
         .on(BoardModelEvent.entryTimerUpdate, onBoardTimerUpdateCommand)
         .on(BoardModelEvent.statusUpdate, onCheckLevelScoreCommand)
+        .on(PlayViewEvent.onScoreBtnClick, updateLevelCammand)
         .on(MainViewEvent.click, onUserInteractionCommand);
 };

@@ -9,6 +9,7 @@ export enum BoardState {
     imitation = 'imitation',
     idle = 'idle',
     levelComplete = 'levelComplete',
+    gameOver = 'gameOver',
 }
 
 export enum BoardStatus {
@@ -123,9 +124,21 @@ export class BoardModel extends ObservableModel {
 
     ///load new level
     public onLevelUpdate(level = 1): void {
+        this._progress = null;
         this._level = level;
         this._createLevelPattern();
         this._state = BoardState.idle;
+    }
+
+    public rebuildLevel(): void {
+        this._score = null;
+        this._localScore = null;
+        if (this._levelPattern) {
+            this._levelPattern.forEach((levelPads) => {
+                this._getPads(levelPads).state = PadState.blocked;
+            });
+            this._levelPattern.length = 0;
+        }
     }
 
     /// start imitiatia this level
@@ -222,8 +235,10 @@ export class BoardModel extends ObservableModel {
         //
         console.warn(padUUid);
 
-        const entryTimer = this._timer.entryTimer;
+        const entryTimer = this._entryTimer;
         const pointers = this._timer.pointers;
+        console.warn(pointers);
+        return;
         for (let i = 0; i < pointers.length; i++) {
             //
             if (padUUid === this._getPads(pointers[i].padUUid).uuid) {
@@ -231,6 +246,8 @@ export class BoardModel extends ObservableModel {
                     this._levelConstInterval >= pointers[i].position - entryTimer &&
                     pointers[i].position - entryTimer >= 0
                 ) {
+                    console.warn(pointers[i].position, entryTimer);
+
                     this._isEntryTruePad = true;
                     this._checkScore(pointers[i].position - entryTimer);
                     this._boardPadClickStatusUpdate(
@@ -316,11 +333,18 @@ export class BoardModel extends ObservableModel {
     }
 
     private _onTimerUpdate(): void {
-        this._timer.entryTimer += 4 * timerDelay;
+        this._timer.entryTimer += Math.round(4 * timerDelay * 100) / 100;
+        this._timer.entryTimer = Math.floor(this._timer.entryTimer * 100) / 100;
         this._entryTimer = this._timer.entryTimer;
+
         if (this._timer.entryTimer >= this._timer.end || this._timer.entryTimer + timerDelay > this._timer.end) {
             removeRunnable(this._timerPRunnable);
             return;
+        } else if (
+            this._timer.entryTimer % (levelLength / this._levelPattern.length) < 0.3 ||
+            (this._timer.entryTimer + timerDelay) % (levelLength / this._levelPattern.length) < timerDelay
+        ) {
+            this._isEntryTruePad = false;
         }
         // this._timer.entryTimer += timerDellay;
         // this._timer.entryTimer += timerDellay;
@@ -343,7 +367,7 @@ export class BoardModel extends ObservableModel {
         for (let index = 1; index <= this._levelPattern.length; index++) {
             this._timer.pointers.push({
                 padUUid: this._levelPattern[index - 1],
-                position: (index - 1) * this._levelConstInterval,
+                position: Math.round(4 * (index - 1) * this._levelConstInterval * 100) / 100,
             });
         }
 
