@@ -1,4 +1,4 @@
-import { levelLength, levels, padsConfigs, timerDellay } from '../constants/constants';
+import { levelLength, levels, padsConfigs, timerDelay } from '../constants/constants';
 import { loopRunnable, removeRunnable } from '../utils';
 import { ObservableModel } from './observable-model';
 import { BoardPadClickStatus, PadModel, PadState } from './pads/pad-model';
@@ -20,7 +20,7 @@ export enum BoardStatus {
 export const duration = 1.5;
 
 export class BoardModel extends ObservableModel {
-    protected $carentScore = 0;
+    protected $currentScore = 0;
     private _state = BoardState.unknown;
     private _status = BoardStatus.unknown;
     private _visibilityRunnable: Runnable;
@@ -135,7 +135,7 @@ export class BoardModel extends ObservableModel {
         this._getPads(this._levelPattern[this._progress * this._levelPattern.length]).state = PadState.showHint;
         this._getPads(this._levelPattern[this._progress * this._levelPattern.length]).runing();
         this._visibilityRunnable = loopRunnable(this._levelConstInterval, this._progressEmitter, this);
-        this._timerPRunnable = loopRunnable(timerDellay * levelLength, this._onTimerUpdate, this);
+        this._timerPRunnable = loopRunnable(timerDelay * levelLength, this._onTimerUpdate, this);
     }
 
     //go to next  level
@@ -163,7 +163,7 @@ export class BoardModel extends ObservableModel {
         } else if ((this._state = BoardState.play)) {
             if (padUUid === this._getPads(this._levelPattern[0]).uuid) {
                 this._localScore = 1 / this._levelPattern.length;
-                this.$carentScore = this._localScore;
+                this.$currentScore = this._localScore;
                 this._boardPadClickStatusUpdate(this._levelConstInterval, this._getPads(this._levelPattern[0]));
             } else {
                 this._boardPadClickStatusUpdate(-1, this._getPads(this._levelPattern[0]));
@@ -176,8 +176,16 @@ export class BoardModel extends ObservableModel {
     public checkLevelScore(): void {
         console.warn('----------------------------------');
 
-        this._score = Math.floor(this.$carentScore * 100);
+        this._score = Math.floor(this.$currentScore * 100);
         this.nextToState();
+    }
+
+    public showAnimation(padUuid: string): void {
+        this._pads.forEach((pad) => {
+            if (pad.uuid == padUuid) {
+                pad.state = PadState.animate;
+            }
+        });
     }
 
     ///return padModel by name or id
@@ -242,7 +250,7 @@ export class BoardModel extends ObservableModel {
     ///counts the this part score on level
     private _checkScore(entryTimer: number): void {
         const x = entryTimer / this._levelConstInterval;
-        this.$carentScore += x / this._levelPattern.length;
+        this.$currentScore += x / this._levelPattern.length;
         // this._isEntryTruePad = false;
         //
     }
@@ -308,9 +316,9 @@ export class BoardModel extends ObservableModel {
     }
 
     private _onTimerUpdate(): void {
-        this._timer.entryTimer += 4 * timerDellay;
+        this._timer.entryTimer += 4 * timerDelay;
         this._entryTimer = this._timer.entryTimer;
-        if (this._timer.entryTimer >= this._timer.end || this._timer.entryTimer + timerDellay > this._timer.end) {
+        if (this._timer.entryTimer >= this._timer.end || this._timer.entryTimer + timerDelay > this._timer.end) {
             removeRunnable(this._timerPRunnable);
             return;
         }

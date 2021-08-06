@@ -5,6 +5,7 @@ export enum PadState {
     active = 'active',
     deactivate = 'deactivate',
     blocked = 'blocked',
+    animate = 'animate',
     showHint = 'showHint',
     hideHint = 'hideHint',
 }

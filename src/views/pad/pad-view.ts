@@ -63,7 +63,9 @@ export class PadView extends Container {
         if (promptString) {
             const commitText = makeText(getPromptTextConfig(promptString));
             commitText.rotation = lp(0, -Math.PI * 0.5);
+            commitText.position.set(this.width * 0.5, -this.height * 0.5);
             this.addChild(commitText);
+
             commitText.alpha = 0;
             gsap.from(commitText, {
                 alpha: 1,
@@ -75,23 +77,29 @@ export class PadView extends Container {
 
     public showHint(): void {
         this._hint.alpha = 1;
-        // this._glow.alpha = 1;
 
-        // gsap.from(this._hint, {
-        //     alpha: 1,
-        //     duration: 14,
-        //     ease: 'Cubic.InOut',
-        // });
+        gsap.timeline({ universal: true }).add([
+            gsap.to(this.scale, {
+                x: 1.04,
+                y: 1.04,
+                duration: 0.3,
+                ease: 'Cubic.In',
+                repeat: 1,
+                yoyo: true,
+            }),
+            gsap.from(this._glow, { alpha: 1, duration: 1, ease: 'Sine.InOut', repeat: 0, yoyo: true }),
+        ]);
     }
 
     public showAnimation(): void {
+        console.warn('hasa vaerjapes');
+
         gsap.from(this, {
             alpha: 0.6,
             duration: 0.6,
             ease: 'Cubic.InOut',
-            repeat: 0,
-            yoyo: true,
         });
+
         //ParticlesEffect
         // const tw = makeParticleEffect(getTraditionalCtaConfettiParticleConfig(100, 100));
         // this.addChild(tw);
@@ -99,39 +107,47 @@ export class PadView extends Container {
 
     public hideHint(): void {
         this._hint.alpha = 0;
-        // this._glow.alpha = 0;
-        // gsap.from(this._hint, {
-        //     alpha: 0,
-        //     duration: 14,
-        //     ease: 'Cubic.InOut',
-        // });
+        // gsap.timeline({ universal: true }).add([
+        //     gsap.from(this.scale, {
+        //         x: 1,
+        //         y: 1,
+        //         duration: 0.8,
+        //         ease: 'Sine.InOut',
+        //     }),
+        //     gsap.from(this._glow, { alpha: 0, duration: 0.6, ease: 'Sine.InOut' }),
+        // ]);
     }
 
     private _build(): void {
         this._buildBg();
         this._buildBlocker();
         this._buildHint();
-        // this._buildGlow();
+        this._buildGlow();
+        this._buildHighlight();
     }
 
     private _buildBg(): void {
         const cell = makeSprite(getCellBgSpriteConfig(this._color, getParams().square_color_patterns.value));
-        cell.anchor.set(0);
         this.addChild((this._pad = cell));
+    }
+
+    private _buildHighlight(): void {
+        const cell = makeSprite(getCellBlockSpriteConfig('white'));
+        cell.alpha = 0;
+        this.addChild(cell);
     }
 
     private _buildBlocker(): void {
         const blocker = makeSprite(getCellBlockSpriteConfig(getParams().emptySquareColor.value.toLowerCase()));
         blocker.visible = true;
-        blocker.anchor.set(0);
         this._pad.addChild((this._blocker = blocker));
     }
 
     private _buildHint(): void {
         const hint = makeSprite(getHintImageSpriteConfig());
         hint.scale.set(0.3);
-        hint.position.x = 40;
-        hint.position.y = this._pad.height - 40;
+        hint.position.x = -60;
+        hint.position.y = -60;
         hint.alpha = 0;
         this.addChild((this._hint = hint));
     }
@@ -139,9 +155,6 @@ export class PadView extends Container {
     private _buildGlow(): void {
         const glow = makeSprite(getPadGlowImageSpriteConfig());
         glow.alpha = 0;
-        glow.x = -glow.width / 2 + this._pad.width / 2;
-        glow.y = -glow.height / 2 + this._pad.height / 2;
-        glow.anchor.set(0);
         this.addChild((this._glow = glow));
     }
 
@@ -154,21 +167,6 @@ export class PadView extends Container {
     }
 
     private _click(): void {
-        console.warn('click');
         lego.event.emit(PadViewEvent.click, this._uuid);
     }
 }
-
-// public showPrompt(promptString: string): void {
-//     if (promptString) {
-//         const commitText = makeText(getPromptTextConfig(promptString));
-//         commitText.rotation = lp(0, -Math.PI * 0.5);
-//         this.addChild(commitText);
-//         commitText.alpha = 0;
-//         gsap.from(commitText, {
-//             alpha: 1,
-//             duration: 0.6,
-//             ease: 'Cubic.InOut',
-//         });
-//     }
-// }

@@ -120,7 +120,7 @@ export class BoardView extends Container {
         padsConfig.forEach((padConfig) => {
             const { row, col } = padConfig.config;
             const pad = new PadView(padConfig);
-            pad.position.set(col * (width + cellsGap), row * (height + cellsGap));
+            pad.position.set(col * (width + cellsGap) + width / 2, row * (height + cellsGap) + height / 2);
             this._pads.push(pad);
             // pad.block();
             this.addChild(pad);
@@ -216,6 +216,10 @@ export class BoardView extends Container {
                 break;
             case PadState.hideHint:
                 this._getPad(uuid).hideHint();
+
+                break;
+            case PadState.animate:
+                this._getPad(uuid).showAnimation();
 
                 break;
 
