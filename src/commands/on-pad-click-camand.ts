@@ -1,7 +1,7 @@
 import { lego } from '@armathai/lego';
 import { boardProgressIsNullGuard } from '../guards/board-progres-is-null-guard';
-import { boardStateLevelCompleteGuard } from '../guards/board-state-level-camplete-guard';
 import { boardStatePlayGuard } from '../guards/board-state-play-guard';
+import { isBoardStateLevelCompleteGuard } from '../guards/is-board-state-level-camplete-guard';
 import { tutorialGuard } from '../guards/tutorial-guard';
 import { store } from '../models/store';
 import { completeTutorialSequenceCommand } from './complete-tutorial-sequence-command';
@@ -25,7 +25,7 @@ export const onPadClickCommand = (padId: string): void => {
         .execute(completeTutorialSequenceCommand)
 
         .payload(padId)
-        .guard(boardStateLevelCompleteGuard)
+        .guard(isBoardStateLevelCompleteGuard)
         .execute(onCheckPlayLevelCommand)
         // //
         .payload(padId)

@@ -2,7 +2,7 @@ import { lego } from '@armathai/lego';
 import { ICellConfig, PixiGrid } from '@armathai/pixi-grid';
 import { PersistentCTAComponent } from '../components/persistent-cta-component';
 import { getUIGridConfig } from '../constants/configs/grid-configs';
-import { PlayableModelEvent, PlayModelEvent } from '../events/model';
+import { PlayModelEvent } from '../events/model';
 import { PersistentCtaModel } from '../models/persistent-cta-model';
 import { ProgressBarModel } from '../models/progress-bar-model';
 import { ProgressBarView } from './progress-bar-view';
@@ -14,7 +14,7 @@ export class UIView extends PixiGrid {
     public constructor() {
         super();
         this.name = 'UIView';
-        lego.event.on(PlayableModelEvent.persistentCtaUpdate, this._onPlayablePersistentCtaUpdate, this);
+        // lego.event.on(PlayableModelEvent.persistentCtaUpdate, this._onPlayablePersistentCtaUpdate, this);
         lego.event.on(PlayModelEvent.progressBarUpdate, this._onProgressBarUpdate, this);
     }
 

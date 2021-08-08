@@ -1,4 +1,4 @@
-import { levelLength, levels, padsConfigs, timerDelay } from '../constants/constants';
+import { levelLength, levelOpenPads, levels, padsConfigs, timerDelay } from '../constants/constants';
 import { loopRunnable, removeRunnable } from '../utils';
 import { ObservableModel } from './observable-model';
 import { BoardPadClickStatus, PadModel, PadState } from './pads/pad-model';
@@ -121,7 +121,7 @@ export class BoardModel extends ObservableModel {
     public initialize(): void {
         this._state = BoardState.idle;
         this._createPads();
-        this._createLevelPattern();
+        // this._createLevelPattern();
     }
 
     public destroy(): void {
@@ -218,14 +218,16 @@ export class BoardModel extends ObservableModel {
         this._score = null;
     }
 
-    //update progress or remove updateing loop
+    //update progress or remove updating loop
     private _progressEmitter(): void {
         this._onProgressUpdate();
         if (this._progress < 1) {
+            console.warn(this._getPads(this._levelPattern[this._progress * this._levelPattern.length - 1]));
             this._getPads(this._levelPattern[this._progress * this._levelPattern.length - 1]).state = PadState.hideHint;
             this._state === BoardState.imitation
                 ? this._getPads(this._levelPattern[this._progress * this._levelPattern.length]).running()
                 : false;
+
             this._getPads(this._levelPattern[this._progress * this._levelPattern.length]).state = PadState.showHint;
         } else {
             this._getPads(this._levelPattern[this._progress * this._levelPattern.length - 1]).state = PadState.hideHint;
@@ -240,7 +242,6 @@ export class BoardModel extends ObservableModel {
     //check is true input pad
     private _checkIsTruePad(padUUid: string): void {
         //
-
         const entryTimer = this._entryTimer;
         const pointers = this._timer.pointers;
         return;
@@ -291,13 +292,18 @@ export class BoardModel extends ObservableModel {
 
     //create pattern in this level
     private _createLevelPattern(): void {
-        const levelPads = levels[this._level - 1];
+        // const levelPads = levelOpenPads[2];
+        const levelPads = levelOpenPads[this._level - 1];
         this._levelPattern ? (this._levelPattern.length = 0) : (this._levelPattern = []);
         const levelPattern: string[] = [];
+
         levelPads.forEach((levelPads) => {
-            levelPattern.push(`pad_${levelPads.row}_${levelPads.col}`);
             this._getPads(`pad_${levelPads.row}_${levelPads.col}`).state = PadState.active;
         });
+        levels[this._level - 1].forEach((levelPads) => {
+            levelPattern.push(`pad_${levelPads.row}_${levelPads.col}`);
+        });
+        console.warn(levelPattern);
         this._levelPattern = levelPattern;
         this._levelConstInterval = levelLength / this._levelPattern.length;
     }

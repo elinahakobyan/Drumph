@@ -20,7 +20,6 @@ export const sounds = {
     PadModel14: 'PadModel14',
     PadModel15: 'PadModel15',
     PadModel18: 'PadModel18',
-    chime: 'chime',
     iceCreamAArp01: 'ice_cream_a_arp_01',
     iceCreamABell01: 'ice_cream_a_bell_01',
     iceCreamABell02: 'ice_cream_a_bell_02',

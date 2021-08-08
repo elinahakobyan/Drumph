@@ -29,7 +29,7 @@ export class BoardView extends Container {
         lego.event.on(BoardModelEvent.statusUpdate, this._onBoardStatusUpdate, this);
         lego.event.on(PadModelEvent.accuracyUpdate, this._onPadAccuracyUpdate, this);
 
-        lego.event.on(BoardModelEvent.scoreUpdate, this._onBoardScoreUpdate, this);
+        // lego.event.on(BoardModelEvent.scoreUpdate, this._onBoardScoreUpdate, this);
 
         this._build();
     }
@@ -133,15 +133,15 @@ export class BoardView extends Container {
         ///
     }
 
-    private _onBoardScoreUpdate(score: number, oldScore: number): void {
-        if (score === null) {
-            console.warn('new level');
-            return;
-        }
-        console.warn(score, 'score', oldScore);
+    // private _onBoardScoreUpdate(score: number, oldScore: number): void {
+    //     if (score === null) {
+    //         console.warn('new level');
+    //         return;
+    //     }
+    //     console.warn(score, 'score', oldScore);
 
-        ///
-    }
+    //     ///
+    // }
 
     private _onUpdateBoard(progressConfig: ProgressConfig): void {
         if (progressConfig.state === BoardState.play) {

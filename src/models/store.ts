@@ -61,8 +61,6 @@ class Store extends ObservableModel {
     }
 
     public destroyPlayModel(): void {
-        console.warn('destroyPlayModel');
-
         this._play.destroy();
         this._play = null;
     }

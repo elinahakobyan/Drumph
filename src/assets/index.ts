@@ -72,7 +72,6 @@ export const assets = {
                     PadModel14: require('../../assets/sounds/PadModel14.mp3'),
                     PadModel15: require('../../assets/sounds/PadModel15.mp3'),
                     PadModel18: require('../../assets/sounds/PadModel18.mp3'),
-                    chime: require('../../assets/sounds/chime.mp3'),
                     ice_cream_a_arp_01: require('../../assets/sounds/ice_cream_a_arp_01.mp3'),
                     ice_cream_a_bell_01: require('../../assets/sounds/ice_cream_a_bell_01.mp3'),
                     ice_cream_a_bell_02: require('../../assets/sounds/ice_cream_a_bell_02.mp3'),
