@@ -33,7 +33,7 @@ export const getTutorialTextConfig = (text: string): TextConfig => {
             dropShadow: true,
             dropShadowAngle: Math.PI,
             dropShadowDistance: 3.14,
-            dropShadowBlur: 45,
+            dropShadowBlur: 20,
             dropShadowColor: '#3eb4ff',
             // dropShadowColor: '#078dff',
             // dropShadowDistance: 16,
@@ -65,7 +65,7 @@ export const getTraditionalCtaPrimaryButtonUpTextConfig = (): TextConfig => {
             fontFamily: ['solomon-sans-black'],
             fontSize: 100,
             fill: '#000000',
-            strokeThickness: 5,
+            strokeThickness: 1,
         }),
     };
 };
@@ -89,7 +89,7 @@ export const getCtaLabelTextConfig = (): TextConfig => {
         // y: -3,
         style: new TextStyle({
             fontFamily: fonts['solomon-sans-black'],
-            fontSize: 70,
+            fontSize: 100,
             fill: '#ffffff',
             // strokeThickness: 10,
         }),

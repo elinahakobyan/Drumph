@@ -218,7 +218,7 @@ export class BoardModel extends ObservableModel {
         this._score = null;
     }
 
-    //update progress or remove updating loop
+    //update progress or \ updating loop
     private _progressEmitter(): void {
         this._onProgressUpdate();
         if (this._progress < 1) {

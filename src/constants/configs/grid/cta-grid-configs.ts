@@ -7,15 +7,15 @@ export const getTraditionalCtaGridLandscapeConfig = (): ICellConfig => {
         cells: [
             {
                 name: 'button',
-                bounds: { x: 0.5, y: 0.57, width: 0.48, height: 0.3 },
-                padding: { x: 0.04 },
-                align: CellAlign.leftCenter,
+                bounds: { x: 0.5, y: 0.57, width: 0.48, height: 0.2 },
+                padding: { x: 0.05, y: 0.06 },
+                align: CellAlign.leftTop,
             },
             {
                 name: 'label',
-                bounds: { x: 0.5, y: 0.5, height: 0.07, width: 0.48 },
-                padding: 0.03,
-                align: CellAlign.leftCenter,
+                bounds: { x: 0.5, y: 0.48, height: 0.09, width: 0.48 },
+                padding: { x: 0.05 },
+                align: CellAlign.leftTop,
             },
             {
                 name: 'bg',
@@ -33,16 +33,17 @@ export const getTraditionalCtaGridLandscapeConfig = (): ICellConfig => {
 
 export const getTraditionalCtaGridPortraitConfig = (): ICellConfig => {
     return {
-        // debug: { color: 0x4bdbd4 },
         name: 'cta',
+        // debug: { color: 0x4bdbd4 },
         cells: [
             {
                 name: 'button',
-                bounds: { x: 0, y: 0.73, width: 1, height: 0.1 },
+                bounds: { x: 0.1, y: 0.74, width: 0.8, height: 0.09 },
+                // padding: 0.04,
             },
             {
                 name: 'label',
-                bounds: { x: 0, y: 0.66, width: 1, height: 0.07 },
+                bounds: { x: 0.1, y: 0.66, width: 0.8, height: 0.07 },
                 align: CellAlign.centerBottom,
             },
             {
