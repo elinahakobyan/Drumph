@@ -52,10 +52,6 @@ export class PadModel extends ObservableModel {
         return this._accuracy;
     }
 
-    public set accuracy(value: BoardPadClickStatus) {
-        this._accuracy = value;
-    }
-
     public get state(): PadState {
         return this._state;
     }
@@ -94,6 +90,11 @@ export class PadModel extends ObservableModel {
         this._coolDownRunnable = delayRunnable(0.01, () => {
             this._status = PadStatus.unknown;
         });
+    }
+
+    public showPrompt(value: BoardPadClickStatus): void {
+        this._accuracy = value;
+        this._accuracy = null;
     }
 
     public initialize(): void {

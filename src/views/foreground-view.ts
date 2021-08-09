@@ -130,8 +130,8 @@ export class ForegroundView extends PixiGrid {
         gsap.to(this._scorePopUp.position, {
             y: -800,
             duration: 0.8,
-        });
-        // }).eventCallback('onComplete', this._destroyScoreComponent.bind(this));
+            // });
+        }).eventCallback('onComplete', this._destroyScoreComponent.bind(this));
     }
 
     private _onBoardScoreUpdate(score: number): void {

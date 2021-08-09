@@ -64,7 +64,6 @@ export class PadView extends Container {
         if (promptString) {
             const commitText = makeText(getPromptTextConfig(promptString));
             commitText.rotation = lp(0, -Math.PI * 0.5);
-            commitText.position.set(this.width * 0.5, -this.height * 0.5);
             this.addChild(commitText);
 
             commitText.alpha = 0;
