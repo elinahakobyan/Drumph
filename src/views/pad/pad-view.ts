@@ -18,6 +18,7 @@ export class PadView extends Container {
     private _pad: Sprite;
     private _hint: Sprite;
     private _glow: Sprite;
+    private _highlight: Sprite;
     private _uuid: string;
     private _config: PadModel;
     private _color: number;
@@ -87,35 +88,26 @@ export class PadView extends Container {
                 repeat: 1,
                 yoyo: true,
             }),
-            gsap.from(this._glow, { alpha: 1, duration: 1, ease: 'Sine.InOut', repeat: 0, yoyo: true }),
+            gsap.from(this._glow, { alpha: 1, duration: 0.9, ease: 'Sine.InOut', repeat: 0, yoyo: true }),
         ]);
     }
 
     public showAnimation(): void {
-        console.warn('hasa vaerjapes');
-
-        gsap.from(this, {
+        gsap.from(this._highlight, {
             alpha: 0.6,
             duration: 0.6,
             ease: 'Cubic.InOut',
+            repeat: 0,
+            yoyo: true,
         });
-
-        //ParticlesEffect
-        // const tw = makeParticleEffect(getTraditionalCtaConfettiParticleConfig(100, 100));
-        // this.addChild(tw);
     }
+
+    //ParticlesEffect
+    // const tw = makeParticleEffect(getTraditionalCtaConfettiParticleConfig(100, 100));
+    // this.addChild(tw);
 
     public hideHint(): void {
         this._hint.alpha = 0;
-        // gsap.timeline({ universal: true }).add([
-        //     gsap.from(this.scale, {
-        //         x: 1,
-        //         y: 1,
-        //         duration: 0.8,
-        //         ease: 'Sine.InOut',
-        //     }),
-        //     gsap.from(this._glow, { alpha: 0, duration: 0.6, ease: 'Sine.InOut' }),
-        // ]);
     }
 
     private _build(): void {
@@ -132,9 +124,9 @@ export class PadView extends Container {
     }
 
     private _buildHighlight(): void {
-        const cell = makeSprite(getCellBlockSpriteConfig('white'));
-        cell.alpha = 0;
-        this.addChild(cell);
+        const highlight = makeSprite(getCellBlockSpriteConfig('white'));
+        highlight.alpha = 0;
+        this.addChild((this._highlight = highlight));
     }
 
     private _buildBlocker(): void {
