@@ -41,7 +41,8 @@ export const getForegroundGridLandscapeConfig = (): ICellConfig => {
             },
             {
                 name: 'cta_logo',
-                bounds: { x: 0.65, y: 0.17, width: 0.33, height: 0.3 },
+                bounds: { x: 0.52, y: 0.17, width: 0.42, height: 0.3 },
+                align: CellAlign.rightCenter,
             },
             {
                 // debug: { color: 0x2fc900 },
@@ -88,7 +89,6 @@ export const getForegroundGridPortraitConfig = (): ICellConfig => {
         name: 'foreground',
         cells: [
             {
-                debug: { color: 0xd95027 },
                 name: 'logo',
                 bounds: { x: (1 - w) / 2, y: 0.15, height: logoH, width: w },
                 align: CellAlign.rightTop,
@@ -100,7 +100,6 @@ export const getForegroundGridPortraitConfig = (): ICellConfig => {
                 padding: { x: 0.05 },
             },
             {
-                debug: { color: 0xd95027 },
                 name: 'tutorial',
                 bounds: { x: (1 - w) / 2, y: logoH + 0.28 + progressBarH, height: 0.25, width: w },
             },
@@ -110,7 +109,6 @@ export const getForegroundGridPortraitConfig = (): ICellConfig => {
                 padding: 0.05,
             },
             {
-                debug: { color: 0x2fc900 },
                 name: 'score',
                 bounds: { x: (1 - w) / 2, y: logoH + 0.28 + progressBarH, height: 0.25, width: w },
             },

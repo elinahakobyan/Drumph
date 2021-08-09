@@ -93,6 +93,9 @@ export class PadView extends Container {
     }
 
     public showAnimation(): void {
+        this._highlight.alpha = 0;
+        gsap.killTweensOf(this._highlight);
+
         gsap.from(this._highlight, {
             alpha: 0.6,
             duration: 0.6,

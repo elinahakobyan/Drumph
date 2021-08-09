@@ -11,6 +11,7 @@ import { Sprite } from '@pixi/sprite';
 import { AnimatedSprite } from '@pixi/sprite-animated';
 import { Text, TextMetrics, TextStyle } from '@pixi/text';
 import { Ticker } from '@pixi/ticker';
+import gsap from 'gsap/gsap-core';
 import { PlayablePixi } from '../playable-pixi';
 
 const isString = (str: unknown): boolean => {
@@ -237,7 +238,7 @@ export function tweenToCell(
     grid: PixiGrid,
     child: IPixiChild,
     cellName: string,
-    duration = 1,
+    duration = 0.8,
     ease = 'Sinusoidal.InOut',
 ): void {
     const { x: formScaleX, y: formScaleY } = child.scale;

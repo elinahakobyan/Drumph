@@ -8,6 +8,7 @@ export enum BoardState {
     idle = 'idle',
     imitation = 'imitation',
     play = 'play',
+    recording = 'recording',
     levelComplete = 'levelComplete',
 }
 
@@ -153,6 +154,7 @@ export class BoardModel extends ObservableModel {
 
     /// start imitiatia this level
     public startImitation(): void {
+        // this.state = BoardState.recording;
         this._onProgressStepCountUpdate();
         this._onTimerStart();
         this._getPads(this._levelPattern[this._progress * this._levelPattern.length]).state = PadState.showHint;
@@ -205,6 +207,7 @@ export class BoardModel extends ObservableModel {
         this._pads.forEach((pad) => {
             if (pad.uuid == padUuid) {
                 pad.state = PadState.animate;
+                pad.state = PadState.active;
             }
         });
     }
@@ -218,11 +221,10 @@ export class BoardModel extends ObservableModel {
         this._score = null;
     }
 
-    //update progress or \ updating loop
+    //update progress or remove updating loop
     private _progressEmitter(): void {
         this._onProgressUpdate();
         if (this._progress < 1) {
-            console.warn(this._getPads(this._levelPattern[this._progress * this._levelPattern.length - 1]));
             this._getPads(this._levelPattern[this._progress * this._levelPattern.length - 1]).state = PadState.hideHint;
             this._state === BoardState.imitation
                 ? this._getPads(this._levelPattern[this._progress * this._levelPattern.length]).running()

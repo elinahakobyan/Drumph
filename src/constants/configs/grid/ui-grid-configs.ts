@@ -15,7 +15,7 @@ export const getUIGridLandscapeConfig = (): ICellConfig => {
     const boardScale = (boardH * viewHeight) / boardHeight;
     const boardW = (boardWidth * boardScale) / viewWidth;
     return {
-        debug: { color: 0x4287f5 },
+        // debug: { color: 0x4287f5 },
         name: 'ui',
         cells: [
             // {
@@ -67,7 +67,7 @@ export const getUIGridPortraitConfig = (): ICellConfig => {
         cells: [
             {
                 name: 'progress_bar',
-                bounds: { x: (1 - w) / 2, y: 0.28, width: w, height: progressBarH },
+                bounds: { x: (1 - w) / 2, y: 0.27, width: w, height: progressBarH },
                 align: CellAlign.leftBottom,
             },
             // {

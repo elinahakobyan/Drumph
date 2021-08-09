@@ -29,8 +29,12 @@ export const onPadClickCommand = (padId: string): void => {
         .execute(onCheckPlayLevelCommand)
         // //
         .payload(padId)
-        .guard(boardStatePlayGuard) // boardProgressIsNullGuard // ToDo: CHECK HERE
-        .execute(onUpdatePlayLevelCommand, showAnimationCommand)
+        .guard(boardStatePlayGuard, boardProgressIsNullGuard)
+        .execute(onUpdatePlayLevelCommand)
+
+        .payload(padId)
+        .guard(boardStatePlayGuard)
+        .execute(showAnimationCommand)
 
         //
         .payload(padId)

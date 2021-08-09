@@ -12,7 +12,7 @@ import { PlayViewEvent } from '../events/view';
 import { HintModel } from '../models/hint-model';
 import { PlayableState } from '../models/playable-model';
 import { TutorialModel } from '../models/tutorial-model';
-import { getParams } from '../utils';
+import { getParams, tweenToCell } from '../utils';
 import { ScoreComponent } from './score-component';
 
 export class ForegroundView extends PixiGrid {
@@ -45,10 +45,13 @@ export class ForegroundView extends PixiGrid {
                 this._build();
                 break;
             case PlayableState.cta:
+                this._replaceLogo();
                 break;
             default:
         }
     }
+
+    //LOGO
 
     private _build(): void {
         this._buildLogo();
@@ -57,6 +60,10 @@ export class ForegroundView extends PixiGrid {
     private _buildLogo(): void {
         this.setChild('logo', (this._logo = new LogoComponent()));
         getParams().logo.value ? (this._logo.visible = true) : (this._logo.visible = false);
+    }
+
+    private _replaceLogo(): void {
+        tweenToCell(this, this._logo, 'cta_logo');
     }
 
     // SOUND
