@@ -25,8 +25,11 @@ export class BoardModel extends ObservableModel {
     private _state = BoardState.unknown;
     private _status = BoardStatus.unknown;
     private _visibilityRunnable: Runnable;
+    private _startRecordingTime: number;
+
     private _timerPRunnable: Runnable;
     private _clickCount = 0;
+    private _padsCount = 0;
 
     private _pads: Map<string, PadModel> = null;
     private _level: number = null;
@@ -159,8 +162,9 @@ export class BoardModel extends ObservableModel {
         // this.state = BoardState.recording;
         this._onProgressStepCountUpdate();
         this._onTimerStart();
-        this._getPads(this._levelPattern[this._progress * this._levelPattern.length]).state = PadState.showHint;
-        this._getPads(this._levelPattern[this._progress * this._levelPattern.length]).running();
+        // this._getPads(this._levelPattern[this._progress * this._levelPattern.length]).state = PadState.showHint;
+        // this._getPads(this._levelPattern[this._progress * this._levelPattern.length]).running();
+
         this._visibilityRunnable = loopRunnable(this._levelConstInterval, this._progressEmitter, this);
         this._timerPRunnable = loopRunnable(timerDelay * levelLength, this._onTimerUpdate, this);
     }
@@ -190,22 +194,22 @@ export class BoardModel extends ObservableModel {
         if (this._state === BoardState.imitation) {
             this._getPads(this._levelPattern[this._progress * this._levelPattern.length]).running();
         } else if ((this._state = BoardState.play)) {
-            console.warn(padUUid);
-            if (padUUid === this._getPads(this._levelPattern[0]).uuid) {
-                this._localScore = 1 / this._levelPattern.length;
-                this.$currentScore = this._localScore;
-                this._boardPadClickStatusUpdate(this._levelConstInterval, this._getPads(this._levelPattern[0]));
-            } else {
-                this._boardPadClickStatusUpdate(-1, this._getPads(this._levelPattern[0]));
-                this._localScore = 0;
-            }
+            // console.warn(padUUid);
+            // if (padUUid === this._getPads(this._levelPattern[0]).uuid) {
+            //     this._localScore = 1 / this._levelPattern.length;
+            //     this.$currentScore = this._localScore;
+            //     this._boardPadClickStatusUpdate(this._levelConstInterval, this._getPads(this._levelPattern[0]));
+            // } else {
+            //     this._boardPadClickStatusUpdate(-1, this._getPads(this._levelPattern[0]));
+            //     this._localScore = 0;
+            // }
         }
     }
 
     ///counts the level score
     public checkLevelScore(): void {
         // console.warn(this.$currentScore);
-        this._score = Math.floor(this.$currentScore * 100);
+        this._score = Math.floor(this._localScore);
         this.nextToState();
     }
 
@@ -229,22 +233,40 @@ export class BoardModel extends ObservableModel {
 
     //update progress or remove updating loop
     private _progressEmitter(): void {
+        // console.warn(this._padsCount);
         this._onProgressUpdate();
-        if (this._progress < 1) {
-            this._getPads(this._levelPattern[this._progress * this._levelPattern.length - 1]).state = PadState.hideHint;
-            this._state === BoardState.imitation
-                ? this._getPads(this._levelPattern[this._progress * this._levelPattern.length]).running()
-                : false;
 
-            this._getPads(this._levelPattern[this._progress * this._levelPattern.length]).state = PadState.showHint;
+        if (this._levelPattern[this._padsCount - 1]) {
+            this._getPads(this._levelPattern[this._padsCount - 1]).state = PadState.hideHint;
+        }
+
+        if (this._padsCount < this._timer.pointers.length) {
+            console.warn('mtra');
+            this._state === BoardState.imitation ? this._getPads(this._levelPattern[this._padsCount]).running() : false;
+            this._getPads(this._levelPattern[this._padsCount]).state = PadState.showHint;
+            this._padsCount += 1;
         } else {
-            this._getPads(this._levelPattern[this._progress * this._levelPattern.length - 1]).state = PadState.hideHint;
-
-            removeRunnable(this._visibilityRunnable);
             // this.state = BoardState.play;
+            removeRunnable(this._visibilityRunnable);
             this._progress = null;
             this._progressStep = null;
         }
+
+        // console.warn(this._progress);
+        // this._onProgressUpdate();
+        // if (this._progress < 1) {
+        //     this._getPads(this._levelPattern[this._progress * this._levelPattern.length - 1]).state = PadState.hideHint;
+        //     this._state === BoardState.imitation
+        //         ? this._getPads(this._levelPattern[this._progress * this._levelPattern.length]).running()
+        //         : false;
+        //     this._getPads(this._levelPattern[this._progress * this._levelPattern.length]).state = PadState.showHint;
+        // } else {
+        //     this._getPads(this._levelPattern[this._progress * this._levelPattern.length - 1]).state = PadState.hideHint;
+        //     removeRunnable(this._visibilityRunnable);
+        //     // this.state = BoardState.play;
+        //     this._progress = null;
+        //     this._progressStep = null;
+        // }
     }
 
     //check is true input pad
@@ -253,37 +275,35 @@ export class BoardModel extends ObservableModel {
         const entryTimer = this._entryTimer;
         const pointers = this._timer.pointers;
 
-        console.warn(entryTimer, 'entryTimer');
-        console.warn(pointers, 'pointers');
-
-        if (pointers[count]) {
+        if (pointers[count] && this._getPads(pointers[count].padUUid)) {
             if (padUUid === this._getPads(pointers[count].padUUid).uuid) {
-                console.warn(this._levelConstInterval);
-                if (
-                    this._levelConstInterval >= pointers[count].position - entryTimer &&
-                    pointers[count].position - entryTimer >= 0
-                ) {
-                    console.warn('11111111111111111111111111111111111111111111111111111111111111111111');
+                // console.warn(this._levelConstInterval);
+                // if (
+                //     this._levelConstInterval >= pointers[count].position - entryTimer &&
+                //     pointers[count].position - entryTimer >= 0
+                // ) {
+                // console.warn('11111111111111111111111111111111111111111111111111111111111111111111');
 
-                    this._isEntryTruePad = true;
-                    this._checkScore(pointers[count].position - entryTimer);
-                    this._boardPadClickStatusUpdate(
-                        pointers[count].position - entryTimer,
-                        this._getPads(pointers[count].padUUid),
-                    );
-                    return;
-                }
+                // this._isEntryTruePad = true;
+                console.warn(pointers[count].position, 'targetTime');
+                console.warn(entryTimer, 'clickTime');
+
+                this._localScore += this._boardPadClickStatusUpdate(
+                    pointers[count].position - entryTimer,
+                    this._getPads(pointers[count].padUUid),
+                );
+                return;
+                // }
             } else {
-                this._boardPadClickStatusUpdate(-1, this._getPads(pointers[count].padUUid));
+                this._localScore += this._boardPadClickStatusUpdate(-1, this._getPads(pointers[count].padUUid));
             }
         }
     }
 
     ///counts the this part score on level
     private _checkScore(entryTimer: number): void {
-        const x = entryTimer / this._levelConstInterval;
-        this.$currentScore += x / this._levelPattern.length;
-
+        // const x = entryTimer / this._levelConstInterval;
+        // this.$currentScore += x / this._levelPattern.length;
         // this._isEntryTruePad = false;
     }
 
@@ -329,31 +349,40 @@ export class BoardModel extends ObservableModel {
         this._progress += this._progressStep;
     }
 
-    private _boardPadClickStatusUpdate(delta: number, padModel: PadModel): void {
-        // this._progress += this._progressStep;
-        const value = delta / this._levelConstInterval;
-        console.warn('222222222222222222222222222222222222222222222222');
+    private _boardPadClickStatusUpdate(delta: number, padModel: PadModel): number {
+        // const value = delta / this._levelConstInterval;
+        let winPercentage = 0;
+        const maxValueInPercentage = 100 / this._levelPattern.length;
+        // const value = delta / this._levelConstInterval;
+        const value = 1 - Math.abs(delta / this._levelConstInterval);
+        console.warn(value, 'value');
 
-        if (delta == -1) {
+        if (delta == -1 || value < 0) {
             padModel.showPrompt(BoardPadClickStatus.miss);
-            // console.warn(BoardPadClickStatus.miss);
+            winPercentage = 0;
+            console.warn(BoardPadClickStatus.miss);
         } else if (value > 0.01 && value < 0.4) {
-            // console.warn(BoardPadClickStatus.bad);
+            console.warn(BoardPadClickStatus.bad);
             padModel.showPrompt(BoardPadClickStatus.bad);
+            winPercentage = maxValueInPercentage - Math.abs(delta / this._levelConstInterval) * maxValueInPercentage;
         } else if (value >= 0.4 && value < 0.7) {
-            // console.warn(BoardPadClickStatus.good);
+            console.warn(BoardPadClickStatus.good);
             padModel.showPrompt(BoardPadClickStatus.good);
+            winPercentage = maxValueInPercentage - Math.abs(delta / this._levelConstInterval) * maxValueInPercentage;
         } else if (value >= 0.7 && value <= 1) {
-            // console.warn(BoardPadClickStatus.perfect);
+            console.warn(BoardPadClickStatus.perfect);
             padModel.showPrompt(BoardPadClickStatus.perfect);
+            winPercentage = maxValueInPercentage;
         }
+
+        return winPercentage;
     }
 
     private _onTimerUpdate(): void {
         this._timer.entryTimer += Math.round(4 * timerDelay * 100) / 100;
         this._timer.entryTimer = Math.floor(this._timer.entryTimer * 100) / 100;
-        this._entryTimer = this._timer.entryTimer;
 
+        this._entryTimer = this._timer.entryTimer;
         if (this._timer.entryTimer >= this._timer.end || this._timer.entryTimer + timerDelay > this._timer.end) {
             removeRunnable(this._timerPRunnable);
             return;
@@ -366,12 +395,14 @@ export class BoardModel extends ObservableModel {
     }
 
     private _onTimerStart(): void {
+        // this._startRecordingTime = Date.now();
+
         this._timer = { start: 0, entryTimer: 0, end: levelLength, pointers: [] };
         this._entryTimer = 0;
         for (let index = 1; index <= this._levelPattern.length; index++) {
             this._timer.pointers.push({
                 padUUid: this._levelPattern[index - 1],
-                position: Math.round(4 * (index - 1) * this._levelConstInterval * 100) / 100,
+                position: (index - 1) * this._levelConstInterval,
             });
         }
 

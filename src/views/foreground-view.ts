@@ -136,9 +136,11 @@ export class ForegroundView extends PixiGrid {
 
     private _onBoardScoreUpdate(score: number): void {
         // score ? true : this._destroyScoreComponent();
-        if (score > 1 || score == 0) {
-            this._buildScoreComponent(score);
-        }
+        console.warn(score, 'score');
+
+        // if (score > 1 || score == 0) {
+        this._buildScoreComponent(score);
+        // }
     }
 
     private _destroyScoreComponent(): void {
