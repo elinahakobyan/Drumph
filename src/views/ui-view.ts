@@ -37,7 +37,6 @@ export class UIView extends PixiGrid {
 
     // /ProgressBar
     private _onProgressBarUpdate(progressBar: ProgressBarModel): void {
-        console.warn(progressBar);
         progressBar ? this._buildProgressBar() : this._destroyProgressBar();
     }
 

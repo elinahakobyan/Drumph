@@ -1,5 +1,5 @@
 import { lego } from '@armathai/lego';
-import { Container, NineSlicePlane, Rectangle } from 'pixi.js';
+import { Container, Graphics, NineSlicePlane } from 'pixi.js';
 import { getProgressBarFillPatchConfig } from '../constants/configs/nineslice-configs';
 import { ProgressBarModelEvent } from '../events/model';
 import { makeNineSlice } from '../utils';
@@ -13,10 +13,11 @@ export class ProgressBarView extends Container {
         this._maxWidth = 1400;
         this._build();
         lego.event.on(ProgressBarModelEvent.progressUpdate, this._updateProgress, this);
-    }
 
-    public getBounds(): Rectangle {
-        return new Rectangle(0, 0, this._maxWidth * this.parent.parent.scale.x, 10);
+        const gr = new Graphics();
+        gr.beginFill(0x00ff00, 0);
+        gr.drawRect(0, 0, this._maxWidth, 5);
+        this.addChild(gr);
     }
 
     private _updateProgress(progress: number): void {

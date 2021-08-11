@@ -9,6 +9,8 @@ import { showTutorialSequenceCommand } from './show-tutorial-sequence-command';
 import { lastTutorialSequenceGuard } from './tutorial-last-sequence-guard';
 
 export const onBoardStateUpdateCommand = (state: string): void => {
+    console.warn(state);
+
     lego.command
         .guard(tutorialModelGuard, () => isIdleStateGuard() || isPlayStateGuard(), lego.not(lastTutorialSequenceGuard))
         .execute(nextTutorialSequenceCommand, showTutorialSequenceCommand)

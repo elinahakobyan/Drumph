@@ -3,6 +3,7 @@ import { BoardModelEvent, TutorialModelEvent, TutorialSequenceModelEvent } from 
 import { MainViewEvent, PadViewEvent, PlayViewEvent, TutorialViewEvent } from '../events/view';
 import { onBoardProgressUpdate } from './on-board-progress-update-camand';
 import { onBoardStateUpdateCommand } from './on-board-state-update-command';
+import { onBoardStatusUpdateCommand } from './on-board-status-update-command';
 import { onBoardTimerUpdateCommand } from './on-board-timer-update-camand';
 import { onCheckLevelScoreCommand } from './on-check-level-score-camand';
 import { onPadClickCommand } from './on-pad-click-camand';
@@ -19,6 +20,7 @@ export const mapPlayCommandsCommand = (): void => {
         .on(TutorialViewEvent.click, onTutorialClickCommand)
         .on(TutorialViewEvent.sequenceHideComplete, onTutorialHideCompleteCommand)
         .on(BoardModelEvent.stateUpdate, onBoardStateUpdateCommand)
+        .on(BoardModelEvent.statusUpdate, onBoardStatusUpdateCommand)
 
         .on(PadViewEvent.click, onPadClickCommand)
         .on(BoardModelEvent.progressUpdate, onBoardProgressUpdate)

@@ -9,6 +9,8 @@ export const onScoreBtnClickCommand = (): void => {
         store.play.board.rebuildLevel();
         store.play.board.onLevelUpdate(level + 1);
     } else {
+        store.play.board.rebuildLevel();
+        store.play.board.onLevelUpdate(level);
         console.warn('try again ');
     }
     //

@@ -36,10 +36,8 @@ export class BoardModel extends ObservableModel {
     private _timer: BoardTimer = null;
     private _progressStepCount: number = null;
     private _progress: boolean;
-    private _progressStep: number = null;
     private _levelPattern: string[] = null;
     private _imitation = false;
-    private _isEntryTruePad = false;
     private _levelConstInterval = 0;
     private _score: number = null;
     private _entryTimer: number = null;
@@ -107,10 +105,6 @@ export class BoardModel extends ObservableModel {
         return this._levelPattern;
     }
 
-    public get progressStepCount(): number {
-        return this._progressStepCount;
-    }
-
     public get progress(): boolean {
         return this._progress;
     }
@@ -153,6 +147,7 @@ export class BoardModel extends ObservableModel {
         this._score = null;
         this._clickCount = 0;
         this._padsCount = 0;
+        this._entryTimer = 0;
         this._localScore = null;
         if (this._levelPattern) {
             this._levelPattern.forEach((levelPads) => {
@@ -183,7 +178,6 @@ export class BoardModel extends ObservableModel {
 
     ///compare input padUUid and element on pattern starting from the second
     public checkPad = (padUUid: string): void => {
-        console.warn('hasa');
         this._checkIsTruePad(padUUid, this._clickCount);
         this._clickCount += 1;
     };
@@ -334,7 +328,6 @@ export class BoardModel extends ObservableModel {
             this._timer.entryTimer % (levelLength / this._levelPattern.length) < 0.3 ||
             (this._timer.entryTimer + timerDelay) % (levelLength / this._levelPattern.length) < timerDelay
         ) {
-            this._isEntryTruePad = false;
         }
     }
 
