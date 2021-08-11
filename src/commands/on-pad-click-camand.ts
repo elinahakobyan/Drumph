@@ -14,10 +14,6 @@ export const onPadClickCommand = (padId: string): void => {
     lego.command
         .execute(onTutorialClickCommand)
 
-        // .payload(padId)
-        // .guard(boardStatePlayGuard)
-        // .execute(showAnimationCommand)
-
         .guard(
             tutorialGuard,
             () => store.playable.tutorial.currentIndex === 1 || store.playable.tutorial.currentIndex === 3,
@@ -36,9 +32,7 @@ export const onPadClickCommand = (padId: string): void => {
         .guard(boardStatePlayGuard)
         .execute(showAnimationCommand)
 
-        //
         .payload(padId)
         .guard(boardStatePlayGuard, lego.not(boardProgressIsNullGuard))
         .execute(onCheckPlayLevelCommand);
-    //
 };
