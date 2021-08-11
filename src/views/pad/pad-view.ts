@@ -87,7 +87,7 @@ export class PadView extends Container {
                 repeat: 1,
                 yoyo: true,
             }),
-            gsap.from(this._glow, { alpha: 1, duration: 0.9, ease: 'Sine.InOut', repeat: 0, yoyo: true }),
+            gsap.from(this._glow, { alpha: 1, duration: 0.7, ease: 'Sine.InOut', repeat: 0, yoyo: true }),
         ]);
     }
 

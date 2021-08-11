@@ -162,15 +162,8 @@ export class BoardModel extends ObservableModel {
         }
     }
 
-    /// start imitation in current level
     public startImitation(): void {
-        // this.state = BoardState.recording;
-        // this._onProgressStepCountUpdate();
         this._onTimerStart();
-        // this._getPads(this._levelPattern[this._progress * this._levelPattern.length]).state = PadState.showHint;
-        // this._getPads(this._levelPattern[this._progress * this._levelPattern.length]).running();
-
-        // this._visibilityRunnable = loopRunnable(this._levelConstInterval, this._progressEmitter, this);
         this._timerPRunnable = loopRunnable(timerDelay * levelLength, this._onTimerUpdate, this);
     }
 
@@ -202,7 +195,6 @@ export class BoardModel extends ObservableModel {
 
     ///counts the level score
     public checkLevelScore(): void {
-        // console.warn(this.$currentScore);
         this._score = Math.floor(this._localScore);
         this.nextToState();
     }
@@ -227,14 +219,13 @@ export class BoardModel extends ObservableModel {
 
     private _showHint(): void {
         if (this._timer.pointers[this._padsCount]) {
-            if (this._entryTimer >= this._timer.pointers[this._padsCount].position - 0.05) {
+            if (this._entryTimer >= this._timer.pointers[this._padsCount].position) {
                 this._progressEmitter();
             }
-        } else if (this._entryTimer === 3.21) {
+        } else if (this._entryTimer >= levelLength) {
             this._progress = true;
         } else {
             this._getPads(this._levelPattern[this._padsCount - 1]).state = PadState.hideHint;
-            // this._padsCount = 0;
         }
     }
 
@@ -247,14 +238,6 @@ export class BoardModel extends ObservableModel {
         this._state === BoardState.imitation ? this._getPads(this._levelPattern[this._padsCount]).running() : false;
         this._getPads(this._levelPattern[this._padsCount]).state = PadState.showHint;
         this._padsCount += 1;
-        // } else {
-        //     this._getPads(this._levelPattern[this._padsCount - 1]).state = PadState.hideHint;
-        //     removeRunnable(this._visibilityRunnable);
-        //     // // this.state = BoardState.play;
-        //     this._padsCount = 0;
-        //     this._progress = null;
-        //     this._progressStep = null;
-        // }
     }
 
     //check is true input pad
@@ -273,18 +256,10 @@ export class BoardModel extends ObservableModel {
                     this._getPads(pointers[count].padUUid),
                 );
                 return;
-                // }
             } else {
                 this._localScore += this._boardPadClickStatusUpdate(-1, this._getPads(pointers[count].padUUid));
             }
         }
-    }
-
-    ///counts the this part score on level
-    private _checkScore(entryTimer: number): void {
-        // const x = entryTimer / this._levelConstInterval;
-        // this.$currentScore += x / this._levelPattern.length;
-        // this._isEntryTruePad = false;
     }
 
     ///create pads
@@ -316,25 +291,11 @@ export class BoardModel extends ObservableModel {
         this._levelConstInterval = levelLength / this._levelPattern.length;
     }
 
-    ///counts the proressStep and progress step count in this level
-    private _onProgressStepCountUpdate(): void {
-        // this._levelPattern.length > 0
-        //     ? (this._progressStepCount = 3.2 / this._levelPattern.length - 0.2)
-        //     : (this._progressStepCount = 0);
-        // !this._progressStep ? (this._progressStep = this._progressStepCount) : false;
-        // this._progress = 0;
-    }
-
-    private _onProgressUpdate(): void {
-        // this._progress += this._progressStep;
-    }
-
     private _boardPadClickStatusUpdate(delta: number, padModel: PadModel): number {
-        // const value = delta / this._levelConstInterval;
         let winPercentage = 0;
         const maxValueInPercentage = 100 / this._levelPattern.length;
-        // const value = delta / this._levelConstInterval;
         const value = 1 - Math.abs(delta / this._levelConstInterval);
+
         console.warn(value, 'value');
 
         if (delta == -1 || value < 0) {
@@ -363,9 +324,6 @@ export class BoardModel extends ObservableModel {
         this._timer.entryTimer = Math.floor(this._timer.entryTimer * 100) / 100;
 
         this._entryTimer = this._timer.entryTimer;
-        // if (this._entryTimer === 3.21) {
-        //     this._progress = true;
-        // }
 
         this._showHint();
 
@@ -381,8 +339,6 @@ export class BoardModel extends ObservableModel {
     }
 
     private _onTimerStart(): void {
-        // this._startRecordingTime = Date.now();
-
         this._timer = { start: 0, entryTimer: 0, end: levelLength, pointers: [] };
         this._entryTimer = 0;
         for (let index = 1; index <= this._levelPattern.length; index++) {
@@ -391,7 +347,5 @@ export class BoardModel extends ObservableModel {
                 position: (index - 1) * this._levelConstInterval,
             });
         }
-
-        // this._timerPRunnable = loopRunnable(timerDellay, this._onTimerUpdate, this);
     }
 }

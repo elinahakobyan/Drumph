@@ -26,7 +26,6 @@ export const getUIGridLandscapeConfig = (): ICellConfig => {
             // },
 
             {
-                // debug: { color: 0x4287f5 },
                 name: 'progress_bar',
                 bounds: { x: (1 - boardW) / 2, y: logoH, width: boardW, height: progressBarH },
                 align: CellAlign.leftTop,
@@ -62,7 +61,6 @@ export const getUIGridPortraitConfig = (): ICellConfig => {
     }
 
     return {
-        // debug: { color: 0x4287f5 },
         name: 'ui',
         cells: [
             {

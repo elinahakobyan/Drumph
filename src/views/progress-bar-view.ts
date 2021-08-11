@@ -13,15 +13,13 @@ export class ProgressBarView extends Container {
         this._maxWidth = 1400;
         this._build();
         lego.event.on(ProgressBarModelEvent.progressUpdate, this._updateProgress, this);
-        // lego.event.on(BoardModelEvent.timerUpdate, this._updateProgress, this);
     }
 
     public getBounds(): Rectangle {
-        return new Rectangle(0, 0, this._maxWidth, 10);
+        return new Rectangle(0, 0, this._maxWidth * this.parent.parent.scale.x, 10);
     }
 
     private _updateProgress(progress: number): void {
-        // console.warn(progress);
         this._fill.width = this._maxWidth * progress;
     }
 
