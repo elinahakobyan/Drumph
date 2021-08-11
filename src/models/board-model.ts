@@ -195,22 +195,10 @@ export class BoardModel extends ObservableModel {
         this._clickCount += 1;
     };
 
-    ///compare input padUUid and element on pattern first
-    public onStartPlay(padUUid: string): void {
-        // if (this._state === BoardState.imitation) {
-        //     this._getPads(this._levelPattern[this._progress * this._levelPattern.length]).running();
-        // } else if ((this._state = BoardState.play)) {
-        // console.warn(padUUid);
-        // if (padUUid === this._getPads(this._levelPattern[0]).uuid) {
-        //     this._localScore = 1 / this._levelPattern.length;
-        //     this.$currentScore = this._localScore;
-        //     this._boardPadClickStatusUpdate(this._levelConstInterval, this._getPads(this._levelPattern[0]));
-        // } else {
-        //     this._boardPadClickStatusUpdate(-1, this._getPads(this._levelPattern[0]));
-        //     this._localScore = 0;
-        // }
-        // }
-    }
+    public showHintDuringGame = (): void => {
+        this._padsCount = 0;
+        this._showHint();
+    };
 
     ///counts the level score
     public checkLevelScore(): void {
@@ -379,18 +367,7 @@ export class BoardModel extends ObservableModel {
         //     this._progress = true;
         // }
 
-        if (this._timer.pointers[this._padsCount]) {
-            if (this._entryTimer >= this._timer.pointers[this._padsCount].position - 0.05) {
-                console.warn('hasaaaaaaaaaaaaaaaaaaaaa');
-
-                this._progressEmitter();
-            }
-        } else if (this._entryTimer === 3.21) {
-            this._progress = true;
-        } else {
-            this._getPads(this._levelPattern[this._padsCount - 1]).state = PadState.hideHint;
-            // this._padsCount = 0;
-        }
+        this._showHint();
 
         if (this._timer.entryTimer >= this._timer.end || this._timer.entryTimer + timerDelay > this._timer.end) {
             removeRunnable(this._timerPRunnable);
