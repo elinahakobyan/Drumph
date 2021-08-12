@@ -34,6 +34,7 @@ export class PadModel extends ObservableModel {
     private _name: string;
     private _activeColor: number;
     private _passiveColor: number;
+
     public constructor(config: PadModelConfig, index: number) {
         super('PadModel');
         this._index = index;
@@ -85,6 +86,10 @@ export class PadModel extends ObservableModel {
         super.destroy();
     }
 
+    public reset(): void {
+        removeRunnable(this._coolDownRunnable);
+    }
+
     public running(): void {
         this._status = PadStatus.play;
         this._coolDownRunnable = delayRunnable(0.01, () => {
@@ -95,9 +100,5 @@ export class PadModel extends ObservableModel {
     public showPrompt(value: BoardPadClickStatus): void {
         this._accuracy = value;
         this._accuracy = null;
-    }
-
-    public initialize(): void {
-        this._state = PadState.deactivate;
     }
 }

@@ -20,6 +20,7 @@ export const phrases = {
     Next: 'Next',
     'Try again': 'Try again',
     'Make your own beat': 'Make your own beat',
+    'Now make your own beat!': 'Now make your own beat!',
     Good: 'Good',
     Perfect: 'Perfect',
     Bad: 'Bad',

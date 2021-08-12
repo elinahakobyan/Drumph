@@ -7,7 +7,6 @@ import { BoardModelEvent, PadModelEvent } from '../events/model';
 import { BoardViewEvent } from '../events/view';
 import { BoardState, BoardStatus } from '../models/board-model';
 import { PadModel, PadState } from '../models/pads/pad-model';
-import { delayRunnable } from '../utils';
 import { PadView } from './pad/pad-view';
 
 export class BoardView extends Container {
@@ -48,8 +47,6 @@ export class BoardView extends Container {
     }
 
     public offPadsClick(): void {
-        // console.warn('offPadsClick');
-
         this._padsInteractive = false;
         this._patternPads.forEach((pad) => {
             pad.updateClickListener(false);
@@ -58,7 +55,6 @@ export class BoardView extends Container {
 
     private _onBoardStateUpdate(value: BoardState): void {
         //
-        // console.warn('BoardState', value, oldValue);
         switch (value) {
             case BoardState.play:
                 this.onPadsClick();
@@ -80,7 +76,6 @@ export class BoardView extends Container {
     }
     private _onBoardStatusUpdate(value: BoardStatus): void {
         //
-        // console.warn('BoardStatus', value, oldValue);
         switch (value) {
             case BoardStatus.start:
                 // this.onPadsClick();
@@ -125,62 +120,6 @@ export class BoardView extends Container {
         ///
     }
 
-    private _onLevelPadsUpdate(levelPattern: string[]): void {
-        levelPattern.forEach((patternPad) => {
-            const pad = <PadView>this._getPad(patternPad);
-            pad ? pad.deactivate() : false;
-        });
-        ///
-    }
-
-    // private _onBoardScoreUpdate(score: number, oldScore: number): void {
-    //     if (score === null) {
-    //         console.warn('new level');
-    //         return;
-    //     }
-    //     console.warn(score, 'score', oldScore);
-
-    //     ///
-    // }
-
-    private _onUpdateBoard(progressConfig: ProgressConfig): void {
-        if (progressConfig.state === BoardState.play) {
-            this.onPadsClick();
-        } else {
-            const pads: string[] = progressConfig.pads;
-
-            this._onUpdateImitation(pads);
-        }
-    }
-
-    private _onUpdateImitation(pads: string[]): void {
-        pads.forEach((padId) => {
-            const pad = this._getPad(padId);
-            pad.showHint();
-            // pad.activate();
-            delayRunnable(
-                0.5,
-                () => {
-                    pad.hideHint();
-                    // pad.deactivate();
-                },
-                this,
-            );
-        });
-        ///
-    }
-
-    private _onCompleteUpdateImitation(isComplete: boolean): void {
-        // console.warn(isComplete);
-        if (isComplete) {
-            this.onPadsClick();
-        } else {
-            this.offPadsClick();
-        }
-
-        ///
-    }
-
     private _getPad(name: string): PadView {
         const cell = this._pads.find((pad) => pad.uuid === name);
         // console.warn(cell);
@@ -190,8 +129,7 @@ export class BoardView extends Container {
     }
 
     private _onPadStateUpdate(newState: string, oldState: string, uuid: string): void {
-        // console.warn(uuid);
-        // console.warn(newState);
+        console.warn(newState);
 
         switch (newState) {
             case PadState.blocked:

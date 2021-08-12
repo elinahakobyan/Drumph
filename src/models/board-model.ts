@@ -10,6 +10,7 @@ export enum BoardState {
     play = 'play',
     recording = 'recording',
     levelComplete = 'levelComplete',
+    aggressiveCtaComplete = 'aggressiveCtaComplete',
 }
 
 export enum BoardStatus {
@@ -25,7 +26,6 @@ export class BoardModel extends ObservableModel {
     private _state = BoardState.unknown;
     private _status = BoardStatus.unknown;
     private _visibilityRunnable: Runnable;
-    private _startRecordingTime: number;
 
     private _timerPRunnable: Runnable;
     private _clickCount = 0;
@@ -34,7 +34,6 @@ export class BoardModel extends ObservableModel {
     private _pads: Map<string, PadModel> = null;
     private _level: number = null;
     private _timer: BoardTimer = null;
-    private _progressStepCount: number = null;
     private _progress: boolean;
     private _levelPattern: string[] = null;
     private _imitation = false;
@@ -139,8 +138,8 @@ export class BoardModel extends ObservableModel {
     public onLevelUpdate(level = 1): void {
         this._progress = false;
         this._level = level;
-        this._state = BoardState.idle;
         this._createLevelPattern();
+        this._state = BoardState.idle;
     }
 
     public rebuildLevel(): void {
@@ -151,7 +150,9 @@ export class BoardModel extends ObservableModel {
         this._localScore = null;
         if (this._levelPattern) {
             this._levelPattern.forEach((levelPads) => {
-                this._getPads(levelPads).state = PadState.blocked;
+                const pad = this._getPads(levelPads);
+                pad.reset();
+                pad.state = PadState.blocked;
             });
             this._levelPattern.length = 0;
         }
@@ -160,6 +161,21 @@ export class BoardModel extends ObservableModel {
     public startImitation(): void {
         this._onTimerStart();
         this._timerPRunnable = loopRunnable(timerDelay * levelLength, this._onTimerUpdate, this);
+    }
+
+    public activateAggressivePads(): void {
+        if (this._levelPattern) {
+            this._levelPattern.forEach((levelPads) => {
+                const pad = this._getPads(levelPads);
+                pad.reset();
+                pad.state = PadState.blocked;
+            });
+            this._levelPattern.length = 0;
+        }
+
+        levels[this._level - 1].forEach((levelPads) => {
+            this._getPads(`pad_${levelPads.row}_${levelPads.col}`).state = PadState.active;
+        });
     }
 
     //go to next  level
@@ -185,6 +201,57 @@ export class BoardModel extends ObservableModel {
     public showHintDuringGame = (): void => {
         this._padsCount = 0;
         this._showHint();
+    };
+
+    public showAggressiveCtaHint = (): void => {
+        const firstLevelSequence: string[] = [];
+        const secondLevelSequence: string[] = [];
+        let time = 0;
+        let count1 = 0;
+        let count2 = 0;
+
+        levels[0].forEach((levelPads) => {
+            firstLevelSequence.push(`pad_${levelPads.row}_${levelPads.col}`);
+        });
+
+        levels[1].forEach((levelPads) => {
+            secondLevelSequence.push(`pad_${levelPads.row}_${levelPads.col}`);
+        });
+
+        console.warn(secondLevelSequence);
+
+        const loop = loopRunnable(
+            0.1 * levelLength,
+            () => {
+                time += Math.round(4 * 0.1 * 100) / 100;
+                time = Math.floor(time * 100) / 100;
+
+                if ((time * 10) % ((levelLength * 10) / firstLevelSequence.length) == 0) {
+                    this._getPads(firstLevelSequence[count1 - 1])
+                        ? (this._getPads(firstLevelSequence[count1 - 1]).state = PadState.hideHint)
+                        : false;
+                    this._getPads(firstLevelSequence[count1]).state = PadState.showHint;
+                    count1 += 1;
+                }
+
+                if ((time * 10) % ((levelLength * 10) / secondLevelSequence.length) == 0) {
+                    this._getPads(secondLevelSequence[count2 - 1])
+                        ? (this._getPads(secondLevelSequence[count2 - 1]).state = PadState.hideHint)
+                        : false;
+                    this._getPads(secondLevelSequence[count2]).state = PadState.showHint;
+                    count2 += 1;
+                }
+
+                if (time >= levelLength) {
+                    this._getPads(secondLevelSequence[count2 - 1]).state = PadState.hideHint;
+                    this._getPads(firstLevelSequence[count1 - 1]).state = PadState.hideHint;
+                    removeRunnable(loop);
+                    this._state = BoardState.aggressiveCtaComplete;
+                }
+            },
+            this,
+        );
+        //
     };
 
     ///counts the level score
@@ -216,7 +283,7 @@ export class BoardModel extends ObservableModel {
             if (this._entryTimer >= this._timer.pointers[this._padsCount].position) {
                 this._progressEmitter();
             }
-        } else if (this._entryTimer >= levelLength) {
+        } else if (this._entryTimer > levelLength) {
             this._progress = true;
         } else {
             this._getPads(this._levelPattern[this._padsCount - 1]).state = PadState.hideHint;
@@ -242,8 +309,8 @@ export class BoardModel extends ObservableModel {
 
         if (pointers[count] && this._getPads(pointers[count].padUUid)) {
             if (padUUid === this._getPads(pointers[count].padUUid).uuid) {
-                console.warn(pointers[count].position, 'targetTime');
-                console.warn(entryTimer, 'clickTime');
+                // console.warn(pointers[count].position, 'targetTime');
+                // console.warn(entryTimer, 'clickTime');
 
                 this._localScore += this._boardPadClickStatusUpdate(
                     pointers[count].position - entryTimer,
@@ -290,22 +357,22 @@ export class BoardModel extends ObservableModel {
         const maxValueInPercentage = 100 / this._levelPattern.length;
         const value = 1 - Math.abs(delta / this._levelConstInterval);
 
-        console.warn(value, 'value');
+        // console.warn(value, 'value');
 
         if (delta == -1 || value < 0) {
             padModel.showPrompt(BoardPadClickStatus.miss);
             winPercentage = 0;
-            console.warn(BoardPadClickStatus.miss);
+            // console.warn(BoardPadClickStatus.miss);
         } else if (value > 0.01 && value < 0.4) {
-            console.warn(BoardPadClickStatus.bad);
+            // console.warn(BoardPadClickStatus.bad);
             padModel.showPrompt(BoardPadClickStatus.bad);
             winPercentage = maxValueInPercentage - Math.abs(delta / this._levelConstInterval) * maxValueInPercentage;
         } else if (value >= 0.4 && value < 0.7) {
-            console.warn(BoardPadClickStatus.good);
+            // console.warn(BoardPadClickStatus.good);
             padModel.showPrompt(BoardPadClickStatus.good);
             winPercentage = maxValueInPercentage - Math.abs(delta / this._levelConstInterval) * maxValueInPercentage;
         } else if (value >= 0.7 && value <= 1) {
-            console.warn(BoardPadClickStatus.perfect);
+            // console.warn(BoardPadClickStatus.perfect);
             padModel.showPrompt(BoardPadClickStatus.perfect);
             winPercentage = maxValueInPercentage;
         }

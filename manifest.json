@@ -41,7 +41,7 @@
             "description": "When true, the cta button is displayed at all times."
         },
         "idleTimeToCta": {
-            "value": 20,
+            "value": 40,
             "description": "AFK time to open the CTA (seconds)",
             "range": [10, 45]
         },
@@ -67,7 +67,7 @@
             }
         },
         "hint": {
-            "value": true,
+            "value": false,
             "description": "Bool to trigger nagging/arrow, param dependency example"
         },
         "idleTimeToHint": {

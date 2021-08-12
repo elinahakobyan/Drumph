@@ -153,6 +153,7 @@ export class PadView extends Container {
     }
 
     private _addListener(): void {
+        this._removeListener();
         this._pad.on('pointerdown', this._click, this);
     }
 

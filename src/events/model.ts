@@ -19,7 +19,6 @@ export enum BoardModelEvent {
     levelUpdate = 'BoardModelLevelUpdate',
     padsUpdate = 'BoardModelPadsUpdate',
     levelPatternUpdate = 'BoardModelLevelPatternUpdate',
-    progressStepCountUpdate = 'BoardModelProgressStepCountUpdate',
     progressUpdate = 'BoardModelProgressUpdate',
 }
 
