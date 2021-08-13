@@ -72,7 +72,7 @@ export class SoundObservant {
         const { index } = store.play.board.getPadByUuid(uuid);
 
         if (newValue === PadStatus.play) {
-            sound.stopAll();
+            // sound.stopAll();
             sound.play(`${index + 1}`);
         }
     }

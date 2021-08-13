@@ -1,5 +1,5 @@
 import { levelLength, levelOpenPads, levels, padsConfigs, timerDelay } from '../constants/constants';
-import { loopRunnable, removeRunnable } from '../utils';
+import { getParams, loopRunnable, removeRunnable } from '../utils';
 import { ObservableModel } from './observable-model';
 import { BoardPadClickStatus, PadModel, PadState } from './pads/pad-model';
 
@@ -41,6 +41,7 @@ export class BoardModel extends ObservableModel {
     private _score: number = null;
     private _entryTimer: number = null;
     private _localScore = 0;
+    private _bpm: number;
 
     public constructor() {
         super('BoardModel');
@@ -106,6 +107,14 @@ export class BoardModel extends ObservableModel {
 
     public get progress(): boolean {
         return this._progress;
+    }
+
+    public set progress(value: boolean) {
+        this._progress = value;
+    }
+
+    public get bpm(): number {
+        return this._bpm;
     }
 
     public getPadByUuid(padUUid: string): PadModel {
@@ -206,51 +215,74 @@ export class BoardModel extends ObservableModel {
     public showAggressiveCtaHint = (): void => {
         const firstLevelSequence: string[] = [];
         const secondLevelSequence: string[] = [];
-        let time = 0;
+        let time1 = 0;
+        let time2 = 0;
         let count1 = 0;
         let count2 = 0;
 
         levels[0].forEach((levelPads) => {
             firstLevelSequence.push(`pad_${levelPads.row}_${levelPads.col}`);
         });
+        firstLevelSequence.push(`pad_${2}_${3}`, `pad_${1}_${3}`);
 
         levels[1].forEach((levelPads) => {
             secondLevelSequence.push(`pad_${levelPads.row}_${levelPads.col}`);
         });
 
-        console.warn(secondLevelSequence);
+        console.warn(firstLevelSequence);
 
-        const loop = loopRunnable(
-            0.1 * levelLength,
+        const loop1 = loopRunnable(
+            0.08 * levelLength,
             () => {
-                time += Math.round(4 * 0.1 * 100) / 100;
-                time = Math.floor(time * 100) / 100;
+                time1 += Math.round(4 * 0.08 * 100) / 100;
+                time1 = Math.round(time1 * 100) / 100;
+                console.warn(time1);
+                if (Math.round(time1 * 100) % ((levelLength * 100) / firstLevelSequence.length) == 0) {
+                    console.warn('first');
 
-                if ((time * 10) % ((levelLength * 10) / firstLevelSequence.length) == 0) {
                     this._getPads(firstLevelSequence[count1 - 1])
                         ? (this._getPads(firstLevelSequence[count1 - 1]).state = PadState.hideHint)
                         : false;
+                    this._getPads(firstLevelSequence[count1]).running();
+
                     this._getPads(firstLevelSequence[count1]).state = PadState.showHint;
                     count1 += 1;
                 }
 
-                if ((time * 10) % ((levelLength * 10) / secondLevelSequence.length) == 0) {
+                if (time1 >= levelLength) {
+                    this._getPads(firstLevelSequence[count1 - 1]).state = PadState.hideHint;
+                    removeRunnable(loop1);
+                    // this._state = BoardState.aggressiveCtaComplete;
+                }
+            },
+            this,
+        );
+
+        const loop2 = loopRunnable(
+            0.1 * levelLength,
+            () => {
+                time2 += Math.round(4 * 0.1 * 100) / 100;
+                time2 = Math.floor(time2 * 100) / 100;
+
+                if ((time2 * 10) % ((levelLength * 10) / secondLevelSequence.length) == 0) {
                     this._getPads(secondLevelSequence[count2 - 1])
                         ? (this._getPads(secondLevelSequence[count2 - 1]).state = PadState.hideHint)
                         : false;
+
                     this._getPads(secondLevelSequence[count2]).state = PadState.showHint;
+                    this._getPads(secondLevelSequence[count2]).running();
                     count2 += 1;
                 }
 
-                if (time >= levelLength) {
+                if (time2 >= levelLength) {
                     this._getPads(secondLevelSequence[count2 - 1]).state = PadState.hideHint;
-                    this._getPads(firstLevelSequence[count1 - 1]).state = PadState.hideHint;
-                    removeRunnable(loop);
+                    removeRunnable(loop2);
                     this._state = BoardState.aggressiveCtaComplete;
                 }
             },
             this,
         );
+
         //
     };
 
@@ -399,12 +431,16 @@ export class BoardModel extends ObservableModel {
     }
 
     private _onTimerStart(): void {
+        if (this._level == 1) {
+            this._bpm = getParams()['2nd_bpm'].value ? 1 : 0.5;
+        }
+
         this._timer = { start: 0, entryTimer: 0, end: levelLength, pointers: [] };
         this._entryTimer = 0;
         for (let index = 1; index <= this._levelPattern.length; index++) {
             this._timer.pointers.push({
                 padUUid: this._levelPattern[index - 1],
-                position: (index - 1) * this._levelConstInterval,
+                position: (index - 1) * this._levelConstInterval * this._bpm,
             });
         }
     }

@@ -129,7 +129,7 @@ export class BoardView extends Container {
     }
 
     private _onPadStateUpdate(newState: string, oldState: string, uuid: string): void {
-        console.warn(newState);
+        // console.warn(newState);
 
         switch (newState) {
             case PadState.blocked:

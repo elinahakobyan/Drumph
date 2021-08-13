@@ -21,7 +21,6 @@ export const mapPlayCommandsCommand = (): void => {
         .on(TutorialViewEvent.sequenceHideComplete, onTutorialHideCompleteCommand)
         .on(BoardModelEvent.stateUpdate, onBoardStateUpdateCommand)
         .on(BoardModelEvent.statusUpdate, onBoardStatusUpdateCommand)
-
         .on(PadViewEvent.click, onPadClickCommand)
         .on(BoardModelEvent.progressUpdate, onBoardProgressUpdate)
         .on(BoardModelEvent.entryTimerUpdate, onBoardTimerUpdateCommand)
