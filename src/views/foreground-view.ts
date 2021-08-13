@@ -4,10 +4,9 @@ import gsap from 'gsap/gsap-core';
 import { NineSlicePlane } from 'pixi.js';
 import { HintComponent } from '../components/hint-component';
 import { LogoComponent } from '../components/logo-component';
-import { SoundToggleComponent } from '../components/sound-toggle-component';
 import { TutorialView } from '../components/tutorial-view';
 import { getForegroundGridConfig } from '../constants/configs/grid-configs';
-import { BoardModelEvent, PlayableModelEvent, SoundModelEvent } from '../events/model';
+import { BoardModelEvent, PlayableModelEvent } from '../events/model';
 import { PlayViewEvent } from '../events/view';
 import { HintModel } from '../models/hint-model';
 import { PlayableState } from '../models/playable-model';
@@ -17,7 +16,6 @@ import { ScoreComponent } from './score-component';
 
 export class ForegroundView extends PixiGrid {
     private _logo: LogoComponent;
-    private _sound: SoundToggleComponent;
     private _hint: HintComponent;
     private _tutorial: TutorialView;
     private _scorePopUp: NineSlicePlane;
@@ -30,7 +28,6 @@ export class ForegroundView extends PixiGrid {
         lego.event
             .on(PlayableModelEvent.stateUpdate, this._onPlayableStateUpdate, this)
             .on(PlayableModelEvent.hintUpdate, this._onHintUpdate, this)
-            .on(SoundModelEvent.iconUpdate, this._onSoundIconUpdate, this)
             .on(PlayableModelEvent.tutorialUpdate, this._onTutorialUpdate, this)
             .on(BoardModelEvent.scoreUpdate, this._onBoardScoreUpdate, this);
     }
@@ -64,19 +61,6 @@ export class ForegroundView extends PixiGrid {
 
     private _replaceLogo(): void {
         tweenToCell(this, this._logo, 'cta_logo');
-    }
-
-    // SOUND
-    private _onSoundIconUpdate(icon: boolean): void {
-        icon ? this._buildSoundToggle() : this._destroySoundToggle();
-    }
-
-    private _buildSoundToggle(): void {
-        this.setChild('sound', (this._sound = new SoundToggleComponent()));
-    }
-
-    private _destroySoundToggle(): void {
-        this._sound && this._sound.destroy();
     }
 
     // HINT

@@ -65,8 +65,6 @@ export class BoardView extends Container {
             case BoardState.imitation:
                 this.offPadsClick();
                 break;
-            case BoardState.levelComplete:
-                // this.onPadsClick();
 
                 break;
 
@@ -134,11 +132,13 @@ export class BoardView extends Container {
         switch (newState) {
             case PadState.blocked:
                 this._getPad(uuid).block();
+                this._patternPads.length = 0;
 
                 break;
             case PadState.active:
                 this._getPad(uuid).activate();
                 this._patternPads.push(this._getPad(uuid));
+
                 break;
             case PadState.deactivate:
                 this._getPad(uuid).block();

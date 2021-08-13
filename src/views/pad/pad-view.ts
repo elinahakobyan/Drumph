@@ -42,11 +42,13 @@ export class PadView extends Container {
     public block(): void {
         this._blocker.visible = true;
         this._pad.interactive = false;
+        this._glow.alpha = 0;
     }
 
     public activate(): void {
         this._blocker.visible = false;
         this._pad.interactive = true;
+        this._addListener();
     }
 
     public deactivate(): void {
@@ -87,7 +89,7 @@ export class PadView extends Container {
                 repeat: 1,
                 yoyo: true,
             }),
-            gsap.from(this._glow, { alpha: 1, duration: 0.7, ease: 'Sine.InOut', repeat: 0, yoyo: true }),
+            gsap.from(this._glow, { alpha: 1, duration: 0.8, ease: 'Sine.InOut', repeat: 0, yoyo: true }),
         ]);
     }
 

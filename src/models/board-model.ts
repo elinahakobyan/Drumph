@@ -1,5 +1,5 @@
 import { levelLength, levelOpenPads, levels, padsConfigs, timerDelay } from '../constants/constants';
-import { getParams, loopRunnable, removeRunnable } from '../utils';
+import { loopRunnable, removeRunnable } from '../utils';
 import { ObservableModel } from './observable-model';
 import { BoardPadClickStatus, PadModel, PadState } from './pads/pad-model';
 
@@ -41,7 +41,6 @@ export class BoardModel extends ObservableModel {
     private _score: number = null;
     private _entryTimer: number = null;
     private _localScore = 0;
-    private _bpm: number;
 
     public constructor() {
         super('BoardModel');
@@ -113,10 +112,6 @@ export class BoardModel extends ObservableModel {
         this._progress = value;
     }
 
-    public get bpm(): number {
-        return this._bpm;
-    }
-
     public getPadByUuid(padUUid: string): PadModel {
         let p;
         this._pads.forEach((pad) => {
@@ -132,7 +127,6 @@ export class BoardModel extends ObservableModel {
     public initialize(): void {
         this._state = BoardState.idle;
         this._createPads();
-        // this._createLevelPattern();
     }
 
     public destroy(): void {
@@ -182,6 +176,7 @@ export class BoardModel extends ObservableModel {
             this._levelPattern.length = 0;
         }
 
+        console.warn(levels[this._level - 1]);
         levels[this._level - 1].forEach((levelPads) => {
             this._getPads(`pad_${levelPads.row}_${levelPads.col}`).state = PadState.active;
         });
@@ -229,30 +224,25 @@ export class BoardModel extends ObservableModel {
             secondLevelSequence.push(`pad_${levelPads.row}_${levelPads.col}`);
         });
 
-        console.warn(firstLevelSequence);
-
         const loop1 = loopRunnable(
             0.08 * levelLength,
             () => {
                 time1 += Math.round(4 * 0.08 * 100) / 100;
                 time1 = Math.round(time1 * 100) / 100;
-                console.warn(time1);
                 if (Math.round(time1 * 100) % ((levelLength * 100) / firstLevelSequence.length) == 0) {
-                    console.warn('first');
-
                     this._getPads(firstLevelSequence[count1 - 1])
                         ? (this._getPads(firstLevelSequence[count1 - 1]).state = PadState.hideHint)
                         : false;
                     this._getPads(firstLevelSequence[count1]).running();
 
                     this._getPads(firstLevelSequence[count1]).state = PadState.showHint;
+                    this._getPads(firstLevelSequence[count1]).state = PadState.animate;
                     count1 += 1;
                 }
 
                 if (time1 >= levelLength) {
                     this._getPads(firstLevelSequence[count1 - 1]).state = PadState.hideHint;
                     removeRunnable(loop1);
-                    // this._state = BoardState.aggressiveCtaComplete;
                 }
             },
             this,
@@ -270,6 +260,7 @@ export class BoardModel extends ObservableModel {
                         : false;
 
                     this._getPads(secondLevelSequence[count2]).state = PadState.showHint;
+                    this._getPads(secondLevelSequence[count2]).state = PadState.animate;
                     this._getPads(secondLevelSequence[count2]).running();
                     count2 += 1;
                 }
@@ -341,9 +332,6 @@ export class BoardModel extends ObservableModel {
 
         if (pointers[count] && this._getPads(pointers[count].padUUid)) {
             if (padUUid === this._getPads(pointers[count].padUUid).uuid) {
-                // console.warn(pointers[count].position, 'targetTime');
-                // console.warn(entryTimer, 'clickTime');
-
                 this._localScore += this._boardPadClickStatusUpdate(
                     pointers[count].position - entryTimer,
                     this._getPads(pointers[count].padUUid),
@@ -369,7 +357,6 @@ export class BoardModel extends ObservableModel {
 
     //create pattern in this level
     private _createLevelPattern(): void {
-        // const levelPads = levelOpenPads[2];
         const levelPads = levelOpenPads[this._level - 1];
         this._levelPattern ? (this._levelPattern.length = 0) : (this._levelPattern = []);
         const levelPattern: string[] = [];
@@ -389,22 +376,16 @@ export class BoardModel extends ObservableModel {
         const maxValueInPercentage = 100 / this._levelPattern.length;
         const value = 1 - Math.abs(delta / this._levelConstInterval);
 
-        // console.warn(value, 'value');
-
         if (delta == -1 || value < 0) {
             padModel.showPrompt(BoardPadClickStatus.miss);
             winPercentage = 0;
-            // console.warn(BoardPadClickStatus.miss);
         } else if (value > 0.01 && value < 0.4) {
-            // console.warn(BoardPadClickStatus.bad);
             padModel.showPrompt(BoardPadClickStatus.bad);
             winPercentage = maxValueInPercentage - Math.abs(delta / this._levelConstInterval) * maxValueInPercentage;
         } else if (value >= 0.4 && value < 0.7) {
-            // console.warn(BoardPadClickStatus.good);
             padModel.showPrompt(BoardPadClickStatus.good);
             winPercentage = maxValueInPercentage - Math.abs(delta / this._levelConstInterval) * maxValueInPercentage;
         } else if (value >= 0.7 && value <= 1) {
-            // console.warn(BoardPadClickStatus.perfect);
             padModel.showPrompt(BoardPadClickStatus.perfect);
             winPercentage = maxValueInPercentage;
         }
@@ -431,16 +412,12 @@ export class BoardModel extends ObservableModel {
     }
 
     private _onTimerStart(): void {
-        if (this._level == 1) {
-            this._bpm = getParams()['2nd_bpm'].value ? 1 : 0.5;
-        }
-
         this._timer = { start: 0, entryTimer: 0, end: levelLength, pointers: [] };
         this._entryTimer = 0;
         for (let index = 1; index <= this._levelPattern.length; index++) {
             this._timer.pointers.push({
                 padUUid: this._levelPattern[index - 1],
-                position: (index - 1) * this._levelConstInterval * this._bpm,
+                position: (index - 1) * this._levelConstInterval,
             });
         }
     }

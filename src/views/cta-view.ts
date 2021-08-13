@@ -23,12 +23,11 @@ export class CTAView extends AbstractCTAView {
     // }
 
     protected build(blockerAlpha?: number): void {
-        super.build(blockerAlpha);
-
         this._buildBgImage();
         this._buildButtons();
         this._buildLabel();
         this._buildConfetti();
+        super.build(blockerAlpha);
     }
 
     private _buildButtons(): void {

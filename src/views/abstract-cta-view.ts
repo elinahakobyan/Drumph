@@ -17,7 +17,7 @@ export abstract class AbstractCTAView extends PixiGrid {
         lego.event.on(PlayableModelEvent.stateUpdate, this._onPlayableStateUpdate, this);
     }
 
-    protected build(blockerAlpha?: number): void {
+    protected build(blockerAlpha = 0): void {
         this._buildBlocker(blockerAlpha);
     }
 
@@ -35,19 +35,20 @@ export abstract class AbstractCTAView extends PixiGrid {
                 // this.removeChildren();
                 break;
             case PlayableState.cta:
-                this.build();
+                this.build(0);
                 break;
             default:
         }
     }
 
-    private _buildBlocker(alpha = 0.5): void {
+    private _buildBlocker(alpha = 1): void {
         const { x, y, width, height } = getPlayable().viewBounds;
         this._blocker = new Graphics();
-        this._blocker.beginFill(0x0, alpha);
+        this._blocker.beginFill(0xfffffff, alpha);
         this._blocker.drawRect(x, y, width, height);
         this._blocker.interactive = true;
         this.setChild('blocker', this._blocker);
+        console.warn(getParams().ctaScreenClickable.value);
 
         if (getParams().ctaScreenClickable.value) {
             this._blocker.on('pointerdown', this._onScreenClick, this);
