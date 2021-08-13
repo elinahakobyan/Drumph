@@ -43,7 +43,7 @@ export class ScoreComponent extends NineSlicePlane {
         btn.interactive = true;
         btn.on('pointerup', () => {
             btn.alpha = 0.56;
-            this.emit('scoreBtnClick', btn);
+            this.emit('scoreBtnClick', text);
         });
         this.addChild(btn);
     }
