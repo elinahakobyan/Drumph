@@ -46,7 +46,7 @@
             "range": [10, 45]
         },
         "ctaScreenClickable": {
-            "value": false,
+            "value": true,
             "description": "The entire CTA screen is clickable to the App store. When false, only CTA button is clickable."
         },
         "ctaPrimaryBtnText": {

@@ -153,7 +153,7 @@ export class BoardModel extends ObservableModel {
         this._localScore = null;
         if (this._levelPattern) {
             this._levelPattern.forEach((levelPads) => {
-                const pad = this._getPads(levelPads);
+                const pad = this.getPads(levelPads);
                 pad.reset();
                 pad.state = PadState.blocked;
             });
@@ -169,7 +169,7 @@ export class BoardModel extends ObservableModel {
     public activateAggressivePads(): void {
         if (this._levelPattern) {
             this._levelPattern.forEach((levelPads) => {
-                const pad = this._getPads(levelPads);
+                const pad = this.getPads(levelPads);
                 pad.reset();
                 pad.state = PadState.blocked;
             });
@@ -178,7 +178,7 @@ export class BoardModel extends ObservableModel {
 
         console.warn(levels[this._level - 1]);
         levels[this._level - 1].forEach((levelPads) => {
-            this._getPads(`pad_${levelPads.row}_${levelPads.col}`).state = PadState.active;
+            this.getPads(`pad_${levelPads.row}_${levelPads.col}`).state = PadState.active;
         });
     }
 
@@ -230,18 +230,18 @@ export class BoardModel extends ObservableModel {
                 time1 += Math.round(4 * 0.08 * 100) / 100;
                 time1 = Math.round(time1 * 100) / 100;
                 if (Math.round(time1 * 100) % ((levelLength * 100) / firstLevelSequence.length) == 0) {
-                    this._getPads(firstLevelSequence[count1 - 1])
-                        ? (this._getPads(firstLevelSequence[count1 - 1]).state = PadState.hideHint)
+                    this.getPads(firstLevelSequence[count1 - 1])
+                        ? (this.getPads(firstLevelSequence[count1 - 1]).state = PadState.hideHint)
                         : false;
-                    this._getPads(firstLevelSequence[count1]).running();
+                    this.getPads(firstLevelSequence[count1]).running();
 
-                    this._getPads(firstLevelSequence[count1]).state = PadState.showHint;
-                    this._getPads(firstLevelSequence[count1]).state = PadState.animate;
+                    this.getPads(firstLevelSequence[count1]).state = PadState.showHint;
+                    this.getPads(firstLevelSequence[count1]).state = PadState.animate;
                     count1 += 1;
                 }
 
                 if (time1 >= levelLength) {
-                    this._getPads(firstLevelSequence[count1 - 1]).state = PadState.hideHint;
+                    this.getPads(firstLevelSequence[count1 - 1]).state = PadState.hideHint;
                     removeRunnable(loop1);
                 }
             },
@@ -255,18 +255,18 @@ export class BoardModel extends ObservableModel {
                 time2 = Math.floor(time2 * 100) / 100;
 
                 if ((time2 * 10) % ((levelLength * 10) / secondLevelSequence.length) == 0) {
-                    this._getPads(secondLevelSequence[count2 - 1])
-                        ? (this._getPads(secondLevelSequence[count2 - 1]).state = PadState.hideHint)
+                    this.getPads(secondLevelSequence[count2 - 1])
+                        ? (this.getPads(secondLevelSequence[count2 - 1]).state = PadState.hideHint)
                         : false;
 
-                    this._getPads(secondLevelSequence[count2]).state = PadState.showHint;
-                    this._getPads(secondLevelSequence[count2]).state = PadState.animate;
-                    this._getPads(secondLevelSequence[count2]).running();
+                    this.getPads(secondLevelSequence[count2]).state = PadState.showHint;
+                    this.getPads(secondLevelSequence[count2]).state = PadState.animate;
+                    this.getPads(secondLevelSequence[count2]).running();
                     count2 += 1;
                 }
 
                 if (time2 >= levelLength) {
-                    this._getPads(secondLevelSequence[count2 - 1]).state = PadState.hideHint;
+                    this.getPads(secondLevelSequence[count2 - 1]).state = PadState.hideHint;
                     removeRunnable(loop2);
                     this._state = BoardState.aggressiveCtaComplete;
                 }
@@ -277,6 +277,9 @@ export class BoardModel extends ObservableModel {
         //
     };
 
+    public getPads(padsUUid: string): PadModel {
+        return this._pads.get(padsUUid);
+    }
     ///counts the level score
     public checkLevelScore(): void {
         this._score = Math.floor(this._localScore);
@@ -293,9 +296,6 @@ export class BoardModel extends ObservableModel {
     }
 
     ///return padModel by name or id
-    private _getPads(padsUUid: string): PadModel {
-        return this._pads.get(padsUUid);
-    }
 
     private _destroyScore(): void {
         this._score = null;
@@ -309,18 +309,18 @@ export class BoardModel extends ObservableModel {
         } else if (this._entryTimer > levelLength) {
             this._progress = true;
         } else {
-            this._getPads(this._levelPattern[this._padsCount - 1]).state = PadState.hideHint;
+            this.getPads(this._levelPattern[this._padsCount - 1]).state = PadState.hideHint;
         }
     }
 
     //update progress or remove updating loop
     private _progressEmitter(): void {
         if (this._levelPattern[this._padsCount - 1]) {
-            this._getPads(this._levelPattern[this._padsCount - 1]).state = PadState.hideHint;
+            this.getPads(this._levelPattern[this._padsCount - 1]).state = PadState.hideHint;
         }
 
-        this._state === BoardState.imitation ? this._getPads(this._levelPattern[this._padsCount]).running() : false;
-        this._getPads(this._levelPattern[this._padsCount]).state = PadState.showHint;
+        this._state === BoardState.imitation ? this.getPads(this._levelPattern[this._padsCount]).running() : false;
+        this.getPads(this._levelPattern[this._padsCount]).state = PadState.showHint;
         this._padsCount += 1;
     }
 
@@ -330,15 +330,15 @@ export class BoardModel extends ObservableModel {
         const entryTimer = this._entryTimer;
         const pointers = this._timer.pointers;
 
-        if (pointers[count] && this._getPads(pointers[count].padUUid)) {
-            if (padUUid === this._getPads(pointers[count].padUUid).uuid) {
+        if (pointers[count] && this.getPads(pointers[count].padUUid)) {
+            if (padUUid === this.getPads(pointers[count].padUUid).uuid) {
                 this._localScore += this._boardPadClickStatusUpdate(
                     pointers[count].position - entryTimer,
-                    this._getPads(pointers[count].padUUid),
+                    this.getPads(pointers[count].padUUid),
                 );
                 return;
             } else {
-                this._localScore += this._boardPadClickStatusUpdate(-1, this._getPads(pointers[count].padUUid));
+                this._localScore += this._boardPadClickStatusUpdate(-1, this.getPads(pointers[count].padUUid));
             }
         }
     }
@@ -362,7 +362,7 @@ export class BoardModel extends ObservableModel {
         const levelPattern: string[] = [];
 
         levelPads.forEach((levelPads) => {
-            this._getPads(`pad_${levelPads.row}_${levelPads.col}`).state = PadState.active;
+            this.getPads(`pad_${levelPads.row}_${levelPads.col}`).state = PadState.active;
         });
         levels[this._level - 1].forEach((levelPads) => {
             levelPattern.push(`pad_${levelPads.row}_${levelPads.col}`);
