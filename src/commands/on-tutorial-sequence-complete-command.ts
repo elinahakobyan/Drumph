@@ -11,7 +11,7 @@ export function onTutorialSequenceCompleteCommand(value: boolean, prevValue: boo
     lego.command
         //
         .payload(BoardState.imitation)
-        .guard(() => index === 0 || index === 2)
+        .guard(() => index === 0 || (index === 2 && store.playable.tutorial.sequences.length !== 3))
         .execute(setBoardStateCommand)
 
         .guard(isBoardStateAggressiveCtaCompleteGuard)

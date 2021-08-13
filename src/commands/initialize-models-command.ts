@@ -1,4 +1,5 @@
 import { lego } from '@armathai/lego';
+import { getTutorialConfig } from '../constants/configs/tutorial-config';
 import { hintGuard } from '../guards/hint-guard';
 import { persistentCtaGuard } from '../guards/persistent-cta-guard';
 import { soundGuard } from '../guards/sound-guard';
@@ -17,6 +18,7 @@ export const initializeModelsCommand = (): void => {
         .execute(initializePlayerModelCommand)
 
         .guard(tutorialGuard)
+        .payload(getTutorialConfig())
         .execute(initializeTutorialModelCommand)
 
         .execute(initializePlayModelCommand)

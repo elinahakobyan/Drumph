@@ -93,12 +93,14 @@ export class PlayableModel extends ObservableModel {
     }
 
     // TUTORIAL
-    public initializeTutorialModel(): void {
+    public initializeTutorialModel(config: TutorialConfig): void {
         this._tutorial = new TutorialModel();
-        this._tutorial.initialize();
+        this._tutorial.initialize(config);
     }
 
     public destroyTutorialModel(): void {
+        console.warn('destroyTutorialModel');
+
         this._tutorial.destroy();
         this._tutorial = null;
     }

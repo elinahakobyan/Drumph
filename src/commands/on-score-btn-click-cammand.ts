@@ -1,4 +1,7 @@
 import { lego } from '@armathai/lego';
+import { getLevel2TutorialConfig, getTutorialConfig } from '../constants/configs/tutorial-config';
+import { isFirstLevelGuard } from '../guards/is-first-level-guard';
+import { isSecondLevelGuard } from '../guards/is-second-level-guard';
 import { tutorialGuard } from '../guards/tutorial-guard';
 import { tutorialModelGuard } from '../guards/tutorial-model-guard';
 import { store } from '../models/store';
@@ -7,7 +10,7 @@ import { initializeTutorialModelCommand } from './initialize-tutorial-model-comm
 
 export const onScoreBtnClickCommand = (text: string): void => {
     const level = store.play.board.level;
-    console.warn(text);
+    console.warn(level);
 
     if (text === 'Next') {
         store.play.board.rebuildLevel();
@@ -19,33 +22,14 @@ export const onScoreBtnClickCommand = (text: string): void => {
             .guard(tutorialModelGuard)
             .execute(destroyTutorialModelCommand)
 
-            .guard(tutorialGuard)
+            .guard(tutorialGuard, isFirstLevelGuard)
+            .payload(getTutorialConfig())
+            .execute(initializeTutorialModelCommand)
+
+            .guard(tutorialGuard, isSecondLevelGuard)
+            .payload(getLevel2TutorialConfig())
             .execute(initializeTutorialModelCommand);
 
         store.play.board.onLevelUpdate(level);
     }
-
-    // if (level === 2) {
-    //     console.warn('agressiv cta');
-    //     store.play.board.rebuildLevel();
-    //     store.play.board.onLevelUpdate(level + 1);
-
-    //     // store.play.board.startImitation();
-    // } else if (store.play.board.score > 0) {
-    //     console.warn('to next level ');
-    //     store.play.board.rebuildLevel();
-    //     store.play.board.onLevelUpdate(level + 1);
-    // } else {
-    //     console.warn('try again ');
-    //     store.play.board.rebuildLevel();
-    //     lego.command
-    //         .guard(tutorialModelGuard)
-    //         .execute(destroyTutorialModelCommand)
-
-    //         .guard(tutorialGuard)
-    //         .execute(initializeTutorialModelCommand);
-
-    //     store.play.board.onLevelUpdate(level);
-    // }
-    //
 };

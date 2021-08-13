@@ -26,7 +26,6 @@ export const onBoardStateUpdateCommand = (state: string): void => {
             () => isIdleStateGuard() || isPlayStateGuard(),
             lego.not(lastTutorialSequenceGuard),
         )
-
         .execute(nextTutorialSequenceCommand, showTutorialSequenceCommand)
 
         .guard(isImitationStateGuard)

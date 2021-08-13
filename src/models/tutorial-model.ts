@@ -1,4 +1,3 @@
-import { getTutorialConfig } from '../constants/configs/tutorial-config';
 import { ObservableModel } from './observable-model';
 import { TutorialSequenceModel } from './tutorial-sequence-model';
 
@@ -20,6 +19,7 @@ export class TutorialModel extends ObservableModel {
     public set complete(value: boolean) {
         this._complete = value;
     }
+
     public get skip(): boolean {
         return this._skip;
     }
@@ -44,10 +44,10 @@ export class TutorialModel extends ObservableModel {
         return this._sequences.find((sequence) => sequence.uuid === uuid);
     }
 
-    public initialize(): void {
+    public initialize(...rest: TutorialConfig[]): void {
         super.initialize();
 
-        this._initSequences();
+        this._initSequences(rest[0]);
     }
 
     public destroy(): void {
@@ -67,7 +67,7 @@ export class TutorialModel extends ObservableModel {
         this.current.show = true;
     }
 
-    private _initSequences(): void {
-        this._sequences = getTutorialConfig().map((config, index) => new TutorialSequenceModel(config, index));
+    private _initSequences(tutorialConfig: TutorialConfig): void {
+        this._sequences = tutorialConfig.map((config, index) => new TutorialSequenceModel(config, index));
     }
 }

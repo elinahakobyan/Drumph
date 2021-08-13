@@ -59,6 +59,10 @@ type TextConfig = {
     style?: PIXI.TextStyle;
 };
 
+type TutorialSequenceConfig = { text: string; duration: number; clickToComplete: boolean };
+
+type TutorialConfig = TutorialSequenceConfig[];
+
 type ProgressConfig = {
     pads: string[];
     state: BoardState;

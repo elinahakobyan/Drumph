@@ -1,5 +1,5 @@
 import { store } from '../models/store';
 
-export const initializeTutorialModelCommand = (): void => {
-    store.playable.initializeTutorialModel();
+export const initializeTutorialModelCommand = (config: TutorialConfig): void => {
+    store.playable.initializeTutorialModel(config);
 };

@@ -8,7 +8,6 @@ import { setPlayableStateCommand } from './set-playable-state-command';
 export const goToCTACommand = (padId: string): void => {
     console.warn(padId);
 
-    store.play.board.getPadByUuid(padId).state = PadState.showHint;
     store.play.board.getPadByUuid(padId).state = PadState.animate;
 
     delayRunnable(1, () => {

@@ -8,7 +8,4 @@ export const onTutorialHideCompleteCommand = (): void => {
         //
         .guard(tutorialModelGuard, lastTutorialSequenceGuard)
         .execute(setTutorialCompleteCommand);
-
-    // .guard(isFirstOrThirdTutorialSequence)
-    // .execute(setImitationStateOnBoardCommand);
 };
