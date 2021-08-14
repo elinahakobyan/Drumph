@@ -6,7 +6,7 @@ import { isBoardStateLevelCompleteGuard } from '../guards/is-board-state-level-c
 import { tutorialGuard } from '../guards/tutorial-guard';
 import { store } from '../models/store';
 import { completeTutorialSequenceCommand } from './complete-tutorial-sequence-command';
-import { goToCTACommand } from './go-to-cta-command';
+import { onAggressiveCtaClickCommand } from './on-aggressive-cta-click-command';
 import { onCheckPlayLevelCommand } from './on-check-play-level-camand ';
 import { onTutorialClickCommand } from './on-tutorial-click-command';
 import { onUpdatePlayLevelCommand } from './on-update-play-level-camand ';
@@ -41,5 +41,5 @@ export const onPadClickCommand = (padId: string): void => {
 
         .payload(padId)
         .guard(isBoardStateAggressiveCtaCompleteGuard)
-        .execute(goToCTACommand);
+        .execute(onAggressiveCtaClickCommand);
 };
