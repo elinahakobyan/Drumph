@@ -116,3 +116,20 @@ type PadModelConfig = {
 };
 
 type LevelConfig = LevelPadConfig[];
+
+type EmitterConfig = {
+    diameter?: number;
+    x: number;
+    y: number;
+    count: number;
+    key: string;
+    color: number;
+    frames: TextureConfig;
+    particleConfig?: {
+        scale?: number;
+        speed?: number;
+        duration?: number;
+        explodeFactor?: number;
+        rotation?: number;
+    };
+};

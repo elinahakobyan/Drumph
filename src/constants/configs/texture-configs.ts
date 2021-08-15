@@ -15,3 +15,11 @@ export const getSoundOnTextureConfig = (config: string): TextureConfig => {
 export const getSoundOffTextureConfig = (config: string): TextureConfig => {
     return textures[`ui/sound_off_${config}` as keyof typeof textures];
 };
+
+export const getBgSparkleTextureConfig = (): TextureConfig => {
+    return textures['pad/sparkle'];
+};
+
+export const getPadAnimationParticleTextureConfig = (): TextureConfig => {
+    return textures['pad/fx_particle' as keyof typeof textures];
+};

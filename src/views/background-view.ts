@@ -2,6 +2,8 @@ import { lego } from '@armathai/lego';
 import { ICellConfig, PixiGrid } from '@armathai/pixi-grid';
 import { Sprite } from '@pixi/sprite';
 import { getBackgroundGridConfig } from '../constants/configs/grid-configs';
+import { getBgSparkleTextureConfig } from '../constants/configs/texture-configs';
+import { Emitter } from '../display/emitter';
 import { PlayableModelEvent } from '../events/model';
 import { PlayableState } from '../models/playable-model';
 import { getParams } from '../utils';
@@ -27,6 +29,7 @@ export class BackgroundView extends PixiGrid {
     public constructor() {
         super();
         this.name = 'BackgroundView';
+        this._buildSparkles();
         lego.event.on(PlayableModelEvent.stateUpdate, this._onPlayableStateUpdate, this);
     }
 
@@ -80,4 +83,37 @@ export class BackgroundView extends PixiGrid {
         const canvas = div.getElementsByTagName('canvas')[0];
         canvas.style.backgroundColor = '#000000';
     }
+
+    private _buildSparkles(): void {
+        const emitter = new Emitter({
+            x: 300,
+            y: 100,
+            count: 4,
+            key: 'UNCOMPRESSED_ASSETS',
+            color: 0xffffff,
+            frames: getBgSparkleTextureConfig(),
+            particleConfig: {
+                scale: 1,
+                speed: 0.5,
+                duration: 2,
+                explodeFactor: 14,
+                rotation: Math.PI * 0.5,
+            },
+        });
+
+        emitter.play();
+        this.addChild(emitter);
+    }
 }
+// diameter: number;
+//     x: number;
+//     y: number;
+//     count: number;
+//     key: string;
+//     color: number;
+//     frames: TextureConfig;
+//     particleConfig?: {
+//         scale?: number;
+//         speed?: number;
+//         duration?: number;
+//         explodeFactor?: number;

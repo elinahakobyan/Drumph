@@ -17,10 +17,10 @@ export class CTAView extends AbstractCTAView {
         return getTraditionalCTAGridConfig();
     }
 
-    // public rebuild(config?: ICellConfig): void {
-    //     super.rebuild(config);
-    //     // this._positionConfetti();
-    // }
+    public rebuild(config?: ICellConfig): void {
+        super.rebuild(config);
+        this._positionConfetti();
+    }
 
     protected build(blockerAlpha?: number): void {
         super.build(blockerAlpha);
@@ -59,14 +59,25 @@ export class CTAView extends AbstractCTAView {
         const { x, height, width } = getPlayable().viewBounds;
         const confettiLeft = makeParticleEffect(getTraditionalCtaConfettiParticleConfig(x - 70, height * 0.6));
         const confettiRight = makeParticleEffect(getTraditionalCtaConfettiParticleConfig(width, height * 0.6));
+        const confettiTop = makeParticleEffect(getTraditionalCtaConfettiParticleConfig(width - 400, height * 0.3));
+        // confettiTop.newEmitter(
+        //     'fx_sparkles',
+        //     getPadAnimationParticleEmitterConfig(),
+        //    \),
+        // );
+        // confettiRight.
+
+        // console.warn(confettiRight.getEmitters());
 
         confettiRight.scale.set(-1, 1);
 
         confettiLeft.start();
         confettiRight.start();
+        confettiTop.start();
 
         this.addChild((this._confettiLeft = confettiLeft));
         this.addChild((this._confettiRight = confettiRight));
+        // this.addChild(confettiTop);
     }
 
     private _positionConfetti(): void {

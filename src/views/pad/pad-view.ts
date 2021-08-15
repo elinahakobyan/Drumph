@@ -8,6 +8,7 @@ import {
     getPadGlowImageSpriteConfig,
 } from '../../constants/configs/sprite-configs';
 import { getPromptTextConfig } from '../../constants/configs/text-configs';
+import { Emitter } from '../../display/emitter';
 import { PadViewEvent } from '../../events/view';
 import { PadModel } from '../../models/pads/pad-model';
 import { getParams, lp, makeSprite, makeText } from '../../utils';
@@ -22,6 +23,7 @@ export class PadView extends Container {
     private _uuid: string;
     private _config: PadModel;
     private _color: number;
+    private _emitter: Emitter;
 
     //private _uuid: string, private _color: number, private _audio: string, private _index: number
     public constructor(padModel: PadModel) {
@@ -120,6 +122,7 @@ export class PadView extends Container {
         this._buildHint();
         this._buildGlow();
         this._buildHighlight();
+        this._buildEmitter();
     }
 
     private _buildBg(): void {
@@ -165,5 +168,22 @@ export class PadView extends Container {
 
     private _click(): void {
         lego.event.emit(PadViewEvent.click, this._uuid);
+    }
+
+    private _buildEmitter(): void {
+        // const emitter = new Emitter({
+        //     diameter: 50,
+        //     x: this.width / 2, //this._glow.x + this._glow.width / 3,
+        //     y: this.height / 2, //this._glow.y + this._glow.height / 3,
+        //     count: 60,
+        //     key: 'UNCOMPRESSED_ASSETS',
+        //     color: this._color,
+        //     frames: getPadAnimationParticleTextureConfig(),
+        //     particleConfig: {
+        //         explodeFactor: 23,
+        //     },
+        // });
+        // emitter.play();
+        // this.addChild((this._emitter = emitter));
     }
 }

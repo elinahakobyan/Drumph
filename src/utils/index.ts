@@ -12,6 +12,7 @@ import { AnimatedSprite } from '@pixi/sprite-animated';
 import { Text, TextMetrics, TextStyle } from '@pixi/text';
 import { Ticker } from '@pixi/ticker';
 import gsap from 'gsap/gsap-core';
+import { Circle } from 'pixi.js';
 import { PlayablePixi } from '../playable-pixi';
 
 const isString = (str: unknown): boolean => {
@@ -168,6 +169,21 @@ export function makeText(config: TextConfig): Text {
     return label;
 }
 
+export function circleSample(circle: Circle, count: number): Point[] {
+    const points: Point[] = [];
+
+    const { x, y } = circle;
+    for (let i = 0; i < count; i++) {
+        const L = 0 + i * (6.28 / count);
+
+        const newX = x + circle.radius * Math.cos(L);
+        const newy = y + circle.radius * Math.sin(L);
+        points.push(new Point(newX, newy));
+    }
+
+    return points;
+}
+
 export function makeParticleEffect(
     config: ParticleConfig,
 ): import('../display/particle-effect').ParticleEffectDisplayObject {
@@ -266,3 +282,14 @@ export function hideToUp(view: Container, delay = 0, duration = 500, ease = 'Sin
 
     return tw;
 }
+
+export function sampleNext(centr: Point, curent: Point, step = 10): Point {
+    const distans = Math.pow(Math.pow(curent.y - centr.y, 2) + Math.pow(curent.x - centr.x, 2), 0.5);
+    const y = ((centr.y - curent.y) * (distans + step)) / distans + centr.y;
+    const x = ((centr.x - curent.x) * (distans + step)) / distans + centr.x;
+    return new Point(x, y);
+}
+
+// export function sample (arr:<Array>) : Array{
+//     return arr[Math.floor(Math.random() * arr.length)];
+// };
