@@ -5,7 +5,6 @@ import { ISpritesheetData, Spritesheet } from '@pixi/spritesheet';
 import { EventEmitter } from '@pixi/utils';
 import WebFontLoader from 'webfontloader';
 import { assets } from '.';
-import { getParams } from '../utils';
 import { spines } from './spines';
 import { textures } from './textures';
 
@@ -59,7 +58,7 @@ export class AssetsLoader extends EventEmitter {
                         await this._loadFonts(<FontAsset>(<unknown>assets[asset]));
                         break;
                     case 'sound':
-                        getParams().sound.value && (await this._loadSounds(assets[asset]));
+                        await this._loadSounds(assets[asset]);
                         break;
                     case 'spines':
                         break;
